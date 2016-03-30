@@ -5,6 +5,8 @@
  */
 package fertilizers;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import javax.swing.JFrame;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -26,8 +28,10 @@ public class AbstractForm extends javax.swing.JFrame {
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             //look and feel could not be set.  What can we do?
         }
-        this.previous = previous;
+        this.previous = previous;        
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         initComponents();
+        this.setBounds(0,0,screenSize.width, screenSize.height);
         this.setResizable(false);
     }
     /**
