@@ -6,6 +6,8 @@
 package test;
 
 import fertilizers.SupplierForm;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import javax.swing.JFrame;
 
 /**
@@ -101,6 +103,11 @@ public class TestForm extends javax.swing.JFrame {
                 new TestForm().setVisible(true);
             }
         });
+        
+        Dimension dim =  Toolkit.getDefaultToolkit().getScreenSize();        
+        //dim.setSize(dim.getWidth(), dim.getHeight() - 50);
+        
+        System.out.println(dim);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
