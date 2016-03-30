@@ -5,44 +5,17 @@
  */
 package fertilizers;
 
-import javax.swing.JFrame;
-import javax.swing.UnsupportedLookAndFeelException;
-
 /**
- * This is not really an abstract class.  Merely a super class.  This can be
- * used to create any other forms
  *
  * @author ProjectTeam
  */
-public class AbstractForm extends javax.swing.JFrame {
+public class SupplierForm extends AbstractForm {
 
-    private JFrame previous = null;
-    
-    public AbstractForm(JFrame previous) {
-        try {
-            //My added code - starts here
-            javax.swing.UIManager.setLookAndFeel(
-                    javax.swing.UIManager.getSystemLookAndFeelClassName());
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-            //look and feel could not be set.  What can we do?
-        }
-        this.previous = previous;
-        initComponents();
-    }
     /**
-     * Creates new form AbstractForm
+     * Creates new form SupplierForm
      */
-    public AbstractForm() {
+    public SupplierForm() {
         initComponents();
-    }
-    
-    public void goToPrevious(){
-        
-        if(this.previous != null && this.previous instanceof JFrame){
-            
-            this.setVisible(false);
-            this.previous.setVisible(true);
-        }
     }
 
     /**
@@ -87,20 +60,20 @@ public class AbstractForm extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AbstractForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SupplierForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AbstractForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SupplierForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AbstractForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SupplierForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AbstractForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SupplierForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AbstractForm().setVisible(true);
+                new SupplierForm().setVisible(true);
             }
         });
     }
