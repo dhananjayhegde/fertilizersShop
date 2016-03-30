@@ -9,6 +9,8 @@ import javax.swing.JFrame;
 import javax.swing.UnsupportedLookAndFeelException;
 
 /**
+ * This is not really an abstract class.  Merely a super class.  This can be
+ * used to create any other forms
  *
  * @author ProjectTeam
  */
