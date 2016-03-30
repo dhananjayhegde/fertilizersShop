@@ -7,7 +7,7 @@ package fertilizers;
 
 /**
  *
- * @author LabAutomationTeam
+ * @author ProjectTeam
  */
 public class Fertilizers {
 
