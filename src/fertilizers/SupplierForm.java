@@ -5,12 +5,19 @@
  */
 package fertilizers;
 
+import javax.swing.JFrame;
+
 /**
  *
  * @author ProjectTeam
  */
 public class SupplierForm extends AbstractForm {
 
+    
+    public SupplierForm(JFrame prev) {
+        super(prev);
+        initComponents();
+    }
     /**
      * Creates new form SupplierForm
      */
