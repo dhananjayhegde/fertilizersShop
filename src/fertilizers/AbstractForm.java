@@ -39,9 +39,8 @@ public class AbstractForm extends javax.swing.JFrame {
         initComponents();
     }
     
-    private java.awt.Rectangle getFullScreenMode(){
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        return new java.awt.Rectangle(screenSize);
+    private java.awt.Dimension getFullScreenMode(){
+        return Toolkit.getDefaultToolkit().getScreenSize();
     }
     
     public void goToPrevious(){
@@ -63,7 +62,8 @@ public class AbstractForm extends javax.swing.JFrame {
     private void initComponents() {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setBounds(this.getFullScreenMode());
+        setBounds(new java.awt.Rectangle(0, 0, 0, 0));
+        setPreferredSize(this.getFullScreenMode());
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
