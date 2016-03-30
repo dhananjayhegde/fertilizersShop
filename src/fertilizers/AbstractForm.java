@@ -6,6 +6,7 @@
 package fertilizers;
 
 import javax.swing.JFrame;
+import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  *
@@ -16,6 +17,13 @@ public class AbstractForm extends javax.swing.JFrame {
     private JFrame previous;
     
     public AbstractForm(JFrame previous) {
+        try {
+            //My added code - starts here
+            javax.swing.UIManager.setLookAndFeel(
+                    javax.swing.UIManager.getSystemLookAndFeelClassName());
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+            //look and feel could not be set.  What can we do?
+        }
         this.previous = previous;
         initComponents();
     }
