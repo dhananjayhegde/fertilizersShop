@@ -29,9 +29,7 @@ public class AbstractForm extends javax.swing.JFrame {
             //look and feel could not be set.  What can we do?
         }
         this.previous = previous;        
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         initComponents();
-        this.setBounds(0,0,screenSize.width, screenSize.height);
         this.setResizable(false);
     }
     /**
@@ -39,6 +37,11 @@ public class AbstractForm extends javax.swing.JFrame {
      */
     public AbstractForm() {
         initComponents();
+    }
+    
+    private java.awt.Rectangle getFullScreenMode(){
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        return new java.awt.Rectangle(screenSize);
     }
     
     public void goToPrevious(){
