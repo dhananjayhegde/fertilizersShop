@@ -28,6 +28,7 @@ public class AbstractForm extends javax.swing.JFrame {
         }
         this.previous = previous;
         initComponents();
+        this.setResizable(false);
     }
     /**
      * Creates new form AbstractForm
