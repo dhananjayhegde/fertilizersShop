@@ -20,7 +20,7 @@ import java.util.logging.Logger;
  * Statement object to work with database in this whole project.</b>
  * 
  * <p>This should act as a single point of entry to database</p>
- * @author LabAutomationTeam
+ * @author ProjectTeam
  */
 public class DatabaseConnection {
     
