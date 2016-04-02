@@ -6,8 +6,9 @@
 package fertilizers;
 
 import java.awt.Dimension;
-import java.awt.List;
 import java.awt.Toolkit;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Iterator;
 import javax.swing.JFrame;
@@ -24,6 +25,10 @@ public class AbstractForm extends javax.swing.JFrame {
     private JFrame previous = null;
     protected ArrayList errors = new ArrayList();
     protected ArrayList success = new ArrayList();
+    
+    protected Statement stmt;
+    protected ResultSet rs;
+    protected String query;
     
     public AbstractForm(JFrame previous) {
         try {
