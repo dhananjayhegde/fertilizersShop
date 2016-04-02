@@ -245,7 +245,7 @@ public class SupplierForm extends AbstractForm {
                 if(!this.rs.next()){
                     //this means there is no supplier with same data
                     
-                    this.query = "INSERT INTI supplier "
+                    this.query = "INSERT INTO supplier "
                             + "(name, address, mobile, tin) "
                             + "VALUES "
                             + "('" + name + "', '" + address + "', '" + mobileString + "', "
