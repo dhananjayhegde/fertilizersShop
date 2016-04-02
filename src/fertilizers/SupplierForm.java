@@ -7,6 +7,7 @@ package fertilizers;
 
 import database.DatabaseConnection;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
@@ -244,7 +245,22 @@ public class SupplierForm extends AbstractForm {
                 if(!this.rs.next()){
                     //this means there is no supplier with same data
                     
+                    this.query = "INSERT INTI supplier "
+                            + "(name, address, mobile, tin) "
+                            + "VALUES "
+                            + "('" + name + "', '" + address + "', '" + mobileString + "', "
+                            + "'" + tin + "')";
                     
+                    this.rs = null; // to ensure we are not using the previous result set again
+                    Integer numero = this.stmt.executeUpdate(this.query, Statement.RETURN_GENERATED_KEYS);
+                    this.rs = this.stmt.getGeneratedKeys();
+                    
+                    if(this.rs != null && this.rs.next()){
+                        this.success.add("Supplier with ID " + this.rs.getLong(1) + " is created successfully");
+                    }
+                    
+                } else {
+                    this.errors.add("A supplier with same data already exists");
                 }
             } catch (SQLException ex) {
                 this.errors.add("Cannot insert data into database");
