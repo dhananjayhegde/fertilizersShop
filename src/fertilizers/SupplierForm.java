@@ -197,18 +197,22 @@ public class SupplierForm extends AbstractForm {
 
     private void jtbcreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtbcreateActionPerformed
         // TODO add your handling code here:
+        String name = this.jtfname.getText();
+        String address = this.jtaaddress.getText();
+        String mobileString = this.jtfmobile.getText();
+        String tin = this.jtftin.getText();
         
         //Data validation
-        if(this.jtfname.getText().isEmpty() || this.jtfname.getText() == null){
+        if(name == null || name.isEmpty()){
             this.errors.add("Enter Name of the supplier");
         }
         
-        if(this.jtfmobile.getText().isEmpty() || this.jtfmobile.getText() == null){
+        if(mobileString == null || mobileString.isEmpty()){
             this.errors.add("Enter a mobile number");
         } else {
             try{
-                long mobile = Long.parseLong(this.jtfmobile.getText());
-                if(this.jtfmobile.getText().length() != 10){
+                long mobile = Long.parseLong(mobileString);
+                if(mobileString.length() != 10){
                     this.errors.add("Enter 10 digit mobile number");
                 }
             } catch (NumberFormatException ex) {
@@ -216,12 +220,15 @@ public class SupplierForm extends AbstractForm {
             }
         }
         
-        if(this.jtaaddress.getText().isEmpty()){
+        if(address == null || address.isEmpty()){
             this.errors.add("Enter address of the supplier"); 
         }
         
         //proceed to further if there are no errors
-        
+        if(this.errors.isEmpty()){
+            
+            
+        }
         
     }//GEN-LAST:event_jtbcreateActionPerformed
 
