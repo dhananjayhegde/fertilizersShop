@@ -85,8 +85,18 @@ public class ProductsForm extends AbstractForm {
         });
 
         jbtclear.setLabel("Clear");
+        jbtclear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtclearActionPerformed(evt);
+            }
+        });
 
         jbtback.setLabel("Back");
+        jbtback.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtbackActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -232,7 +242,7 @@ public class ProductsForm extends AbstractForm {
             this.query = "SELECT id "
                     + "FROM products "
                     + "WHERE name='" + name + "' AND description='" + description + "' "
-                    + "composition='" + composition + "'";
+                    + "AND composition='" + composition + "'";
             
             try {
                 this.rs = this.stmt.executeQuery(this.query);
@@ -242,7 +252,7 @@ public class ProductsForm extends AbstractForm {
                             + "(name, description, composition, stockqty) "
                             + "VALUES "
                             + "('" + name + "', '" + description + "', '" + composition + "', "
-                            + "'" + stock + "'";
+                            + "'" + stock + "')";
                     
                     this.rs = null;
                     
@@ -269,6 +279,20 @@ public class ProductsForm extends AbstractForm {
             this.jlmsg.setText(this.msgListToString(this.success));
         }
     }//GEN-LAST:event_jbtcreateActionPerformed
+
+    private void jbtclearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtclearActionPerformed
+        // TODO add your handling code here:
+        
+        this.jtadesc.setText("");
+        this.jtfcomp.setText("");
+        this.jtfname.setText("");
+        this.jtfstock.setText("");
+    }//GEN-LAST:event_jbtclearActionPerformed
+
+    private void jbtbackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtbackActionPerformed
+        // TODO add your handling code here:
+        this.goToPrevious();
+    }//GEN-LAST:event_jbtbackActionPerformed
 
     /**
      * @param args the command line arguments

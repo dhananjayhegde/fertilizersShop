@@ -187,11 +187,17 @@
           <Properties>
             <Property name="label" type="java.lang.String" value="Clear"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtclearActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="jbtback">
           <Properties>
             <Property name="label" type="java.lang.String" value="Back"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtbackActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
