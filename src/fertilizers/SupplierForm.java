@@ -94,6 +94,11 @@ public class SupplierForm extends AbstractForm {
         });
 
         jbtback.setText("Back");
+        jbtback.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtbackActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -291,6 +296,11 @@ public class SupplierForm extends AbstractForm {
         this.jtfname.setText("");
         this.jtftin.setText("");
     }//GEN-LAST:event_jbtclearActionPerformed
+
+    private void jbtbackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtbackActionPerformed
+        // TODO add your handling code here:
+        this.goToPrevious();
+    }//GEN-LAST:event_jbtbackActionPerformed
 
     /**
      * @param args the command line arguments
