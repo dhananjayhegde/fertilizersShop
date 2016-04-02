@@ -87,6 +87,11 @@ public class SupplierForm extends AbstractForm {
         });
 
         jbtclear.setText("Clear");
+        jbtclear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtclearActionPerformed(evt);
+            }
+        });
 
         jbtback.setText("Back");
 
@@ -278,6 +283,14 @@ public class SupplierForm extends AbstractForm {
             this.jlmsg.setText(this.msgListToString(this.success));
         }
     }//GEN-LAST:event_jtbcreateActionPerformed
+
+    private void jbtclearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtclearActionPerformed
+        // TODO add your handling code here:
+        this.jtaaddress.setText("");
+        this.jtfmobile.setText("");
+        this.jtfname.setText("");
+        this.jtftin.setText("");
+    }//GEN-LAST:event_jbtclearActionPerformed
 
     /**
      * @param args the command line arguments
