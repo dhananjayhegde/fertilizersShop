@@ -267,6 +267,13 @@ public class SupplierForm extends AbstractForm {
             }
         }
         
+        if(!this.errors.isEmpty()){
+            this.jlmsg.setText(this.msgListToString(this.errors));
+        }
+        
+        if (!this.success.isEmpty()) {
+            this.jlmsg.setText(this.msgListToString(this.success));
+        }
     }//GEN-LAST:event_jtbcreateActionPerformed
 
     /**
