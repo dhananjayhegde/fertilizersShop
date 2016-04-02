@@ -207,6 +207,9 @@ public class SupplierForm extends AbstractForm {
         String mobileString = this.jtfmobile.getText();
         String tin = this.jtftin.getText();
         
+        //Initialize error and success lists
+        this.errors.clear();
+        this.success.clear();
         //Data validation
         if(name == null || name.isEmpty()){
             this.errors.add("Enter Name of the supplier");
