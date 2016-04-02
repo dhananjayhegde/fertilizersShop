@@ -5,6 +5,12 @@
  */
 package fertilizers;
 
+import database.DatabaseConnection;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author ProjectTeam
@@ -70,8 +76,18 @@ public class FarmerForm extends AbstractForm {
         });
 
         jbtclear.setText("Clear");
+        jbtclear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtclearActionPerformed(evt);
+            }
+        });
 
         jbtback.setText("Back");
+        jbtback.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtbackActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -213,10 +229,63 @@ public class FarmerForm extends AbstractForm {
         
         if(this.errors.isEmpty()){
             
+            this.stmt = DatabaseConnection.getConnection().getStatement();
+
+            this.query = "SELECT id "
+                    + "FROM farmer "
+                    + "where name='" + name + "' AND address='" + address + "' AND "
+                    + "mobile='" + mobileString + "'";
+            
+            try {
+                this.rs = this.stmt.executeQuery(this.query);
+                
+                if(!this.rs.next()){
+                    
+                    this.query = "INSERT INTO farmer "
+                            + "(name, address, mobile) "
+                            + "VALUES "
+                            + "('" + name + "', '" + address + "', '" + mobileString + "')";
+
+                    this.rs = null; // to ensure we are not using the previous result set again
+                    Integer numero = this.stmt.executeUpdate(this.query, Statement.RETURN_GENERATED_KEYS);
+                    this.rs = this.stmt.getGeneratedKeys();
+                    
+                    if (this.rs != null && this.rs.next()) {
+                        this.success.add("Farmer account with ID " + this.rs.getLong(1) + " is created successfully");
+                    }
+                    
+                } else {
+                
+                    this.errors.add("A farmer with same data already exists");
+                }
+            } catch (SQLException ex) {
+                this.errors.add("Cannot insert data into database");
+            }
             
         }
         
+        if (!this.errors.isEmpty()) {
+            this.jlmsg.setText(this.msgListToString(this.errors));
+        }
+
+        if (!this.success.isEmpty()) {
+            this.jlmsg.setText(this.msgListToString(this.success));
+        }
+        
     }//GEN-LAST:event_jbtcreateActionPerformed
+
+    private void jbtclearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtclearActionPerformed
+        // TODO add your handling code here:
+        
+        this.jtaaddress.setText("");
+        this.jtfmobile.setText("");
+        this.jtfname.setText("");
+    }//GEN-LAST:event_jbtclearActionPerformed
+
+    private void jbtbackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtbackActionPerformed
+        // TODO add your handling code here:
+        this.goToPrevious();
+    }//GEN-LAST:event_jbtbackActionPerformed
 
     /**
      * @param args the command line arguments
