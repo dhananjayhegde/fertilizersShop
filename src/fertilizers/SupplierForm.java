@@ -199,6 +199,29 @@ public class SupplierForm extends AbstractForm {
         // TODO add your handling code here:
         
         //Data validation
+        if(this.jtfname.getText().isEmpty() || this.jtfname.getText() == null){
+            this.errors.add("Enter Name of the supplier");
+        }
+        
+        if(this.jtfmobile.getText().isEmpty() || this.jtfmobile.getText() == null){
+            this.errors.add("Enter a mobile number");
+        } else {
+            try{
+                long mobile = Long.parseLong(this.jtfmobile.getText());
+                if(this.jtfmobile.getText().length() != 10){
+                    this.errors.add("Enter 10 digit mobile number");
+                }
+            } catch (NumberFormatException ex) {
+                this.errors.add("Enter only digits in mobile field");
+            }
+        }
+        
+        if(this.jtaaddress.getText().isEmpty()){
+            this.errors.add("Enter address of the supplier"); 
+        }
+        
+        //proceed to further if there are no errors
+        
         
     }//GEN-LAST:event_jtbcreateActionPerformed
 

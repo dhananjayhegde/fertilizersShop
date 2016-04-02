@@ -20,8 +20,8 @@ import javax.swing.UnsupportedLookAndFeelException;
 public class AbstractForm extends javax.swing.JFrame {
 
     private JFrame previous = null;
-    protected ArrayList errors;
-    protected ArrayList success;
+    protected ArrayList errors = new ArrayList();
+    protected ArrayList success = new ArrayList();
     
     public AbstractForm(JFrame previous) {
         try {
@@ -60,6 +60,8 @@ public class AbstractForm extends javax.swing.JFrame {
     public void logout(){
         System.out.println("Successfully Logged out");
     }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
