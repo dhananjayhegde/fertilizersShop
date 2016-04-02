@@ -5,6 +5,10 @@
  */
 package fertilizers;
 
+import database.DatabaseConnection;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 
 /**
@@ -227,7 +231,24 @@ public class SupplierForm extends AbstractForm {
         //proceed to further if there are no errors
         if(this.errors.isEmpty()){
             
+            this.stmt = DatabaseConnection.getConnection().getStatement();
             
+            this.query = "SELECT id "
+                    + "FROM supplier "
+                    + "where name='" + name +"' AND address='" + address + "' AND "
+                    + "mobile='" + mobileString + "' AND tin='" + tin +"'";
+            
+            try {
+                this.rs = stmt.executeQuery(this.query);
+                
+                if(!this.rs.next()){
+                    //this means there is no supplier with same data
+                    
+                    
+                }
+            } catch (SQLException ex) {
+                this.errors.add("Cannot insert data into database");
+            }
         }
         
     }//GEN-LAST:event_jtbcreateActionPerformed
