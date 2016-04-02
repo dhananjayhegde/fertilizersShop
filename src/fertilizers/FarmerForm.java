@@ -8,8 +8,7 @@ package fertilizers;
 import database.DatabaseConnection;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.swing.JFrame;
 
 /**
  *
@@ -17,6 +16,11 @@ import java.util.logging.Logger;
  */
 public class FarmerForm extends AbstractForm {
 
+    
+    public FarmerForm(JFrame prev) {
+        super(prev);
+        initComponents();
+    }
     /**
      * Creates new form FarmerForm
      */
