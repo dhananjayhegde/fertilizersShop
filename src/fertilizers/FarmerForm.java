@@ -206,6 +206,8 @@ public class FarmerForm extends AbstractForm {
         String address = this.jtaaddress.getText();
         String mobileString = this.jtfmobile.getText();
         
+        java.sql.Date today;
+        
         //initialization
         this.errors.clear();
         this.success.clear();
@@ -255,7 +257,31 @@ public class FarmerForm extends AbstractForm {
                     this.rs = this.stmt.getGeneratedKeys();
                     
                     if (this.rs != null && this.rs.next()) {
-                        this.success.add("Farmer account with ID " + this.rs.getLong(1) + " is created successfully");
+                        Long farmerId = this.rs.getLong(1);
+                        this.success.add("Farmer account with ID " + farmerId + " is created successfully");
+                        //only if the Famer id is created, generate an account for the farmer
+                        
+                        //convert today to sql date format
+                        java.util.Date util_today = new java.util.Date();
+                        today = new java.sql.Date(util_today.getTime());
+                        
+                        this.query = "INSERT INTO account "
+                                + "(farmerid, date, balance) "
+                                + "VALUES "
+                                + "('" + farmerId + "', '" + today + "', '" + 0.00 + "')";
+                        
+                        this.rs = null;
+                        
+                        numero = this.stmt.executeUpdate(this.query, Statement.RETURN_GENERATED_KEYS);
+                        this.rs = this.stmt.getGeneratedKeys();
+                        
+                        if(this.rs != null && this.rs.next()){
+                            this.success.add("An account for the farmer with ID " + this.rs.getLong(1) + " is created successfully");
+                        } else {
+                            this.errors.add(" But account for this farmer is not created");
+                        }
+                    } else {
+                        this.errors.add("Farmer IDis not created");
                     }
                     
                 } else {
