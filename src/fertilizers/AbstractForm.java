@@ -7,6 +7,7 @@ package fertilizers;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -19,6 +20,8 @@ import javax.swing.UnsupportedLookAndFeelException;
 public class AbstractForm extends javax.swing.JFrame {
 
     private JFrame previous = null;
+    protected ArrayList errors;
+    protected ArrayList success;
     
     public AbstractForm(JFrame previous) {
         try {
@@ -52,6 +55,10 @@ public class AbstractForm extends javax.swing.JFrame {
             this.setVisible(false);
             this.previous.setVisible(true);
         }
+    }
+    
+    public void logout(){
+        System.out.println("Successfully Logged out");
     }
 
     /**
