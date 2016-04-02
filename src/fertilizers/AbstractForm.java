@@ -6,8 +6,10 @@
 package fertilizers;
 
 import java.awt.Dimension;
+import java.awt.List;
 import java.awt.Toolkit;
 import java.util.ArrayList;
+import java.util.Iterator;
 import javax.swing.JFrame;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -61,7 +63,17 @@ public class AbstractForm extends javax.swing.JFrame {
         System.out.println("Successfully Logged out");
     }
     
-    
+    public String msgListToString(java.util.List<String> msgList){
+        String message = "";
+        Iterator it;
+        if(!msgList.isEmpty()){
+            it = msgList.iterator();        
+            while(it.hasNext()){
+                message += (String) it.next();
+            }
+        }
+        return message;
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
