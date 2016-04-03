@@ -6,6 +6,7 @@
 package fertilizers;
 
 import java.sql.SQLException;
+import java.util.Vector;
 
 /**
  *
@@ -16,7 +17,7 @@ public class ALVTableModel extends javax.swing.table.AbstractTableModel {
     int columnCount;
     int rowCount;
     String[] columns;
-    Object[][] data;
+    Vector<Object[]> data; //each element is an array of Object === a row is an array of columns
     java.sql.ResultSet resultSet;
     
     public ALVTableModel(java.sql.ResultSet resultSet){
@@ -42,17 +43,23 @@ public class ALVTableModel extends javax.swing.table.AbstractTableModel {
                 this.columns[i] = resultSet.getMetaData().getColumnName(i);
             }
             
-            int rowIndex = 0;
+            Object[] row;
             while(this.resultSet.next()){
+                row = new Object[this.columnCount];
                 for(int colIndex = 0; colIndex < this.columnCount; colIndex++){
-                    this.data[rowIndex][colIndex] = this.resultSet.getString(colIndex);
+                    row[colIndex] = this.resultSet.getString(colIndex);
                 }
-                rowIndex++;
-            }
-            
-            this.rowCount = rowIndex; //total number of rows
-            
+                this.data.addElement(row);
+            }            
             //fire data changed event so that the tableView gets updated
+            fireTableChanged(null);
+        }
+    }
+    
+    public void appendRow(Object[] row){
+        if(row.length == this.columnCount){
+            this.data.addElement(row);
+            fireTableChanged(null);
         }
     }
     
@@ -64,7 +71,7 @@ public class ALVTableModel extends javax.swing.table.AbstractTableModel {
      * @throws IndexOutOfBoundsException 
      */
     public Object[] getRowByIndex(int rowIndex) throws IndexOutOfBoundsException{
-        return data[rowIndex];
+        return this.data.get(rowIndex);
     }
     /**
      * If index > this.columnCount then throws ArrayIndexOutOfBoundsException
@@ -83,7 +90,7 @@ public class ALVTableModel extends javax.swing.table.AbstractTableModel {
     
     @Override
     public int getRowCount() {
-        return this.rowCount;
+        return this.data.size();
     }
 
     @Override
@@ -93,7 +100,6 @@ public class ALVTableModel extends javax.swing.table.AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) throws IndexOutOfBoundsException{
-        return data[rowIndex][columnIndex];
+        return (this.data.get(rowIndex))[columnIndex];
     }
-    
 }
