@@ -73,8 +73,47 @@ public class ALVTableModel extends javax.swing.table.AbstractTableModel {
         }
     }
     
-    public void removeRowByIndex(int rowIndex) throws IndexOutOfBoundsException{
+    public void removeSelectedRow(Object[] row) {
+        this.data.remove(row);
+        fireTableChanged(null);
+    }
+    
+    /**
+     * If you call this method inside a loop to remove all the selected rows,
+     * you are bound to hit ArrayIndexOutOfBoundsException.
+     * 
+     * This is because, when the first selected row is removed, this.data gets rearranged.
+     * This means, total count is reduced by 1 and indices are rearranged
+     * accordingly.
+     * 
+     * Instead, to delete multiple rows, use, removeSelectedRows()
+     * 
+     * @param rowIndex
+     * @throws IndexOutOfBoundsException 
+     */
+    public void removeSelectedRow(int rowIndex) throws IndexOutOfBoundsException{
         this.data.remove(rowIndex);
+        fireTableChanged(null);
+    }
+    
+    /**
+     * Optimized for deleting multiple rows
+     * 
+     * @param selectedRows
+     * @throws IndexOutOfBoundsException 
+     */
+    public void removeSelectedRows(int[] selectedRows) throws IndexOutOfBoundsException{
+        
+        //Collcted the rows to be removed, and then deleted them
+        Object[] toRemove = new Object[selectedRows.length];
+        for(int i = 0; i < selectedRows.length; i++){
+            toRemove[i] = (Object[])this.data.get(selectedRows[i]);
+        }
+        
+        for (Object row : toRemove) {
+            this.data.remove((Object[]) row);
+        }
+        
         fireTableChanged(null);
     }
     
