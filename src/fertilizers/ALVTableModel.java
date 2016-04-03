@@ -56,6 +56,12 @@ public class ALVTableModel extends javax.swing.table.AbstractTableModel {
         }
     }
     
+    /**
+     * Adds only if the length of the row array == number of columns
+     * We restrict that all rows have same number of columns for simplicity
+     * 
+     * @param row 
+     */
     public void appendRow(Object[] row){
         if(row.length == this.columnCount){
             this.data.addElement(row);
@@ -63,6 +69,15 @@ public class ALVTableModel extends javax.swing.table.AbstractTableModel {
         }
     }
     
+    public void removeRowByIndex(int rowIndex) throws IndexOutOfBoundsException{
+        this.data.remove(rowIndex);
+        fireTableChanged(null);
+    }
+    
+    public void removeRow(Object[] row){
+        this.data.remove(row);
+        fireTableChanged(null);
+    }
     /**
      * Returns the whole row
      * 
@@ -101,5 +116,11 @@ public class ALVTableModel extends javax.swing.table.AbstractTableModel {
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) throws IndexOutOfBoundsException{
         return (this.data.get(rowIndex))[columnIndex];
+    }
+    
+    @Override
+    public void setValueAt(Object value, int rowIndex, int colIndex) throws IndexOutOfBoundsException{
+        (this.data.get(rowIndex))[colIndex] = value;
+        fireTableChanged(null);
     }
 }
