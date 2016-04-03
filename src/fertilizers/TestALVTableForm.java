@@ -54,6 +54,7 @@ public class TestALVTableForm extends javax.swing.JFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         jtbfarmer = new javax.swing.JTable();
+        jbtremoveselected = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -70,25 +71,50 @@ public class TestALVTableForm extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(jtbfarmer);
 
+        jbtremoveselected.setText("Remove Selected");
+        jbtremoveselected.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtremoveselectedActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 755, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 755, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jbtremoveselected)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 491, Short.MAX_VALUE)
-                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jbtremoveselected)
+                .addContainerGap(243, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jbtremoveselectedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtremoveselectedActionPerformed
+        // TODO add your handling code here:
+        
+        int[] selectedRows = this.jtbfarmer.getSelectedRows();
+//        int rowCount = this.jtbfarmer.getSelectedRowCount();
+        
+        ((ALVTableModel) this.jtbfarmer.getModel()).removeSelectedRows(selectedRows);
+//        for(int i = 0; i < rowCount; i++){
+//            ((ALVTableModel)this.jtbfarmer.getModel()).removeSelectedRow(selectedRows[i]);
+//        }
+    }//GEN-LAST:event_jbtremoveselectedActionPerformed
 
     /**
      * @param args the command line arguments
@@ -127,6 +153,7 @@ public class TestALVTableForm extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton jbtremoveselected;
     private javax.swing.JTable jtbfarmer;
     // End of variables declaration//GEN-END:variables
 }
