@@ -74,7 +74,9 @@ public class AbstractForm extends javax.swing.JFrame {
         if(!msgList.isEmpty()){
             it = msgList.iterator();        
             while(it.hasNext()){
-                message += (String) it.next();
+                if(!message.isEmpty()){
+                    message += "; " + (String) it.next();
+                }                 
             }
         }
         return message;
