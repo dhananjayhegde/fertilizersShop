@@ -52,8 +52,12 @@ public class PurchaseModel {
         this.items.add(item);
     }
     
-    public void removeItemByItemNumber(PurchaseItemsModel item){
-        
+    public void removeItem(PurchaseItemsModel item){
+        this.items.removeIf(e -> e.getId() == item.getId());
+    }
+    
+    public void removeItemByItemNumber(int itemNo){
+        this.items.removeIf(e -> e.getId() == itemNo);
     }
     
     public ArrayList<PurchaseItemsModel> getItems() {
