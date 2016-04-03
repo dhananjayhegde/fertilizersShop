@@ -6,7 +6,6 @@
 package fertilizers;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 
 /**
@@ -42,7 +41,19 @@ public class PurchaseModel {
         this.subsidy = subsidy;
     }
     
-    
+    public void displayPurchaseOrder(){
+        System.out.println("Purchase Order Header : ");
+        System.out.println("------------------------------------------------------------------");
+        System.out.println("ID      : " + this.getId());
+        System.out.println("Supplier Id : " + this.supplierId);
+        System.out.println("Total       : " + this.total);
+        System.out.println("Purchase Order Items : ");
+        System.out.println("------------------------------------------------------------------");
+        System.out.println("Item No.    Product Id      Price       Quantity        Amount");
+        System.out.println("------------------------------------------------------------------");
+        this.items.forEach(e -> System.out.println(e.getItemNo() + "    " + e.getProductId() + "    " 
+                                + e.getPrice() + "  " + e.getQuantity() + " " + e.getAmount()));
+    }
 //    public static PurchaseModel getPurchaseById(long id){
 //        
 //        return new PurchaseModel();
@@ -101,20 +112,10 @@ public class PurchaseModel {
         this.date = date;
     }
 
-    /**
-     * Get the value of supplierId
-     *
-     * @return the value of supplierId
-     */
     public long getSupplierId() {
         return supplierId;
     }
 
-    /**
-     * Set the value of supplierId
-     *
-     * @param supplierId new value of supplierId
-     */
     public void setSupplierId(long supplierId) {
         this.supplierId = supplierId;
     }
