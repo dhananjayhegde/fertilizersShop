@@ -7,6 +7,7 @@ package fertilizers;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 
 /**
  *
@@ -61,6 +62,7 @@ public class PurchaseModel {
     
     public void addItem(PurchaseItemsModel item){
         this.items.add(item);
+        this.calculateTotal();
     }
     
     public void removeItem(PurchaseItemsModel item){
@@ -91,9 +93,9 @@ public class PurchaseModel {
         return total;
     }
 
-    public void setTotal(double total) {
-        this.total = total;
-    }
+//    public void setTotal(double total) {
+//        this.total = total;
+//    }
 
 
     public double getSubtotal() {
@@ -128,4 +130,14 @@ public class PurchaseModel {
         this.id = id;
     }
 
+    private void calculateTotal() {
+        Iterator it = this.items.iterator();
+        double total = 0;
+        
+        while(it.hasNext()){
+            total += ((PurchaseItemsModel)it.next()).getAmount();
+        }
+        
+        this.total = total;
+    }
 }
