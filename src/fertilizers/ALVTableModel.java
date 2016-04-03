@@ -17,11 +17,12 @@ public class ALVTableModel extends javax.swing.table.AbstractTableModel {
     int columnCount;
     int rowCount;
     String[] columns;
-    Vector<Object[]> data; //each element is an array of Object === a row is an array of columns
+    String[] header;
+    Vector<Object[]> data = new Vector(); //each element is an array of Object === a row is an array of columns
     java.sql.ResultSet resultSet;
     
-    public ALVTableModel(java.sql.ResultSet resultSet){
-        
+    public ALVTableModel(java.sql.ResultSet resultSet) throws SQLException{
+        this.setData(resultSet);
     }
     
     /**
@@ -40,14 +41,17 @@ public class ALVTableModel extends javax.swing.table.AbstractTableModel {
 
             //initiate columns
             for (int i = 0; i < this.columnCount; i++) {
-                this.columns[i] = resultSet.getMetaData().getColumnName(i);
+                this.columns[i] = resultSet.getMetaData().getColumnName(i + 1);
             }
+            
+            //Temporary fix
+            this.header = this.columns;
             
             Object[] row;
             while(this.resultSet.next()){
                 row = new Object[this.columnCount];
                 for(int colIndex = 0; colIndex < this.columnCount; colIndex++){
-                    row[colIndex] = this.resultSet.getString(colIndex);
+                    row[colIndex] = this.resultSet.getString(colIndex + 1);
                 }
                 this.data.addElement(row);
             }            
@@ -97,6 +101,11 @@ public class ALVTableModel extends javax.swing.table.AbstractTableModel {
      */
     public String getColumnAt(int index) throws ArrayIndexOutOfBoundsException{
         return this.columns[index];
+    }
+    
+    @Override
+    public String getColumnName(int index) throws ArrayIndexOutOfBoundsException {
+        return this.header[index].toUpperCase();
     }
     
     public String[] getColumns(){
