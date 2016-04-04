@@ -32,6 +32,42 @@ public class PurchaseForm extends AbstractForm {
         initComponents();
         initialize();
     }
+    
+    private ComboBoxModel getSupplierModel(){
+        SupplierModel[] suppliers = null;
+        ArrayList<SupplierModel> slist = new ArrayList();
+
+        this.stmt = DatabaseConnection.getConnection().getStatement();
+
+        this.query = "SELECT * FROM supplier";
+
+        try {
+            this.rs = this.stmt.executeQuery(this.query);
+            while (this.rs.next()) {
+                slist.add(new SupplierModel(this.rs.getLong("id"),
+                                            this.rs.getString("name"),
+                                            this.rs.getString("address"),
+                                            this.rs.getString("mobile"),
+                                            this.rs.getString("tin")
+                                        ));
+
+            }
+
+            suppliers = new SupplierModel[slist.size()];
+            Iterator it = slist.iterator();
+            int i = 0;
+            while (it.hasNext()) {
+                suppliers[i++] = (SupplierModel) it.next();
+            }
+
+        } catch (SQLException ex) {
+            this.jlmsg.setText("There was a problem getting supplier data from database");
+        }
+
+        return new DefaultComboBoxModel(suppliers);
+    }
+    
+    
     private ComboBoxModel getProductModel(){
         
         ProductModel[] products = null;
@@ -357,5 +393,6 @@ public class PurchaseForm extends AbstractForm {
 
     private void initialize() {
         this.jcbproduct.setModel(this.getProductModel());
+        this.jcbsupplier.setModel(this.getSupplierModel());
     }
 }
