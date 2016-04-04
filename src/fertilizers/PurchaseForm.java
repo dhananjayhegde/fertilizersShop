@@ -5,6 +5,12 @@
  */
 package fertilizers;
 
+import database.DatabaseConnection;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFrame;
 
 /**
@@ -24,7 +30,42 @@ public class PurchaseForm extends AbstractForm {
     public PurchaseForm() {
         initComponents();
     }
-
+    private ComboBoxModel getProductModel(){
+        
+        ProductModel[] products = null;
+        ArrayList<ProductModel> plist = new ArrayList();
+        
+        this.stmt = DatabaseConnection.getConnection().getStatement();
+        
+        this.query = "SELECT * FROM products";
+        
+        try {
+            this.rs = this.stmt.executeQuery(this.query);
+            while(this.rs.next()){
+                plist.add(new ProductModel( this.rs.getLong("id"),
+                                            this.rs.getString("name"),
+                                            this.rs.getString("description"),
+                                            this.rs.getString("composition"),
+                                            this.rs.getLong("stockqty"),
+                                            this.rs.getDouble("price")
+                                            ));
+                        
+            }
+            
+            products = new ProductModel[plist.size()];
+            Iterator it = plist.iterator();
+            int i = 0;
+            while(it.hasNext()){
+                products[i++] = (ProductModel) it.next();
+            }
+            
+        } catch (SQLException ex) {
+            this.jlmsg.setText("There was a problem getting product data from database");
+        }
+        
+        return new DefaultComboBoxModel(products);
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
