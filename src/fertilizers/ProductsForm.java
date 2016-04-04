@@ -311,11 +311,7 @@ public class ProductsForm extends AbstractForm {
 
     private void jbtclearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtclearActionPerformed
         // TODO add your handling code here:
-        
-        this.jtadesc.setText("");
-        this.jtfcomp.setText("");
-        this.jtfname.setText("");
-        this.jtfstock.setText("");
+        this.clearFormFields();
     }//GEN-LAST:event_jbtclearActionPerformed
 
     private void jbtbackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtbackActionPerformed
@@ -323,6 +319,13 @@ public class ProductsForm extends AbstractForm {
         this.goToPrevious();
     }//GEN-LAST:event_jbtbackActionPerformed
 
+    private void clearFormFields(){
+        this.jtadesc.setText("");
+        this.jtfcomp.setText("");
+        this.jtfname.setText("");
+        this.jtfstock.setText("");
+        this.jtfprice.setText("");
+    }
     /**
      * @param args the command line arguments
      */
