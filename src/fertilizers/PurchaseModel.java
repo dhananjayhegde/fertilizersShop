@@ -15,7 +15,7 @@ import java.util.Iterator;
  */
 public class PurchaseModel {
     
-    private long id;
+    private long id = -1L; //BEFORE SAVING TO DATABASE
     private long supplierId;
     private Date date;
     private double subtotal;
