@@ -106,6 +106,10 @@ public class ALVDynamicTableModel extends javax.swing.table.AbstractTableModel{
 
         fireTableChanged(null);
     }
+    
+    public void removeAllRows(){
+        this.data.clear();
+    }
 
     public void removeRow(Object[] row) {
         this.data.remove(row);
