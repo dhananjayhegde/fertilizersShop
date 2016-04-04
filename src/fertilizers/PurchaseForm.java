@@ -381,11 +381,7 @@ public class PurchaseForm extends AbstractForm {
 
     private void jcbproductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbproductActionPerformed
         // TODO add your handling code here:
-        ProductModel selProd;
-        
-        selProd = (ProductModel) this.jcbproduct.getSelectedItem();
-        this.jtfprice.setText(selProd.getPrice() + "");
-        this.updateAmountField();
+        this.updatePrice();
     }//GEN-LAST:event_jcbproductActionPerformed
 
     /**
@@ -451,6 +447,17 @@ public class PurchaseForm extends AbstractForm {
     private void initialize() {
         this.jcbproduct.setModel(this.getProductModel());
         this.jcbsupplier.setModel(this.getSupplierModel());
+        this.updatePrice();
         this.updateAmountField();
+    }
+
+    private void updatePrice() {
+        
+        ProductModel selProd;
+
+        selProd = (ProductModel) this.jcbproduct.getSelectedItem();
+        this.jtfprice.setText(selProd.getPrice() + "");
+        this.updateAmountField();
+        
     }
 }
