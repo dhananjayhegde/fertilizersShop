@@ -9,6 +9,7 @@ import database.DatabaseConnection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Vector;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFrame;
@@ -19,6 +20,9 @@ import javax.swing.JFrame;
  */
 public class PurchaseForm extends AbstractForm {
 
+    private Vector<Object[]> purchaseItems;
+    private PurchaseModel purchaseOrder;
+    
     public PurchaseForm(JFrame prev) {
         super(prev);
         initComponents();
@@ -49,7 +53,7 @@ public class PurchaseForm extends AbstractForm {
             
             //CALCULATION OF TOTAL AMOUTN PER ITEM
             amount = iQty * price;
-            
+            this.jlmsg.setText("");
         } catch (NumberFormatException ex) {
             this.jlmsg.setText("Quantity has to be a whole number and price has to be a decimal");
         }
@@ -216,6 +220,11 @@ public class PurchaseForm extends AbstractForm {
         jButton1.setText("Add Item");
 
         jButton2.setText("Clear Item Data");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("New Order ");
 
@@ -312,7 +321,7 @@ public class PurchaseForm extends AbstractForm {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jlitems, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(311, Short.MAX_VALUE))
+                .addContainerGap(301, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -329,14 +338,12 @@ public class PurchaseForm extends AbstractForm {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jlbanner, javax.swing.GroupLayout.PREFERRED_SIZE, 450, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jlbanner, javax.swing.GroupLayout.PREFERRED_SIZE, 450, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -375,7 +382,7 @@ public class PurchaseForm extends AbstractForm {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -402,6 +409,11 @@ public class PurchaseForm extends AbstractForm {
         // TODO add your handling code here:
         this.updateAmountField();
     }//GEN-LAST:event_jtfqtyKeyReleased
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        this.clearItemData();
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -479,5 +491,14 @@ public class PurchaseForm extends AbstractForm {
         this.jtfprice.setText(selProd.getPrice() + "");
         this.updateAmountField();
         
+    }
+
+    private void clearItemData() {
+        this.jtfamount.setText("");
+        this.jtfqty.setText("");
+        this.jtfprice.setText("");
+        this.jtfsubsidy.setText("");
+        this.jcbproduct.setSelectedIndex(0);
+        this.jcbsupplier.setSelectedIndex(0);
     }
 }
