@@ -12,7 +12,7 @@ import java.util.Vector;
  * @author ProjectTeam
  */
 public class ALVDynamicTableModel extends javax.swing.table.AbstractTableModel{
-    private int columnCount;
+//    private int columnCount;
     private int rowCount;
     private String[] header;
     private Vector<Object[]> data = new Vector(); //each element is an array of Object === a row is an array of columns
@@ -35,7 +35,7 @@ public class ALVDynamicTableModel extends javax.swing.table.AbstractTableModel{
             this.data = dataSet;
 
             this.header = header; //column headers
-            this.columnCount = header.length; //set Column count
+//            this.columnCount = header.length; //set Column count
             fireTableChanged(null);
         } else if(header != null && header.length > 0){
             this.header = header;
@@ -57,7 +57,7 @@ public class ALVDynamicTableModel extends javax.swing.table.AbstractTableModel{
      * @param row
      */
     public void appendRow(Object[] row) {
-        if (row.length == this.columnCount) {
+        if (row.length == this.header.length) {
             this.data.addElement(row);
             fireTableChanged(null);
         }
@@ -136,7 +136,7 @@ public class ALVDynamicTableModel extends javax.swing.table.AbstractTableModel{
 
     @Override
     public String getColumnName(int index) throws ArrayIndexOutOfBoundsException {
-        return this.header[index].toUpperCase();
+        return this.header[index];
     }
 
     public String[] getColumns() {
@@ -150,7 +150,7 @@ public class ALVDynamicTableModel extends javax.swing.table.AbstractTableModel{
 
     @Override
     public int getColumnCount() {
-        return this.columnCount;
+        return this.header.length;
     }
 
     @Override

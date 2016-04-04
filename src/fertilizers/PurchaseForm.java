@@ -41,7 +41,7 @@ public class PurchaseForm extends AbstractForm {
 
     private void initializeItemsTable(){
         this.headers = this.getTableColumns();
-        this.purchaseItems = new Vector();        
+        this.purchaseItems = new Vector<Object[]>();        
         this.alvModel = new ALVDynamicTableModel(this.purchaseItems, this.headers);
         this.jtbitemdata.setModel(alvModel);
     }
