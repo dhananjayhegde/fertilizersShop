@@ -19,12 +19,12 @@ import javax.swing.JFrame;
  */
 public class PurchaseForm extends AbstractForm {
 
-    
-    public PurchaseForm(JFrame prev){
+    public PurchaseForm(JFrame prev) {
         super(prev);
         initComponents();
         initialize();
     }
+
     /**
      * Creates new form PurchaseForm
      */
@@ -32,8 +32,30 @@ public class PurchaseForm extends AbstractForm {
         initComponents();
         initialize();
     }
-    
-    private ComboBoxModel getSupplierModel(){
+
+    private void updateAmountField() {
+
+        double price = 0.00;
+        double amount = 0.00;
+        int iQty = 0;
+        String qty;
+
+
+        qty = this.jtfqty.getText();
+
+        try {
+            iQty = Integer.parseInt(qty);
+            price = Double.parseDouble(this.jtfprice.getText());
+            
+            amount = iQty * price;
+        } catch (NumberFormatException ex) {
+            this.jlmsg.setText("Quantity has to be a whole number and price has to be a decimal");
+        }
+        
+        this.jtfamount.setText(amount + "");
+    }
+
+    private ComboBoxModel getSupplierModel() {
         SupplierModel[] suppliers = null;
         ArrayList<SupplierModel> slist = new ArrayList();
 
@@ -45,11 +67,11 @@ public class PurchaseForm extends AbstractForm {
             this.rs = this.stmt.executeQuery(this.query);
             while (this.rs.next()) {
                 slist.add(new SupplierModel(this.rs.getLong("id"),
-                                            this.rs.getString("name"),
-                                            this.rs.getString("address"),
-                                            this.rs.getString("mobile"),
-                                            this.rs.getString("tin")
-                                        ));
+                        this.rs.getString("name"),
+                        this.rs.getString("address"),
+                        this.rs.getString("mobile"),
+                        this.rs.getString("tin")
+                ));
 
             }
 
@@ -66,44 +88,43 @@ public class PurchaseForm extends AbstractForm {
 
         return new DefaultComboBoxModel(suppliers);
     }
-    
-    
-    private ComboBoxModel getProductModel(){
-        
+
+    private ComboBoxModel getProductModel() {
+
         ProductModel[] products = null;
         ArrayList<ProductModel> plist = new ArrayList();
-        
+
         this.stmt = DatabaseConnection.getConnection().getStatement();
-        
+
         this.query = "SELECT * FROM products";
-        
+
         try {
             this.rs = this.stmt.executeQuery(this.query);
-            while(this.rs.next()){
-                plist.add(new ProductModel( this.rs.getLong("id"),
-                                            this.rs.getString("name"),
-                                            this.rs.getString("description"),
-                                            this.rs.getString("composition"),
-                                            this.rs.getLong("stockqty"),
-                                            this.rs.getDouble("price")
-                                            ));
-                        
+            while (this.rs.next()) {
+                plist.add(new ProductModel(this.rs.getLong("id"),
+                        this.rs.getString("name"),
+                        this.rs.getString("description"),
+                        this.rs.getString("composition"),
+                        this.rs.getLong("stockqty"),
+                        this.rs.getDouble("price")
+                ));
+
             }
-            
+
             products = new ProductModel[plist.size()];
             Iterator it = plist.iterator();
             int i = 0;
-            while(it.hasNext()){
+            while (it.hasNext()) {
                 products[i++] = (ProductModel) it.next();
             }
-            
+
         } catch (SQLException ex) {
             this.jlmsg.setText("There was a problem getting product data from database");
         }
-        
+
         return new DefaultComboBoxModel(products);
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -129,6 +150,8 @@ public class PurchaseForm extends AbstractForm {
         jtfprice = new javax.swing.JTextField();
         jtfqty = new javax.swing.JTextField();
         jtfamount = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jlitems = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
@@ -169,10 +192,21 @@ public class PurchaseForm extends AbstractForm {
         jlamount.setText("Amount : ");
 
         jcbproduct.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jcbproduct.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jcbproductActionPerformed(evt);
+            }
+        });
 
         jtfprice.setEditable(false);
+        jtfprice.setToolTipText("User input not allowed on this field");
 
         jtfamount.setEditable(false);
+        jtfamount.setToolTipText("User input not allowed on this field");
+
+        jButton1.setText("Add Item");
+
+        jButton2.setText("Clear Item Data");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -182,31 +216,39 @@ public class PurchaseForm extends AbstractForm {
                 .addGap(20, 20, 20)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jlamount, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jlsupplier, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jtfamount, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jcbsupplier, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jlquantity, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jtfqty, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jlprice, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jtfprice, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(jlquantity, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jtfqty, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(jlprice, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jtfprice, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(jlsubsidy, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jtfsubsidy, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jlheader, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(jlamount, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jtfamount, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel3Layout.createSequentialGroup()
+                                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jlproduct, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jcbproduct, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jlsubsidy, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jtfsubsidy, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jlsupplier, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jcbsupplier, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jlheader, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(88, Short.MAX_VALUE))
+                        .addComponent(jcbproduct, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -237,7 +279,11 @@ public class PurchaseForm extends AbstractForm {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jlamount, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jtfamount, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(61, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
 
         jPanel4.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -252,7 +298,7 @@ public class PurchaseForm extends AbstractForm {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jlitems, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(201, Short.MAX_VALUE))
+                .addContainerGap(311, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -333,6 +379,15 @@ public class PurchaseForm extends AbstractForm {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jcbproductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbproductActionPerformed
+        // TODO add your handling code here:
+        ProductModel selProd;
+        
+        selProd = (ProductModel) this.jcbproduct.getSelectedItem();
+        this.jtfprice.setText(selProd.getPrice() + "");
+        this.updateAmountField();
+    }//GEN-LAST:event_jcbproductActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -369,6 +424,8 @@ public class PurchaseForm extends AbstractForm {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -394,5 +451,6 @@ public class PurchaseForm extends AbstractForm {
     private void initialize() {
         this.jcbproduct.setModel(this.getProductModel());
         this.jcbsupplier.setModel(this.getSupplierModel());
+        this.updateAmountField();
     }
 }
