@@ -23,6 +23,7 @@ public class PurchaseForm extends AbstractForm {
     public PurchaseForm(JFrame prev){
         super(prev);
         initComponents();
+        initialize();
     }
     /**
      * Creates new form PurchaseForm
@@ -352,4 +353,8 @@ public class PurchaseForm extends AbstractForm {
     private javax.swing.JTextField jtfqty;
     private javax.swing.JTextField jtfsubsidy;
     // End of variables declaration//GEN-END:variables
+
+    private void initialize() {
+        this.jcbproduct.setModel(this.getProductModel());
+    }
 }
