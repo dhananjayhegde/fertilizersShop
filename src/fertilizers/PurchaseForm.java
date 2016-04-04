@@ -51,7 +51,7 @@ public class PurchaseForm extends AbstractForm {
     }
     
     private void clearItemModelData(){
-        this.alvModel.removeSelectedRows(this.jtbitemdata.getSe);
+        this.alvModel.removeAllRows();
     }
     
     private void removeItems(int[] rows){
@@ -549,6 +549,7 @@ public class PurchaseForm extends AbstractForm {
     private void jbtneworderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtneworderActionPerformed
         // TODO add your handling code here:
         this.clearItemModelData();
+        this.clearItemData();
     }//GEN-LAST:event_jbtneworderActionPerformed
 
     /**
