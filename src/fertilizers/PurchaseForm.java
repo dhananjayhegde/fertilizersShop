@@ -21,6 +21,7 @@ import javax.swing.JFrame;
 public class PurchaseForm extends AbstractForm {
 
     private Vector<Object[]> purchaseItems;
+    private String[] headers;
     private PurchaseModel purchaseOrder;
     
     public PurchaseForm(JFrame prev) {
@@ -37,6 +38,31 @@ public class PurchaseForm extends AbstractForm {
         initialize();
     }
 
+    private void initializeOrderData(){
+        this.headers = this.getTableColumns();
+        
+    }
+    
+    private String[] getTableColumns(){
+        return new String[]{"Produ. ID", "Product Name", "Unit Price", "Quantity(in kg)", "Amount (in Rs.)"};
+    }
+    
+    //Call this from action event of Add Item button
+    private Object[] getNewITemForModel(){
+        
+        Object[] row = new Object[this.headers.length];
+        
+        if(!this.jtfsubsidy.getText().isEmpty() && !this.jtfqty.getText().isEmpty()) {
+            row[0] = ((ProductModel) this.jcbproduct.getSelectedItem()).getId();
+            row[1] = (String) this.jcbproduct.getSelectedItem();
+            row[2] = this.jtfprice.getText();
+            row[3] = this.jtfqty.getText();
+            row[4] = this.jtfamount.getText();
+            return row;
+        }
+        return null;
+    }
+    
     private void updateAmountField() {
 
         double price = 0.00;
@@ -163,7 +189,8 @@ public class PurchaseForm extends AbstractForm {
         jlitems = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jtbitemdata = new javax.swing.JTable();
-        jButton4 = new javax.swing.JButton();
+        jbtremoveitem = new javax.swing.JButton();
+        jbtsaveorder = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jlmsg = new javax.swing.JLabel();
 
@@ -230,6 +257,7 @@ public class PurchaseForm extends AbstractForm {
         });
 
         jButton3.setText("New Order ");
+        jButton3.setToolTipText("Wipes out existing order data and initiates a new order");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -330,7 +358,9 @@ public class PurchaseForm extends AbstractForm {
         ));
         jScrollPane1.setViewportView(jtbitemdata);
 
-        jButton4.setText("Remove Items");
+        jbtremoveitem.setText("Remove Items");
+
+        jbtsaveorder.setText("Save Order");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -341,10 +371,12 @@ public class PurchaseForm extends AbstractForm {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 641, Short.MAX_VALUE)
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jlitems, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addComponent(jlitems, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jbtremoveitem, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jbtsaveorder, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -355,7 +387,9 @@ public class PurchaseForm extends AbstractForm {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 348, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jbtremoveitem, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jbtsaveorder, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -482,12 +516,13 @@ public class PurchaseForm extends AbstractForm {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton jbtremoveitem;
+    private javax.swing.JButton jbtsaveorder;
     private javax.swing.JComboBox<String> jcbproduct;
     private javax.swing.JComboBox<String> jcbsupplier;
     private javax.swing.JLabel jlamount;

@@ -12,12 +12,10 @@ import java.util.Vector;
  * @author ProjectTeam
  */
 public class ALVDynamicTableModel extends javax.swing.table.AbstractTableModel{
-    int columnCount;
-    int rowCount;
-    String[] columns;
-    String[] header;
-    Vector<Object[]> data = new Vector(); //each element is an array of Object === a row is an array of columns
-    private Vector<Object[]> dataSet;
+    private int columnCount;
+    private int rowCount;
+    private String[] header;
+    private Vector<Object[]> data = new Vector(); //each element is an array of Object === a row is an array of columns
 
     public ALVDynamicTableModel(Vector<Object[]> dataSet, String[] header) {
         this.setData(dataSet, header);
@@ -32,15 +30,15 @@ public class ALVDynamicTableModel extends javax.swing.table.AbstractTableModel{
      */
     public void setData(Vector<Object[]> dataSet, String[] header) {
 
-        if (dataSet != null && header != null && dataSet.get(0).length == header.length) {
+        if (dataSet != null && header != null && dataSet.size() > 0 && dataSet.get(0).length == header.length) {
             this.data = dataSet;
 
-            this.columns = this.header = header; //column headers
+            this.header = header; //column headers
             this.columnCount = header.length; //set Column count
             fireTableChanged(null);
         } else {
             //initiate empty model
-            this.columns = this.header = new String[0];
+            this.header = new String[0];
             this.data.addElement(new Object[0]);
         }
     }
@@ -126,7 +124,7 @@ public class ALVDynamicTableModel extends javax.swing.table.AbstractTableModel{
      * @throws ArrayIndexOutOfBoundsException
      */
     public String getColumnAt(int index) throws ArrayIndexOutOfBoundsException {
-        return this.columns[index];
+        return this.header[index];
     }
 
     @Override
@@ -135,7 +133,7 @@ public class ALVDynamicTableModel extends javax.swing.table.AbstractTableModel{
     }
 
     public String[] getColumns() {
-        return this.columns;
+        return this.header;
     }
 
     @Override

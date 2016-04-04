@@ -173,8 +173,10 @@ public class TestALVTableSimpleClassModel extends javax.swing.JFrame {
         } catch (SQLException ex) {
             Logger.getLogger(TestALVTableSimpleClassModel.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        
         this.jTable1.setModel(new ALVDynamicTableModel(data, headers));
+        ALVDynamicTableModel alvModel = (ALVDynamicTableModel)this.jTable1.getModel();
+
     }
     
     

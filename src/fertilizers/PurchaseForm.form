@@ -324,6 +324,7 @@
             <Component class="javax.swing.JButton" name="jButton3">
               <Properties>
                 <Property name="text" type="java.lang.String" value="New Order "/>
+                <Property name="toolTipText" type="java.lang.String" value="Wipes out existing order data and initiates a new order"/>
               </Properties>
             </Component>
           </SubComponents>
@@ -345,11 +346,13 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jScrollPane1" pref="641" max="32767" attributes="0"/>
                           <Group type="102" attributes="0">
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jlitems" min="-2" pref="350" max="-2" attributes="0"/>
-                                  <Component id="jButton4" alignment="0" min="-2" pref="150" max="-2" attributes="0"/>
-                              </Group>
+                              <Component id="jlitems" min="-2" pref="350" max="-2" attributes="0"/>
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="jbtremoveitem" min="-2" pref="150" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
+                              <Component id="jbtsaveorder" min="-2" pref="150" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
@@ -364,7 +367,10 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jScrollPane1" min="-2" pref="348" max="-2" attributes="0"/>
                       <EmptySpace pref="56" max="32767" attributes="0"/>
-                      <Component id="jButton4" min="-2" pref="25" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="jbtremoveitem" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
+                          <Component id="jbtsaveorder" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
+                      </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -400,9 +406,14 @@
                 </Component>
               </SubComponents>
             </Container>
-            <Component class="javax.swing.JButton" name="jButton4">
+            <Component class="javax.swing.JButton" name="jbtremoveitem">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Remove Items"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JButton" name="jbtsaveorder">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Save Order"/>
               </Properties>
             </Component>
           </SubComponents>
