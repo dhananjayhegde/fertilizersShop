@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -135,6 +136,47 @@ public class TestALVTableSimpleClassModel extends javax.swing.JFrame {
     private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 
+    private void initializeDynamicTable(){
+        
+        Statement stmt;
+        ResultSet rs;
+        String query;
+
+        Vector<Object[]> data = new Vector();
+        Object[]  row;
+        
+        String[] headers = null;
+        int columnCount = 0;
+        int colIndex;
+
+        query = "SELECT * FROM products";
+        stmt = DatabaseConnection.getConnection().getStatement();
+        
+        try {
+            rs = stmt.executeQuery(query);
+            columnCount = rs.getMetaData().getColumnCount();
+            headers = new String[columnCount];
+            
+            for (int i = 0; i < columnCount; i++) {
+                headers[i] = rs.getMetaData().getColumnName(i + 1);
+            }
+            
+            while(rs.next()){
+                row = new Object[columnCount];
+                for(colIndex = 0; colIndex < columnCount; colIndex++){
+                    row[colIndex] = rs.getString(colIndex + 1);
+                }
+                data.addElement(row);
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(TestALVTableSimpleClassModel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        this.jTable1.setModel(new ALVDynamicTableModel(data, headers));
+    }
+    
+    
     private void initialize() {
         Statement stmt;
         ResultSet rs;
