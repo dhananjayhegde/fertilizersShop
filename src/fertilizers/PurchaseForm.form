@@ -297,6 +297,9 @@
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="jtfqty">
+              <Events>
+                <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jtfqtyKeyReleased"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JTextField" name="jtfamount">
               <Properties>

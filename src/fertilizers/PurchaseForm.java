@@ -201,6 +201,12 @@ public class PurchaseForm extends AbstractForm {
         jtfprice.setEditable(false);
         jtfprice.setToolTipText("User input not allowed on this field");
 
+        jtfqty.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jtfqtyKeyReleased(evt);
+            }
+        });
+
         jtfamount.setEditable(false);
         jtfamount.setToolTipText("User input not allowed on this field");
 
@@ -383,6 +389,11 @@ public class PurchaseForm extends AbstractForm {
         // TODO add your handling code here:
         this.updatePrice();
     }//GEN-LAST:event_jcbproductActionPerformed
+
+    private void jtfqtyKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfqtyKeyReleased
+        // TODO add your handling code here:
+        this.updateAmountField();
+    }//GEN-LAST:event_jtfqtyKeyReleased
 
     /**
      * @param args the command line arguments
