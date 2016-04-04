@@ -25,7 +25,8 @@ public class TestALVTableSimpleClassModel extends javax.swing.JFrame {
      */
     public TestALVTableSimpleClassModel() {
         initComponents();
-        initialize();
+//        initialize();
+        initializeDynamicTable();
     }
 
     /**
@@ -92,7 +93,7 @@ public class TestALVTableSimpleClassModel extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         int[] rows = this.jTable1.getSelectedRows();
-        ((ALVTableSimpleClassModel)this.jTable1.getModel()).removeSelectedRows(rows);
+        ((ALVDynamicTableModel)this.jTable1.getModel()).removeSelectedRows(rows);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

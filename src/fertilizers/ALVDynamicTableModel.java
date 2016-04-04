@@ -37,21 +37,6 @@ public class ALVDynamicTableModel extends javax.swing.table.AbstractTableModel{
 
             this.columns = this.header = header; //column headers
             this.columnCount = header.length; //set Column count
-
-//            //initiate columns
-//            for (int i = 0; i < this.columnCount; i++) {
-//                this.columns[i] = dataSet.getMetaData().getColumnName(i + 1);
-//            }
-//            Object[] row;
-/*----------------------------------------------------------------------------->
-for (Object row : this.dataSet) {
-//                row = new Object[this.columnCount];
-//                for (int colIndex = 0; colIndex < this.columnCount; colIndex++) {
-//                    row[colIndex] = this.dataSet.getString(colIndex + 1);
-//                }
-                this.data.addElement((Object[]) row);
-            } <----------------------------------------------------------------------*/
-            //fire data changed event so that the tableView gets updated
             fireTableChanged(null);
         } else {
             //initiate empty model
