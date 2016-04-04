@@ -36,7 +36,9 @@ public class ALVDynamicTableModel extends javax.swing.table.AbstractTableModel{
             this.header = header; //column headers
             this.columnCount = header.length; //set Column count
             fireTableChanged(null);
-        } else {
+        } else if(header != null && header.length > 0){
+            this.header = header;
+        }else {
             //initiate empty model
             this.header = new String[0];
             this.data.addElement(new Object[0]);

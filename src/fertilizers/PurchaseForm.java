@@ -23,6 +23,7 @@ public class PurchaseForm extends AbstractForm {
     private Vector<Object[]> purchaseItems;
     private String[] headers;
     private PurchaseModel purchaseOrder;
+    private ALVDynamicTableModel alvModel;
     
     public PurchaseForm(JFrame prev) {
         super(prev);
@@ -38,13 +39,26 @@ public class PurchaseForm extends AbstractForm {
         initialize();
     }
 
-    private void initializeOrderData(){
+    private void initializeItemsTable(){
         this.headers = this.getTableColumns();
-        
+        this.purchaseItems = new Vector();        
+        this.alvModel = new ALVDynamicTableModel(this.purchaseItems, this.headers);
+        this.jtbitemdata.setModel(alvModel);
     }
     
     private String[] getTableColumns(){
         return new String[]{"Produ. ID", "Product Name", "Unit Price", "Quantity(in kg)", "Amount (in Rs.)"};
+    }
+    
+    private void addItemToModel(){
+        
+        Object[] row = this.getNewITemForModel();
+        if(row == null){
+            this.jlmsg.setText("Enter All fields to add the item to order");
+        } else {
+            this.jlmsg.setText("");
+            this.alvModel.appendRow(row);
+        }
     }
     
     //Call this from action event of Add Item button
@@ -54,7 +68,7 @@ public class PurchaseForm extends AbstractForm {
         
         if(!this.jtfsubsidy.getText().isEmpty() && !this.jtfqty.getText().isEmpty()) {
             row[0] = ((ProductModel) this.jcbproduct.getSelectedItem()).getId();
-            row[1] = (String) this.jcbproduct.getSelectedItem();
+            row[1] = ((ProductModel) this.jcbproduct.getSelectedItem()).getName();
             row[2] = this.jtfprice.getText();
             row[3] = this.jtfqty.getText();
             row[4] = this.jtfamount.getText();
@@ -248,6 +262,11 @@ public class PurchaseForm extends AbstractForm {
         jtfamount.setToolTipText("User input not allowed on this field");
 
         jButton1.setText("Add Item");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Clear Item Data");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -477,6 +496,11 @@ public class PurchaseForm extends AbstractForm {
         this.clearItemData();
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        this.addItemToModel();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -547,6 +571,7 @@ public class PurchaseForm extends AbstractForm {
         this.jcbsupplier.setModel(this.getSupplierModel());
         this.updatePrice();
         this.updateAmountField();
+        this.initializeItemsTable();
     }
 
     private void updatePrice() {
