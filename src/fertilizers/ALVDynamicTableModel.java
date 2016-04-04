@@ -17,6 +17,7 @@ public class ALVDynamicTableModel extends javax.swing.table.AbstractTableModel{
     private String[] header;
     private Vector<Object[]> data = new Vector(); //each element is an array of Object === a row is an array of columns
 
+    
     public ALVDynamicTableModel(Vector<Object[]> dataSet, String[] header) {
         this.setData(dataSet, header);
     }
@@ -45,6 +46,10 @@ public class ALVDynamicTableModel extends javax.swing.table.AbstractTableModel{
         }
     }
 
+    public void setColumns(String[] headers){
+        this.header = headers;
+    }
+    
     /**
      * Adds only if the length of the row array == number of columns We restrict
      * that all rows have same number of columns for simplicity
