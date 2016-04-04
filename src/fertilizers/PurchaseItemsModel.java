@@ -18,9 +18,8 @@ public class PurchaseItemsModel {
     private int quantity;
     private double amount;
 
-    public PurchaseItemsModel(long id, int itemNo, long productId, double price, int quantity, double amount) {
+    public PurchaseItemsModel(long id, long productId, double price, int quantity, double amount) {
         this.id = id;
-        this.itemNo = itemNo;
         this.productId = productId;
         this.price = price;
         this.quantity = quantity;

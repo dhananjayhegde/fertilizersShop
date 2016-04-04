@@ -42,6 +42,14 @@ public class PurchaseForm extends AbstractForm {
         jlsubsidy = new javax.swing.JLabel();
         jcbsupplier = new javax.swing.JComboBox<>();
         jtfsubsidy = new javax.swing.JTextField();
+        jlproduct = new javax.swing.JLabel();
+        jlprice = new javax.swing.JLabel();
+        jlquantity = new javax.swing.JLabel();
+        jlamount = new javax.swing.JLabel();
+        jcbproduct = new javax.swing.JComboBox<>();
+        jtfprice = new javax.swing.JTextField();
+        jtfqty = new javax.swing.JTextField();
+        jtfamount = new javax.swing.JTextField();
         jPanel4 = new javax.swing.JPanel();
         jlitems = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
@@ -69,6 +77,24 @@ public class PurchaseForm extends AbstractForm {
 
         jtfsubsidy.setToolTipText("");
 
+        jlproduct.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jlproduct.setText("Product : ");
+
+        jlprice.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jlprice.setText("Price : ");
+
+        jlquantity.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jlquantity.setText("Quantity : ");
+
+        jlamount.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jlamount.setText("Amount : ");
+
+        jcbproduct.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jtfprice.setEditable(false);
+
+        jtfamount.setEditable(false);
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -76,6 +102,22 @@ public class PurchaseForm extends AbstractForm {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jlamount, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jtfamount, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jlquantity, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jtfqty, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jlprice, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jtfprice, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jlproduct, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jcbproduct, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jlsubsidy, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
@@ -100,13 +142,29 @@ public class PurchaseForm extends AbstractForm {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jlsubsidy, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jtfsubsidy, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(222, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jlproduct, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jcbproduct, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jlprice, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jtfprice, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jlquantity, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jtfqty, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jlamount, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jtfamount, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(61, Short.MAX_VALUE))
         );
 
         jPanel4.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         jlitems.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jlitems.setText("Item");
+        jlitems.setText("Items");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -168,7 +226,7 @@ public class PurchaseForm extends AbstractForm {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jlmsg, javax.swing.GroupLayout.DEFAULT_SIZE, 63, Short.MAX_VALUE)
+                .addComponent(jlmsg, javax.swing.GroupLayout.DEFAULT_SIZE, 52, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -236,13 +294,21 @@ public class PurchaseForm extends AbstractForm {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JComboBox<String> jcbproduct;
     private javax.swing.JComboBox<String> jcbsupplier;
+    private javax.swing.JLabel jlamount;
     private javax.swing.JLabel jlbanner;
     private javax.swing.JLabel jlheader;
     private javax.swing.JLabel jlitems;
     private javax.swing.JLabel jlmsg;
+    private javax.swing.JLabel jlprice;
+    private javax.swing.JLabel jlproduct;
+    private javax.swing.JLabel jlquantity;
     private javax.swing.JLabel jlsubsidy;
     private javax.swing.JLabel jlsupplier;
+    private javax.swing.JTextField jtfamount;
+    private javax.swing.JTextField jtfprice;
+    private javax.swing.JTextField jtfqty;
     private javax.swing.JTextField jtfsubsidy;
     // End of variables declaration//GEN-END:variables
 }

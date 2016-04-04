@@ -21,6 +21,7 @@ public class PurchaseModel {
     private double subtotal;
     private double total;
     private double subsidy;
+    private static int numberOfItems = 0;
     
     private ArrayList<PurchaseItemsModel> items = new ArrayList();
 
@@ -61,12 +62,14 @@ public class PurchaseModel {
 //    }
     
     public void addItem(PurchaseItemsModel item){
+        item.setItemNo( ++PurchaseModel.numberOfItems);
         this.items.add(item);
-        this.calculateTotal();
+        this.calculateTotal();        
     }
     
     public void removeItem(PurchaseItemsModel item){
         this.items.removeIf(e -> e.getId() == item.getId());
+        this.calculateTotal();
     }
     
     public void removeItemByItemNumber(int itemNo){
