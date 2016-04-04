@@ -32,7 +32,7 @@ public class ALVTableSimpleClassModel extends javax.swing.table.AbstractTableMod
      */
     public void setData(Object[][] dataSet, String[] header) {
         
-        if (dataSet != null && dataSet[0].length == header.length) {
+        if (dataSet != null && header != null && dataSet[0].length == header.length) {
             this.dataSet = dataSet;
 
             this.columns = this.header = header; //column headers
@@ -53,6 +53,10 @@ public class ALVTableSimpleClassModel extends javax.swing.table.AbstractTableMod
             }
             //fire data changed event so that the tableView gets updated
             fireTableChanged(null);
+        } else {
+            //initiate empty model
+            this.columns = this.header = new String[0];
+            this.data.addElement(new Object[0]);
         }
     }
 
