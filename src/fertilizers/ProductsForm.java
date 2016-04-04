@@ -224,6 +224,8 @@ public class ProductsForm extends AbstractForm {
         String description = this.jtadesc.getText();
         String composition = this.jtfcomp.getText();
         String stock = this.jtfstock.getText();
+        String price = this.jtfprice.getText();
+        double dbPrice = 0.00;
         
         //initialize
         this.errors.clear();
@@ -250,7 +252,17 @@ public class ProductsForm extends AbstractForm {
             } catch (NumberFormatException ex){
                 this.errors.add("Stock can be only a whole number. Do not enter anything else.");
             }
-        }        
+        }    
+        
+        if (price == null || price.isEmpty()) {
+            this.errors.add("Price cannot be empty");
+        } else {
+            try {
+                dbPrice = Double.parseDouble(price);
+            } catch (NumberFormatException ex) {
+                this.errors.add("Please enter a decimal number in price field");
+            }
+        }
         //create entries database
         if(this.errors.isEmpty()){
             
@@ -269,7 +281,7 @@ public class ProductsForm extends AbstractForm {
                             + "(name, description, composition, stockqty) "
                             + "VALUES "
                             + "('" + name + "', '" + description + "', '" + composition + "', "
-                            + "'" + stock + "')";
+                            + "'" + stock + "', '" + dbPrice + "')";
                     
                     this.rs = null;
                     
