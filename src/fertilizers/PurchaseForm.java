@@ -30,6 +30,7 @@ public class PurchaseForm extends AbstractForm {
      */
     public PurchaseForm() {
         initComponents();
+        initialize();
     }
     private ComboBoxModel getProductModel(){
         
