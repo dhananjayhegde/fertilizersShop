@@ -685,21 +685,21 @@ public class PurchaseForm extends AbstractForm {
         
     }
     
-    private void prepareOrderData(){
+    private boolean prepareOrderData(){
         
         Long supplierId;
         java.util.Date util_today;
-        double total;
-        double subtotal;
-        double subsidy;
-     
+        double subsidy = 0;
+        
+        PurchaseItemsModel purchaseItem;
         //initialize the messages
         this.errors.clear();
         this.success.clear();
-        
+        this.purchaseOrder = null; //initialize
+                 
         if (this.alvModel.getRowCount() <= 0) {
             this.jlmsg.setText("Add at least one item to order");
-            return;
+            return false;
         }
 
         if (this.jtfsubsidy.getText().isEmpty()) {
@@ -711,6 +711,47 @@ public class PurchaseForm extends AbstractForm {
         util_today = new java.util.Date();
         
         this.purchaseOrder = new PurchaseModel(supplierId, util_today);
+        
+        //get Subsisdy amount from the screen field
+        try{
+            subsidy = Double.parseDouble(this.jtfsubsidy.getText());
+        } catch (NumberFormatException ex) {
+            this.errors.add("Enter a decimal number for subsidy amount"); 
+        }
+        
+        if(this.errors.isEmpty()) {
+            this.purchaseOrder.setSubsidy(subsidy);
+            //prepare item data
+
+            for (int rowIndex = 0; rowIndex < this.alvModel.getRowCount(); rowIndex++) {
+
+                purchaseItem = new PurchaseItemsModel();
+                int colIndex = 0;
+                //purchaseItem.setItemNo(itemNo++); addITem method takes care of this
+                purchaseItem.setProductId((long)this.alvModel.getValueAt(rowIndex, colIndex++));
+                colIndex++; //skip the product name column from the table model
+                purchaseItem.setPrice(Double.parseDouble((String)this.alvModel.getValueAt(rowIndex, colIndex++)));
+                purchaseItem.setQuantity(Integer.parseInt((String)this.alvModel.getValueAt(rowIndex, colIndex++)));
+                purchaseItem.setAmount(Double.parseDouble((String)this.alvModel.getValueAt(rowIndex, colIndex++)));
+
+                //add the item to purchaseOrder.  Total and subtotal are calculated automatically
+                this.purchaseOrder.addItem(purchaseItem);
+            }
+            
+            if(this.purchaseOrder.getNumberOfItems() <= 0){
+                this.errors.add("No Items are added to order");
+            }
+            if(this.purchaseOrder.getTotal() <= 0) {
+                this.errors.add("Looks Like subsidy amount is more than order total amount");
+            }
+        }
+        
+        if(this.errors.isEmpty()) {
+            return true;
+        } else {
+            this.jlmsg.setText(this.msgListToString(this.errors));
+            return false;
+        }
         
     }
 }

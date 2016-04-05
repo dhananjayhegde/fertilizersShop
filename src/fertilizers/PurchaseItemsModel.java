@@ -17,6 +17,10 @@ public class PurchaseItemsModel {
     private double price;
     private int quantity;
     private double amount;
+    
+    public PurchaseItemsModel(){
+    
+    }
 
     public PurchaseItemsModel(long id, long productId, double price, int quantity, double amount) {
         this.id = id;

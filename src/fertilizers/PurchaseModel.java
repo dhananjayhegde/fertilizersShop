@@ -68,6 +68,10 @@ public class PurchaseModel {
 //        
 //        return new PurchaseModel();
 //    }
+
+    public int getNumberOfItems() {
+        return numberOfItems;
+    }
     
     public void addItem(PurchaseItemsModel item){
         item.setItemNo( ++PurchaseModel.numberOfItems);
@@ -76,8 +80,10 @@ public class PurchaseModel {
     }
     
     public void removeItem(PurchaseItemsModel item){
-        this.items.removeIf(e -> e.getId() == item.getId());
-        this.calculateTotal();
+        if(this.items.removeIf(e -> e.getId() == item.getId() && e.getItemNo() == item.getItemNo())){
+            --PurchaseModel.numberOfItems;
+            this.calculateTotal();
+        }        
     }
     
     public void removeItemByItemNumber(int itemNo){
