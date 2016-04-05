@@ -5,6 +5,10 @@
  */
 package fertilizers;
 
+import database.DatabaseConnection;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 
 /**
@@ -13,16 +17,19 @@ import javax.swing.JFrame;
  */
 public class FarmerAccountsForm extends AbstractForm {
 
+    private ALVTableModel alvModel;
     
     public FarmerAccountsForm(JFrame prev){
         super(prev);
         initComponents();
+        initilize();
     }
     /**
      * Creates new form FarmerAccountsForm
      */
     public FarmerAccountsForm() {
         initComponents();
+        initilize();
     }
 
     /**
@@ -34,18 +41,56 @@ public class FarmerAccountsForm extends AbstractForm {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jlbanner = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jtbaccounts = new javax.swing.JTable();
+        jlmsg = new javax.swing.JLabel();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(675, 620));
+        setPreferredSize(new java.awt.Dimension(775, 620));
+
+        jlbanner.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jlbanner.setText("Farmer Accounts : ");
+
+        jtbaccounts.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(jtbaccounts);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 627, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1)
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jlbanner, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 216, Short.MAX_VALUE)
+                        .addComponent(jlmsg, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 542, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jlbanner, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jlmsg, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 371, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(107, Short.MAX_VALUE))
         );
 
         pack();
@@ -87,5 +132,31 @@ public class FarmerAccountsForm extends AbstractForm {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel jlbanner;
+    private javax.swing.JLabel jlmsg;
+    private javax.swing.JTable jtbaccounts;
     // End of variables declaration//GEN-END:variables
+
+    private void initilize() {
+       
+        this.stmt = DatabaseConnection.getConnection().getStatement();
+        
+        this.query = "SELECT * "
+                + "FROM v_farmer_account ";
+        
+        try {
+            this.rs = this.stmt.executeQuery(this.query);
+            this.alvModel = new ALVTableModel(this.rs);
+            
+            this.jtbaccounts.setModel(alvModel);
+            
+            if(this.rs.getMetaData().getColumnCount() <= 0 ){
+                this.jlmsg.setText("No Accounts Found");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(FarmerAccountsForm.class.getName()).log(Level.SEVERE, null, ex);
+            this.jlmsg.setText("No Accounts Found");
+        }
+    }
 }

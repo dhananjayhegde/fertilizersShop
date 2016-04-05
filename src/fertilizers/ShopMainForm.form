@@ -185,8 +185,11 @@
             </Component>
             <Component class="javax.swing.JButton" name="jbtdisplayfarmer">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Display Farmer"/>
+                <Property name="text" type="java.lang.String" value="Display Farmer Accounts"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtdisplayfarmerActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="jbtcreatesupp">
               <Properties>
