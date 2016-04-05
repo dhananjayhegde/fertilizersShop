@@ -7,9 +7,12 @@ package fertilizers;
 
 import database.DatabaseConnection;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFrame;
@@ -24,7 +27,7 @@ public class PurchaseForm extends AbstractForm {
     private String[] headers;
     private PurchaseModel purchaseOrder;
     private ALVDynamicTableModel alvModel;
-    
+
     public PurchaseForm(JFrame prev) {
         super(prev);
         initComponents();
@@ -39,43 +42,43 @@ public class PurchaseForm extends AbstractForm {
         initialize();
     }
 
-    private void initializeItemsTable(){
+    private void initializeItemsTable() {
         this.headers = this.getTableColumns();
-        this.purchaseItems = new Vector<Object[]>();        
+        this.purchaseItems = new Vector<Object[]>();
         this.alvModel = new ALVDynamicTableModel(this.purchaseItems, this.headers);
         this.jtbitemdata.setModel(alvModel);
     }
-    
-    private String[] getTableColumns(){
+
+    private String[] getTableColumns() {
         return new String[]{"Produ. ID", "Product Name", "Unit Price", "Quantity(in kg)", "Amount (in Rs.)"};
     }
-    
-    private void clearItemModelData(){
+
+    private void clearItemModelData() {
         this.alvModel.removeAllRows();
     }
-    
-    private void removeItems(int[] rows){
-        
+
+    private void removeItems(int[] rows) {
+
         this.alvModel.removeSelectedRows(rows);
     }
-    
-    private void addItemToModel(){
-        
+
+    private void addItemToModel() {
+
         Object[] row = this.getNewITemForModel();
-        if(row == null){
+        if (row == null) {
             this.jlmsg.setText("Enter All fields to add the item to order");
         } else {
             this.jlmsg.setText("");
             this.alvModel.appendRow(row);
         }
     }
-    
+
     //Call this from action event of Add Item button
-    private Object[] getNewITemForModel(){
-        
+    private Object[] getNewITemForModel() {
+
         Object[] row = new Object[this.headers.length];
-        
-        if(!this.jtfsubsidy.getText().isEmpty() && !this.jtfqty.getText().isEmpty()) {
+
+        if (!this.jtfsubsidy.getText().isEmpty() && !this.jtfqty.getText().isEmpty()) {
             row[0] = ((ProductModel) this.jcbproduct.getSelectedItem()).getId();
             row[1] = ((ProductModel) this.jcbproduct.getSelectedItem()).getName();
             row[2] = this.jtfprice.getText();
@@ -85,7 +88,7 @@ public class PurchaseForm extends AbstractForm {
         }
         return null;
     }
-    
+
     private void updateAmountField() {
 
         double price = 0.00;
@@ -93,20 +96,19 @@ public class PurchaseForm extends AbstractForm {
         int iQty = 0;
         String qty;
 
-
         qty = this.jtfqty.getText();
 
         try {
             iQty = Integer.parseInt(qty);
             price = Double.parseDouble(this.jtfprice.getText());
-            
+
             //CALCULATION OF TOTAL AMOUTN PER ITEM
             amount = iQty * price;
             this.jlmsg.setText("");
         } catch (NumberFormatException ex) {
             this.jlmsg.setText("Quantity has to be a whole number and price has to be a decimal");
         }
-        
+
         this.jtfamount.setText(amount + "");
     }
 
@@ -216,6 +218,7 @@ public class PurchaseForm extends AbstractForm {
         jtbitemdata = new javax.swing.JTable();
         jbtremoveitem = new javax.swing.JButton();
         jbtsaveorder = new javax.swing.JButton();
+        jlsuccessmsg = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jlmsg = new javax.swing.JLabel();
 
@@ -410,6 +413,7 @@ public class PurchaseForm extends AbstractForm {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        jtbitemdata.setToolTipText("");
         jScrollPane1.setViewportView(jtbitemdata);
 
         jbtremoveitem.setText("Remove Items");
@@ -463,19 +467,22 @@ public class PurchaseForm extends AbstractForm {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jlbanner, javax.swing.GroupLayout.PREFERRED_SIZE, 450, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jlbanner, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jlsuccessmsg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(20, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jlbanner, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jlbanner, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jlsuccessmsg, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -555,6 +562,7 @@ public class PurchaseForm extends AbstractForm {
         // TODO add your handling code here:
         this.clearItemModelData();
         this.clearItemData();
+        this.jlsuccessmsg.setText("");
     }//GEN-LAST:event_jbtneworderActionPerformed
 
     private void jbtsaveorderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtsaveorderActionPerformed
@@ -621,6 +629,7 @@ public class PurchaseForm extends AbstractForm {
     private javax.swing.JLabel jlproduct;
     private javax.swing.JLabel jlquantity;
     private javax.swing.JLabel jlsubsidy;
+    private javax.swing.JLabel jlsuccessmsg;
     private javax.swing.JLabel jlsupplier;
     private javax.swing.JTable jtbitemdata;
     private javax.swing.JTextField jtfamount;
@@ -632,72 +641,124 @@ public class PurchaseForm extends AbstractForm {
     private void initialize() {
         this.jcbproduct.setModel(this.getProductModel());
         this.jcbsupplier.setModel(this.getSupplierModel());
+        this.jtfqty.setText("0");
         this.updatePrice();
         this.updateAmountField();
         this.initializeItemsTable();
     }
 
     private void updatePrice() {
-        
+
         ProductModel selProd;
 
         selProd = (ProductModel) this.jcbproduct.getSelectedItem();
         this.jtfprice.setText(selProd.getPrice() + "");
         this.updateAmountField();
-        
+
     }
 
     private void clearItemData() {
         this.jtfamount.setText("");
         this.jtfqty.setText("");
         this.jtfprice.setText("");
+        this.jtfqty.setText("0");
 //        this.jtfsubsidy.setText("");
         this.jcbproduct.setSelectedIndex(0);
         this.jcbsupplier.setSelectedIndex(0);
     }
-    
-    private void saveOrder(){
+
+    private void saveOrder() {
         //local variable declaration
-        String subsidy;
-        String supplierId;
-        java.util.Date util_today;
-        java.sql.Date sql_today;
-        
-        double subtotal;
-        double total;
-        
+        PurchaseItemsModel item;
+        long orderId = -1;
         //initialize the messages
         this.errors.clear();
         this.success.clear();
-        
-        //check if there are any items added at all
 
-        
-        if(this.prepareOrderData()){
+        //check if there are any items added at all
+        if (this.prepareOrderData()) {
             //first save the order header data into "purchase" tbale
-            this.jlmsg.setText("Order prepare successfully");
+            this.jlmsg.setText("Order prepared successfully");
             this.stmt = DatabaseConnection.getConnection().getStatement();
-            
+
             this.query = "INSERT INTO purchase "
-                    + "(supplierid, date)";
+                    + "(supplierid, date, subtotal, total, subsidy) "
+                    + "VALUES "
+                    + "('" + this.purchaseOrder.getSupplierId() + "', '" + new java.sql.Date(this.purchaseOrder.getDate().getTime()) + "', "
+                    + "'" + this.purchaseOrder.getSubtotal() + "', '" + this.purchaseOrder.getTotal() + "', "
+                    + "'" + this.purchaseOrder.getSubsidy() + "')";
+
+            try {
+                this.rs.close(); //close the previous result set
+                Integer numero = this.stmt.executeUpdate(this.query, Statement.RETURN_GENERATED_KEYS);
+                this.rs = this.stmt.getGeneratedKeys();
+
+                if (this.rs.next()) {
+                    orderId = this.rs.getLong(1);
+                    this.purchaseOrder.setId(orderId); //set the generated Order ID
+                    Iterator itemIterator = this.purchaseOrder.getItems().iterator();
+
+                    while (itemIterator.hasNext()) {
+                        this.query = "";
+                        this.rs.close();
+
+                        item = (PurchaseItemsModel) itemIterator.next();
+
+                        this.query = "INSERT INTO purchasedetails "
+                                + "(id, itemno, productid, price, quantity, amount) "
+                                + "VALUES "
+                                + "('" + orderId + "', '" + item.getItemNo() + "', "
+                                + "'" + item.getProductId() + "', '" + item.getPrice() + "', "
+                                + "'" + item.getQuantity() + "', '" + item.getAmount() + "')";
+
+                        this.stmt.executeUpdate(this.query);
+
+                    }
+                    
+                    this.jlsuccessmsg.setText("Order saved successfully. Order ID : " + orderId);
+                    this.clearItemModelData();
+                    this.clearItemData();
+                }
+
+            } catch (SQLException ex) {
+                Logger.getLogger(PurchaseForm.class.getName()).log(Level.SEVERE, null, ex);
+                if (orderId > 0) {
+                    //this means, order header saved but not item details.
+                    //So, to maintain data consistency, we delete the order header/detials
+                    this.query = "DELETE FROM purchase "
+                            + "WHERE id=" + orderId;
+
+                    try {
+                        this.stmt.executeUpdate(this.query);
+                        //if successfull, delete all partially saved item details
+                        this.query = "DELETE FROM purchasedetails "
+                                + "WHERE id=" + orderId;
+                        this.stmt.executeUpdate(this.query);
+                        
+                    } catch (SQLException ex1) {
+                        this.jlmsg.setText("There was a problem saving the order");
+                    }
+                }
+            }
+
         } else {
             this.jlmsg.setText(this.msgListToString(this.errors));
         }
         
     }
-    
-    private boolean prepareOrderData(){
-        
+
+    private boolean prepareOrderData() {
+
         Long supplierId;
         java.util.Date util_today;
         double subsidy = 0;
-        
+
         PurchaseItemsModel purchaseItem;
         //initialize the messages
         this.errors.clear();
         this.success.clear();
         this.purchaseOrder = null; //initialize
-                 
+
         if (this.alvModel.getRowCount() <= 0) {
             this.jlmsg.setText("Add at least one item to order");
             return false;
@@ -706,21 +767,21 @@ public class PurchaseForm extends AbstractForm {
         if (this.jtfsubsidy.getText().isEmpty()) {
             this.errors.add("Enter a subsidy amount in Rs.");
         }
-        
+
         //if we are here, then there may not be any errors   
-        supplierId = ((SupplierModel)this.jcbsupplier.getSelectedItem()).getId();
+        supplierId = ((SupplierModel) this.jcbsupplier.getSelectedItem()).getId();
         util_today = new java.util.Date();
-        
+
         this.purchaseOrder = new PurchaseModel(supplierId, util_today);
-        
+
         //get Subsisdy amount from the screen field
-        try{
+        try {
             subsidy = Double.parseDouble(this.jtfsubsidy.getText());
         } catch (NumberFormatException ex) {
-            this.errors.add("Enter a decimal number for subsidy amount"); 
+            this.errors.add("Enter a decimal number for subsidy amount");
         }
-        
-        if(this.errors.isEmpty()) {
+
+        if (this.errors.isEmpty()) {
             this.purchaseOrder.setSubsidy(subsidy);
             //prepare item data
 
@@ -729,30 +790,30 @@ public class PurchaseForm extends AbstractForm {
                 purchaseItem = new PurchaseItemsModel();
                 int colIndex = 0;
                 //purchaseItem.setItemNo(itemNo++); addITem method takes care of this
-                purchaseItem.setProductId((long)this.alvModel.getValueAt(rowIndex, colIndex++));
+                purchaseItem.setProductId((long) this.alvModel.getValueAt(rowIndex, colIndex++));
                 colIndex++; //skip the product name column from the table model
-                purchaseItem.setPrice(Double.parseDouble((String)this.alvModel.getValueAt(rowIndex, colIndex++)));
-                purchaseItem.setQuantity(Integer.parseInt((String)this.alvModel.getValueAt(rowIndex, colIndex++)));
-                purchaseItem.setAmount(Double.parseDouble((String)this.alvModel.getValueAt(rowIndex, colIndex++)));
+                purchaseItem.setPrice(Double.parseDouble((String) this.alvModel.getValueAt(rowIndex, colIndex++)));
+                purchaseItem.setQuantity(Integer.parseInt((String) this.alvModel.getValueAt(rowIndex, colIndex++)));
+                purchaseItem.setAmount(Double.parseDouble((String) this.alvModel.getValueAt(rowIndex, colIndex++)));
 
                 //add the item to purchaseOrder.  Total and subtotal are calculated automatically
                 this.purchaseOrder.addItem(purchaseItem);
             }
-            
-            if(this.purchaseOrder.getNumberOfItems() <= 0){
+
+            if (this.purchaseOrder.getNumberOfItems() <= 0) {
                 this.errors.add("No Items are added to order");
             }
-            if(this.purchaseOrder.getTotal() <= 0) {
+            if (this.purchaseOrder.getTotal() <= 0) {
                 this.errors.add("Looks Like subsidy amount is more than order total amount");
             }
         }
-        
-        if(this.errors.isEmpty()) {
+
+        if (this.errors.isEmpty()) {
             return true;
         } else {
             //this.jlmsg.setText(this.msgListToString(this.errors));
             return false;
         }
-        
+
     }
 }
