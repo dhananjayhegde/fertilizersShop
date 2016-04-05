@@ -5,6 +5,13 @@
  */
 package fertilizers;
 
+import database.DatabaseConnection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author ProjectTeam
@@ -179,10 +186,37 @@ public class LoginForm extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void login() {
+        String uname;
+        String pwd;
         
+        uname = this.jtfuname.getText();
+        pwd = new String(this.jtfpwd.getPassword());
+        
+        Statement stmt;
+        ResultSet rs;
+        String query;
+        
+        stmt = DatabaseConnection.getConnection().getStatement();
+        
+        query = "SELECT * FROM user "
+                + "WHERE username='" + uname + "' AND password='" + pwd + "'";
+        
+        try {
+            rs = stmt.executeQuery(query);
+            if(rs.next()){
+                //go to next screen
+                
+            } else {
+                this.jlmsg.setText("Username or password is incorrect");
+            }
+        } catch (SQLException ex) {
+            this.jlmsg.setText(ex.getMessage());
+        }
+
     }
 
     private void cancelAndClose() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+        this.dispose();
     }
 }
