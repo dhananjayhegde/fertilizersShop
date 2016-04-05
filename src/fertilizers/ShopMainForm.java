@@ -27,7 +27,8 @@ public class ShopMainForm extends AbstractForm {
         initComponents();
     }
 
-    private java.awt.Dimension getFullScreenMode() {
+    @Override
+    protected java.awt.Dimension getFullScreenMode() {
         Dimension dim = new Dimension(680, 620);
         //dim.setSize(dim.getWidth() - 200, dim.getHeight() - 200);
         return dim;
@@ -80,6 +81,11 @@ public class ShopMainForm extends AbstractForm {
         jlmasterdata.setText("Master Data");
 
         jbtcreatefarmer.setText("Create Farmer");
+        jbtcreatefarmer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtcreatefarmerActionPerformed(evt);
+            }
+        });
 
         jbtdisplayfarmer.setText("Display Farmer");
 
@@ -283,6 +289,12 @@ public class ShopMainForm extends AbstractForm {
         // TODO add your handling code here:
         this.goToPrevious();
     }//GEN-LAST:event_jbtlogoutActionPerformed
+
+    private void jbtcreatefarmerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtcreatefarmerActionPerformed
+        // TODO add your handling code here:
+        this.setVisible(false);
+        (new FarmerForm(this)).setVisible(true);
+    }//GEN-LAST:event_jbtcreatefarmerActionPerformed
 
     /**
      * @param args the command line arguments

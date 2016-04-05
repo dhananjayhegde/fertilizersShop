@@ -49,7 +49,7 @@ public class AbstractForm extends javax.swing.JFrame {
         initComponents();
     }
     
-    private java.awt.Dimension getFullScreenMode(){
+    protected java.awt.Dimension getFullScreenMode(){
         Dimension dim =  Toolkit.getDefaultToolkit().getScreenSize();        
         dim.setSize(dim.getWidth(), dim.getHeight() - 50);
         return dim;

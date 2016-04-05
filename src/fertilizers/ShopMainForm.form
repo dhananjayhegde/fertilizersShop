@@ -179,6 +179,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Create Farmer"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtcreatefarmerActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="jbtdisplayfarmer">
               <Properties>
