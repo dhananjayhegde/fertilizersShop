@@ -90,6 +90,11 @@ public class ShopMainForm extends AbstractForm {
         jbtdisplayfarmer.setText("Display Farmer");
 
         jbtcreatesupp.setText("Create Supplier");
+        jbtcreatesupp.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtcreatesuppActionPerformed(evt);
+            }
+        });
 
         jbtdisplaysupp.setText("Display Supplier");
 
@@ -295,6 +300,12 @@ public class ShopMainForm extends AbstractForm {
         this.setVisible(false);
         (new FarmerForm(this)).setVisible(true);
     }//GEN-LAST:event_jbtcreatefarmerActionPerformed
+
+    private void jbtcreatesuppActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtcreatesuppActionPerformed
+        // TODO add your handling code here:
+        this.setVisible(false);
+        (new SupplierForm(this)).setVisible(true);
+    }//GEN-LAST:event_jbtcreatesuppActionPerformed
 
     /**
      * @param args the command line arguments
