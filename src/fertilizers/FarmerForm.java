@@ -21,6 +21,7 @@ public class FarmerForm extends AbstractForm {
     public FarmerForm(JFrame prev) {
         super(prev);
         initComponents();
+        this.setLocationRelativeTo(null);
     }
     /**
      * Creates new form FarmerForm

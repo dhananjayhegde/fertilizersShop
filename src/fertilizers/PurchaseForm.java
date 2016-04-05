@@ -32,6 +32,7 @@ public class PurchaseForm extends AbstractForm {
         super(prev);
         initComponents();
         initialize();
+        this.setLocationRelativeTo(null);
     }
 
     /**

@@ -21,6 +21,7 @@ public class SupplierForm extends AbstractForm {
     public SupplierForm(JFrame prev) {
         super(prev);
         initComponents();
+        this.setLocationRelativeTo(null);
     }
     /**
      * Creates new form SupplierForm

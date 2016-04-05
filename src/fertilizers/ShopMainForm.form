@@ -141,6 +141,8 @@
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="jbtcreatesupp" alignment="0" min="-2" pref="150" max="-2" attributes="0"/>
                                   <Component id="jbtdisplaysupp" alignment="0" min="-2" pref="150" max="-2" attributes="0"/>
+                                  <Component id="jbtcreateproducts" alignment="0" min="-2" pref="150" max="-2" attributes="0"/>
+                                  <Component id="jbtdisplayproducts" alignment="0" min="-2" pref="150" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
@@ -161,7 +163,11 @@
                       <Component id="jbtcreatesupp" min="-2" pref="25" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="jbtdisplaysupp" min="-2" pref="25" max="-2" attributes="0"/>
-                      <EmptySpace pref="155" max="32767" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="jbtcreateproducts" min="-2" pref="25" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="jbtdisplayproducts" min="-2" pref="25" max="-2" attributes="0"/>
+                      <EmptySpace pref="69" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -202,6 +208,19 @@
             <Component class="javax.swing.JButton" name="jbtdisplaysupp">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Display Supplier"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JButton" name="jbtcreateproducts">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Create Products"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtcreateproductsActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JButton" name="jbtdisplayproducts">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Display Products"/>
               </Properties>
             </Component>
           </SubComponents>
@@ -315,6 +334,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Purchase"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtpurchaseActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="jbtpurchasereport">
               <Properties>

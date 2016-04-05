@@ -23,6 +23,7 @@ public class FarmerAccountsForm extends AbstractForm {
         super(prev);
         initComponents();
         initilize();
+        this.setLocationRelativeTo(null);
     }
     /**
      * Creates new form FarmerAccountsForm

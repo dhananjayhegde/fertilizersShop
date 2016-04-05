@@ -41,12 +41,14 @@ public class AbstractForm extends javax.swing.JFrame {
         this.previous = previous;        
         initComponents();
         this.setResizable(false);
+        this.setLocationRelativeTo(null);
     }
     /**
      * Creates new form AbstractForm
      */
     public AbstractForm() {
         initComponents();
+        this.setLocationRelativeTo(null);
     }
     
     protected java.awt.Dimension getFullScreenMode(){
@@ -54,6 +56,25 @@ public class AbstractForm extends javax.swing.JFrame {
         dim.setSize(dim.getWidth(), dim.getHeight() - 50);
         return dim;
     }
+    
+    protected java.awt.Rectangle getPlaceToCenter(){
+    
+        java.awt.Rectangle displayArea;
+        
+        int screenH, screenW;
+        int compH, compW;
+        
+        screenH = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
+        screenW = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+        
+        compH = (int) this.getPreferredSize().getHeight();
+        compW = (int) this.getPreferredSize().getWidth();
+        
+        displayArea = new java.awt.Rectangle((screenW / 2 - compW / 2), (screenH / 2 - compH / 2), compW, compH);
+        System.out.println(displayArea);
+        return new java.awt.Rectangle((screenW/2 - compW/2), (screenH/2 - compH/2), compW, compH);
+    }
+    
     
     public void goToPrevious(){
         
@@ -146,6 +167,7 @@ public class AbstractForm extends javax.swing.JFrame {
         });
     }
 
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
 }

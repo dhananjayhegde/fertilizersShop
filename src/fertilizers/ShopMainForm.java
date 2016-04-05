@@ -19,6 +19,7 @@ public class ShopMainForm extends AbstractForm {
     public ShopMainForm(JFrame prev){
         super(prev);
         initComponents();
+        this.setLocationRelativeTo(null);
     }
     /**
      * Creates new form ShopMainForm
@@ -50,6 +51,8 @@ public class ShopMainForm extends AbstractForm {
         jbtdisplayfarmer = new javax.swing.JButton();
         jbtcreatesupp = new javax.swing.JButton();
         jbtdisplaysupp = new javax.swing.JButton();
+        jbtcreateproducts = new javax.swing.JButton();
+        jbtdisplayproducts = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jlsales = new javax.swing.JLabel();
         jbtsell = new javax.swing.JButton();
@@ -103,6 +106,15 @@ public class ShopMainForm extends AbstractForm {
 
         jbtdisplaysupp.setText("Display Supplier");
 
+        jbtcreateproducts.setText("Create Products");
+        jbtcreateproducts.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtcreateproductsActionPerformed(evt);
+            }
+        });
+
+        jbtdisplayproducts.setText("Display Products");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -121,7 +133,9 @@ public class ShopMainForm extends AbstractForm {
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jbtcreatesupp, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jbtdisplaysupp, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jbtdisplaysupp, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jbtcreateproducts, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jbtdisplayproducts, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE))))
         );
         jPanel3Layout.setVerticalGroup(
@@ -137,7 +151,11 @@ public class ShopMainForm extends AbstractForm {
                 .addComponent(jbtcreatesupp, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jbtdisplaysupp, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(155, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jbtcreateproducts, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jbtdisplayproducts, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(69, Short.MAX_VALUE))
         );
 
         jPanel4.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -180,6 +198,11 @@ public class ShopMainForm extends AbstractForm {
         jlpurchase.setText("Purchase Area");
 
         jbtpurchase.setText("Purchase");
+        jbtpurchase.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtpurchaseActionPerformed(evt);
+            }
+        });
 
         jbtpurchasereport.setText("Purchase Report");
 
@@ -318,6 +341,18 @@ public class ShopMainForm extends AbstractForm {
         (new FarmerAccountsForm(this)).setVisible(true);
     }//GEN-LAST:event_jbtdisplayfarmerActionPerformed
 
+    private void jbtcreateproductsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtcreateproductsActionPerformed
+        // TODO add your handling code here:
+        this.setVisible(false);
+        (new ProductsForm(this)).setVisible(true);
+    }//GEN-LAST:event_jbtcreateproductsActionPerformed
+
+    private void jbtpurchaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtpurchaseActionPerformed
+        // TODO add your handling code here:
+        this.setVisible(false);
+        (new PurchaseForm(this)).setVisible(true);
+    }//GEN-LAST:event_jbtpurchaseActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -360,8 +395,10 @@ public class ShopMainForm extends AbstractForm {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JButton jbtcreatefarmer;
+    private javax.swing.JButton jbtcreateproducts;
     private javax.swing.JButton jbtcreatesupp;
     private javax.swing.JButton jbtdisplayfarmer;
+    private javax.swing.JButton jbtdisplayproducts;
     private javax.swing.JButton jbtdisplaysupp;
     private javax.swing.JButton jbtlogout;
     private javax.swing.JButton jbtpurchase;
