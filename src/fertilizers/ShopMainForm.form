@@ -77,7 +77,7 @@
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="jPanel5" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <Component id="jButton9" min="-2" pref="150" max="-2" attributes="0"/>
+                      <Component id="jbtlogout" min="-2" pref="150" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace pref="20" max="32767" attributes="0"/>
               </Group>
@@ -89,7 +89,7 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jlbanner" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
-                      <Component id="jButton9" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
+                      <Component id="jbtlogout" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
@@ -129,18 +129,18 @@
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="jlmasterdata" alignment="0" min="-2" pref="150" max="-2" attributes="0"/>
-                                  <Component id="jButton1" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="jbtcreatefarmer" alignment="0" max="32767" attributes="0"/>
                               </Group>
                               <EmptySpace pref="36" max="32767" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
-                              <Component id="jButton2" min="-2" pref="150" max="-2" attributes="0"/>
+                              <Component id="jbtdisplayfarmer" min="-2" pref="150" max="-2" attributes="0"/>
                               <EmptySpace max="32767" attributes="0"/>
                           </Group>
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jButton3" alignment="0" min="-2" pref="150" max="-2" attributes="0"/>
-                                  <Component id="jButton4" alignment="0" min="-2" pref="150" max="-2" attributes="0"/>
+                                  <Component id="jbtcreatesupp" alignment="0" min="-2" pref="150" max="-2" attributes="0"/>
+                                  <Component id="jbtdisplaysupp" alignment="0" min="-2" pref="150" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
@@ -154,13 +154,13 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jlmasterdata" min="-2" pref="30" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="jButton1" min="-2" pref="25" max="-2" attributes="0"/>
+                      <Component id="jbtcreatefarmer" min="-2" pref="25" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="jButton2" min="-2" pref="25" max="-2" attributes="0"/>
+                      <Component id="jbtdisplayfarmer" min="-2" pref="25" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="jButton3" min="-2" pref="25" max="-2" attributes="0"/>
+                      <Component id="jbtcreatesupp" min="-2" pref="25" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="jButton4" min="-2" pref="25" max="-2" attributes="0"/>
+                      <Component id="jbtdisplaysupp" min="-2" pref="25" max="-2" attributes="0"/>
                       <EmptySpace pref="155" max="32767" attributes="0"/>
                   </Group>
               </Group>
@@ -175,22 +175,22 @@
                 <Property name="text" type="java.lang.String" value="Master Data"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JButton" name="jButton1">
+            <Component class="javax.swing.JButton" name="jbtcreatefarmer">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Create Farmer"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JButton" name="jButton2">
+            <Component class="javax.swing.JButton" name="jbtdisplayfarmer">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Display Farmer"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JButton" name="jButton3">
+            <Component class="javax.swing.JButton" name="jbtcreatesupp">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Create Supplier"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JButton" name="jButton4">
+            <Component class="javax.swing.JButton" name="jbtdisplaysupp">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Display Supplier"/>
               </Properties>
@@ -213,8 +213,8 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jlsales" alignment="0" min="-2" pref="150" max="-2" attributes="0"/>
-                          <Component id="jButton5" alignment="0" min="-2" pref="150" max="-2" attributes="0"/>
-                          <Component id="jButton6" alignment="0" min="-2" pref="150" max="-2" attributes="0"/>
+                          <Component id="jbtsell" alignment="0" min="-2" pref="150" max="-2" attributes="0"/>
+                          <Component id="jbtsalesreport" alignment="0" min="-2" pref="150" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace pref="36" max="32767" attributes="0"/>
                   </Group>
@@ -226,9 +226,9 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jlsales" min="-2" pref="30" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
-                      <Component id="jButton5" min="-2" pref="25" max="-2" attributes="0"/>
+                      <Component id="jbtsell" min="-2" pref="25" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="jButton6" min="-2" pref="25" max="-2" attributes="0"/>
+                      <Component id="jbtsalesreport" min="-2" pref="25" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
@@ -243,13 +243,13 @@
                 <Property name="text" type="java.lang.String" value="Sales Area"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JButton" name="jButton5">
+            <Component class="javax.swing.JButton" name="jbtsell">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Sell"/>
                 <Property name="toolTipText" type="java.lang.String" value=""/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JButton" name="jButton6">
+            <Component class="javax.swing.JButton" name="jbtsalesreport">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Sales Report"/>
               </Properties>
@@ -272,8 +272,8 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jlpurchase" alignment="0" min="-2" pref="150" max="-2" attributes="0"/>
-                          <Component id="jButton7" alignment="0" min="-2" pref="150" max="-2" attributes="0"/>
-                          <Component id="jButton8" alignment="0" min="-2" pref="150" max="-2" attributes="0"/>
+                          <Component id="jbtpurchase" alignment="0" min="-2" pref="150" max="-2" attributes="0"/>
+                          <Component id="jbtpurchasereport" alignment="0" min="-2" pref="150" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace pref="36" max="32767" attributes="0"/>
                   </Group>
@@ -285,9 +285,9 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jlpurchase" min="-2" pref="30" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="jButton7" min="-2" pref="25" max="-2" attributes="0"/>
+                      <Component id="jbtpurchase" min="-2" pref="25" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="jButton8" min="-2" pref="25" max="-2" attributes="0"/>
+                      <Component id="jbtpurchasereport" min="-2" pref="25" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
@@ -302,19 +302,19 @@
                 <Property name="text" type="java.lang.String" value="Purchase Area"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JButton" name="jButton7">
+            <Component class="javax.swing.JButton" name="jbtpurchase">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Purchase"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JButton" name="jButton8">
+            <Component class="javax.swing.JButton" name="jbtpurchasereport">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Purchase Report"/>
               </Properties>
             </Component>
           </SubComponents>
         </Container>
-        <Component class="javax.swing.JButton" name="jButton9">
+        <Component class="javax.swing.JButton" name="jbtlogout">
           <Properties>
             <Property name="text" type="java.lang.String" value="Logout"/>
           </Properties>
