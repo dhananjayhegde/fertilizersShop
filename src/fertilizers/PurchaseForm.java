@@ -673,14 +673,15 @@ public class PurchaseForm extends AbstractForm {
         //check if there are any items added at all
 
         
-        if(this.errors.isEmpty()){
-        
-            this.prepareOrderData();
+        if(this.prepareOrderData()){
             //first save the order header data into "purchase" tbale
+            this.jlmsg.setText("Order prepare successfully");
             this.stmt = DatabaseConnection.getConnection().getStatement();
             
             this.query = "INSERT INTO purchase "
                     + "(supplierid, date)";
+        } else {
+            this.jlmsg.setText(this.msgListToString(this.errors));
         }
         
     }
@@ -749,7 +750,7 @@ public class PurchaseForm extends AbstractForm {
         if(this.errors.isEmpty()) {
             return true;
         } else {
-            this.jlmsg.setText(this.msgListToString(this.errors));
+            //this.jlmsg.setText(this.msgListToString(this.errors));
             return false;
         }
         
