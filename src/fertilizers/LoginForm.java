@@ -9,8 +9,6 @@ import database.DatabaseConnection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -44,6 +42,11 @@ public class LoginForm extends javax.swing.JFrame {
         jbtcancel = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                formComponentShown(evt);
+            }
+        });
 
         jlmsg.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
@@ -139,6 +142,11 @@ public class LoginForm extends javax.swing.JFrame {
         this.cancelAndClose();
     }//GEN-LAST:event_jbtcancelActionPerformed
 
+    private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
+        // TODO add your handling code here:
+        initialize();
+    }//GEN-LAST:event_formComponentShown
+
     /**
      * @param args the command line arguments
      */
@@ -205,7 +213,8 @@ public class LoginForm extends javax.swing.JFrame {
             rs = stmt.executeQuery(query);
             if(rs.next()){
                 //go to next screen
-                
+                this.setVisible(false);
+                (new ShopMainForm(this)).setVisible(true);
             } else {
                 this.jlmsg.setText("Username or password is incorrect");
             }
@@ -218,5 +227,10 @@ public class LoginForm extends javax.swing.JFrame {
     private void cancelAndClose() {
         
         this.dispose();
+    }
+
+    private void initialize() {
+        this.jtfpwd.setText("");
+        this.jtfuname.setText("");
     }
 }

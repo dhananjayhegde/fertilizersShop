@@ -192,6 +192,11 @@ public class ShopMainForm extends AbstractForm {
         );
 
         jbtlogout.setText("Logout");
+        jbtlogout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtlogoutActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -273,6 +278,11 @@ public class ShopMainForm extends AbstractForm {
         // TODO add your handling code here:
         System.out.println("W : " + this.getSize().width + ", H : " + this.getSize().height);
     }//GEN-LAST:event_formComponentResized
+
+    private void jbtlogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtlogoutActionPerformed
+        // TODO add your handling code here:
+        this.goToPrevious();
+    }//GEN-LAST:event_jbtlogoutActionPerformed
 
     /**
      * @param args the command line arguments
