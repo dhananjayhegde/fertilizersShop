@@ -18,7 +18,7 @@ public class PurchaseModel {
     private long id = -1L; //BEFORE SAVING TO DATABASE
     private long supplierId;
     private Date date;
-    private double subtotal;
+    private double subtotal ;
     private double total;
     private double subsidy;
     private static int numberOfItems = 0;
@@ -26,6 +26,14 @@ public class PurchaseModel {
     private ArrayList<PurchaseItemsModel> items = new ArrayList();
 
 
+    public PurchaseModel(long supplierId, Date date) {
+        this.supplierId = supplierId;
+        this.date = date;
+        this.subtotal = 0.00;
+        this.total = 0.00;
+        this.subsidy = 0.00;
+    }
+    
     public PurchaseModel(long supplierId, Date date, double subtotal, double total, double subsidy) {
         this.supplierId = supplierId;
         this.date = date;
@@ -135,12 +143,14 @@ public class PurchaseModel {
 
     private void calculateTotal() {
         Iterator it = this.items.iterator();
-        double total = 0;
-        
+        double subtotal = 0;
         while(it.hasNext()){
-            total += ((PurchaseItemsModel)it.next()).getAmount();
+            subtotal += ((PurchaseItemsModel)it.next()).getAmount();
+        }
+        if(subtotal > 0){
+            this.subtotal = subtotal;
+            this.total = this.subtotal - this.subsidy;
         }
         
-        this.total = total;
     }
 }

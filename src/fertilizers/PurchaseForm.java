@@ -420,6 +420,11 @@ public class PurchaseForm extends AbstractForm {
         });
 
         jbtsaveorder.setText("Save Order");
+        jbtsaveorder.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtsaveorderActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -552,6 +557,11 @@ public class PurchaseForm extends AbstractForm {
         this.clearItemData();
     }//GEN-LAST:event_jbtneworderActionPerformed
 
+    private void jbtsaveorderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtsaveorderActionPerformed
+        // TODO add your handling code here:
+        this.saveOrder();
+    }//GEN-LAST:event_jbtsaveorderActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -644,5 +654,63 @@ public class PurchaseForm extends AbstractForm {
 //        this.jtfsubsidy.setText("");
         this.jcbproduct.setSelectedIndex(0);
         this.jcbsupplier.setSelectedIndex(0);
+    }
+    
+    private void saveOrder(){
+        //local variable declaration
+        String subsidy;
+        String supplierId;
+        java.util.Date util_today;
+        java.sql.Date sql_today;
+        
+        double subtotal;
+        double total;
+        
+        //initialize the messages
+        this.errors.clear();
+        this.success.clear();
+        
+        //check if there are any items added at all
+
+        
+        if(this.errors.isEmpty()){
+        
+            this.prepareOrderData();
+            //first save the order header data into "purchase" tbale
+            this.stmt = DatabaseConnection.getConnection().getStatement();
+            
+            this.query = "INSERT INTO purchase "
+                    + "(supplierid, date)";
+        }
+        
+    }
+    
+    private void prepareOrderData(){
+        
+        Long supplierId;
+        java.util.Date util_today;
+        double total;
+        double subtotal;
+        double subsidy;
+     
+        //initialize the messages
+        this.errors.clear();
+        this.success.clear();
+        
+        if (this.alvModel.getRowCount() <= 0) {
+            this.jlmsg.setText("Add at least one item to order");
+            return;
+        }
+
+        if (this.jtfsubsidy.getText().isEmpty()) {
+            this.errors.add("Enter a subsidy amount in Rs.");
+        }
+        
+        //if we are here, then there may not be any errors   
+        supplierId = ((SupplierModel)this.jcbsupplier.getSelectedItem()).getId();
+        util_today = new java.util.Date();
+        
+        this.purchaseOrder = new PurchaseModel(supplierId, util_today);
+        
     }
 }
