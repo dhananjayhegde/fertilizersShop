@@ -15,12 +15,12 @@ import javax.swing.JFrame;
  */
 public class ShopMainForm extends AbstractForm {
 
-    
-    public ShopMainForm(JFrame prev){
+    public ShopMainForm(JFrame prev) {
         super(prev);
         initComponents();
         this.setLocationRelativeTo(null);
     }
+
     /**
      * Creates new form ShopMainForm
      */
@@ -34,6 +34,7 @@ public class ShopMainForm extends AbstractForm {
         //dim.setSize(dim.getWidth() - 200, dim.getHeight() - 200);
         return dim;
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -104,7 +105,12 @@ public class ShopMainForm extends AbstractForm {
             }
         });
 
-        jbtdisplaysupp.setText("Display Supplier");
+        jbtdisplaysupp.setText("Supplier Report");
+        jbtdisplaysupp.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtdisplaysuppActionPerformed(evt);
+            }
+        });
 
         jbtcreateproducts.setText("Create Products");
         jbtcreateproducts.addActionListener(new java.awt.event.ActionListener() {
@@ -113,7 +119,12 @@ public class ShopMainForm extends AbstractForm {
             }
         });
 
-        jbtdisplayproducts.setText("Display Products");
+        jbtdisplayproducts.setText("Products Stock");
+        jbtdisplayproducts.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtdisplayproductsActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -172,6 +183,11 @@ public class ShopMainForm extends AbstractForm {
         });
 
         jbtsalesreport.setText("Sales Report");
+        jbtsalesreport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtsalesreportActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -210,6 +226,11 @@ public class ShopMainForm extends AbstractForm {
         });
 
         jbtpurchasereport.setText("Purchase Report");
+        jbtpurchasereport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtpurchasereportActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -363,6 +384,30 @@ public class ShopMainForm extends AbstractForm {
         this.setVisible(false);
         (new SalesForm(this)).setVisible(true);
     }//GEN-LAST:event_jbtsellActionPerformed
+
+    private void jbtdisplaysuppActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtdisplaysuppActionPerformed
+        // TODO add your handling code here:
+        this.setVisible(false);
+        (new SupplierReport(this)).setVisible(true);
+    }//GEN-LAST:event_jbtdisplaysuppActionPerformed
+
+    private void jbtdisplayproductsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtdisplayproductsActionPerformed
+        // TODO add your handling code here:
+        this.setVisible(false);
+        (new ProductReport(this)).setVisible(true);
+    }//GEN-LAST:event_jbtdisplayproductsActionPerformed
+
+    private void jbtsalesreportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtsalesreportActionPerformed
+        // TODO add your handling code here:
+        this.setVisible(false);
+        (new SalesReport(this)).setVisible(true);
+    }//GEN-LAST:event_jbtsalesreportActionPerformed
+
+    private void jbtpurchasereportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtpurchasereportActionPerformed
+        // TODO add your handling code here:
+        this.setVisible(false);
+        (new PurchaseReport(this)).setVisible(true);
+    }//GEN-LAST:event_jbtpurchasereportActionPerformed
 
     /**
      * @param args the command line arguments

@@ -207,8 +207,11 @@
             </Component>
             <Component class="javax.swing.JButton" name="jbtdisplaysupp">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Display Supplier"/>
+                <Property name="text" type="java.lang.String" value="Supplier Report"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtdisplaysuppActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="jbtcreateproducts">
               <Properties>
@@ -220,8 +223,11 @@
             </Component>
             <Component class="javax.swing.JButton" name="jbtdisplayproducts">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Display Products"/>
+                <Property name="text" type="java.lang.String" value="Products Stock"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtdisplayproductsActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
@@ -284,6 +290,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Sales Report"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtsalesreportActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
@@ -345,6 +354,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Purchase Report"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtpurchasereportActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
