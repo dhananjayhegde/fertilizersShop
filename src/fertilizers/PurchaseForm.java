@@ -714,6 +714,25 @@ public class PurchaseForm extends AbstractForm {
 
                         this.stmt.executeUpdate(this.query);
 
+                        //UPDATE PRODUCT STOCK - get the current stock and then add the purchase quantity and update
+                        this.query = "SELECT stockqty "
+                                + "FROM products "
+                                + "WHERE id=" + item.getProductId();
+                        this.rs.close();
+
+                        this.rs = this.stmt.executeQuery(this.query);
+                        if (this.rs.next()) {
+
+                            long stockqty = this.rs.getLong("stockqty");
+                            stockqty += item.getQuantity();
+                           
+                            this.query = "UPDATE products "
+                                    + "SET stockqty=" + stockqty
+                                    + " WHERE id=" + item.getProductId();
+                            this.rs.close();
+
+                            this.stmt.executeUpdate(this.query);
+                        }
                     }
                     
                     this.jlsuccessmsg.setText("Order saved successfully. Order ID : " + orderId);
