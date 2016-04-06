@@ -22,7 +22,7 @@ public class SalesModel {
 
     private static int numberOfItems = 0;
 
-    private ArrayList<PurchaseItemsModel> items = new ArrayList();
+    private ArrayList<SalesItemsModel> items = new ArrayList();
 
     public SalesModel(long farmerId, Date date) {
         this.farmerId = farmerId;
@@ -52,7 +52,7 @@ public class SalesModel {
         System.out.println("ID      : " + this.getId());
         System.out.println("Supplier Id : " + this.farmerId);
         System.out.println("Total       : " + this.total);
-        System.out.println("Purchase Order Items : ");
+        System.out.println("Sales Order Items : ");
         System.out.println("------------------------------------------------------------------");
         System.out.println("Item No.    Product Id      Price       Quantity        Amount");
         System.out.println("------------------------------------------------------------------");
@@ -68,13 +68,13 @@ public class SalesModel {
         return numberOfItems;
     }
 
-    public void addItem(PurchaseItemsModel item) {
+    public void addItem(SalesItemsModel item) {
         item.setItemNo(++SalesModel.numberOfItems);
         this.items.add(item);
         this.calculateTotal();
     }
 
-    public void removeItem(PurchaseItemsModel item) {
+    public void removeItem(SalesItemsModel item) {
         if (this.items.removeIf(e -> e.getId() == item.getId() && e.getItemNo() == item.getItemNo())) {
             --SalesModel.numberOfItems;
             this.calculateTotal();
@@ -85,11 +85,11 @@ public class SalesModel {
         this.items.removeIf(e -> e.getId() == itemNo);
     }
 
-    public ArrayList<PurchaseItemsModel> getItems() {
+    public ArrayList<SalesItemsModel> getItems() {
         return items;
     }
 
-    public void setItems(ArrayList<PurchaseItemsModel> items) {
+    public void setItems(ArrayList<SalesItemsModel> items) {
         this.items = items;
     }
 
