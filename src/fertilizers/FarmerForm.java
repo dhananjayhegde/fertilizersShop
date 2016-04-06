@@ -28,6 +28,7 @@ public class FarmerForm extends AbstractForm {
      */
     public FarmerForm() {
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     @Override

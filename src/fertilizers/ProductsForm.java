@@ -29,6 +29,7 @@ public class ProductsForm extends AbstractForm {
      */
     public ProductsForm() {
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     /**
