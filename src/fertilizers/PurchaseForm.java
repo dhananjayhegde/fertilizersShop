@@ -220,6 +220,8 @@ public class PurchaseForm extends AbstractForm {
         jbtremoveitem = new javax.swing.JButton();
         jbtsaveorder = new javax.swing.JButton();
         jlsuccessmsg = new javax.swing.JLabel();
+        jbtback = new javax.swing.JButton();
+        jblogout = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jlmsg = new javax.swing.JLabel();
 
@@ -462,6 +464,20 @@ public class PurchaseForm extends AbstractForm {
                 .addContainerGap())
         );
 
+        jbtback.setText("Back");
+        jbtback.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtbackActionPerformed(evt);
+            }
+        });
+
+        jblogout.setText("Logout");
+        jblogout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jblogoutActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -473,17 +489,26 @@ public class PurchaseForm extends AbstractForm {
                     .addComponent(jlbanner, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jlsuccessmsg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jlsuccessmsg, javax.swing.GroupLayout.PREFERRED_SIZE, 358, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jbtback, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jblogout, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(20, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jlbanner, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jlsuccessmsg, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jlbanner, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jlsuccessmsg, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jbtback, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jblogout, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -571,6 +596,17 @@ public class PurchaseForm extends AbstractForm {
         this.saveOrder();
     }//GEN-LAST:event_jbtsaveorderActionPerformed
 
+    private void jbtbackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtbackActionPerformed
+        // TODO add your handling code here:
+        this.goToPrevious();
+    }//GEN-LAST:event_jbtbackActionPerformed
+
+    private void jblogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jblogoutActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+        (new LoginForm()).setVisible(true);
+    }//GEN-LAST:event_jblogoutActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -613,7 +649,9 @@ public class PurchaseForm extends AbstractForm {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JButton jblogout;
     private javax.swing.JButton jbtadditem;
+    private javax.swing.JButton jbtback;
     private javax.swing.JButton jbtclearitemdata;
     private javax.swing.JButton jbtneworder;
     private javax.swing.JButton jbtremoveitem;
