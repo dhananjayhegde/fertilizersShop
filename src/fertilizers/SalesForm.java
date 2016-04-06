@@ -66,8 +66,8 @@ public class SalesForm extends AbstractForm {
     private void addItemToModel() {
 
         Object[] row = this.getNewITemForModel();
-        if (row == null) {
-            this.jlmsg.setText("Enter All fields to add the item to order");
+        if (row == null && !this.errors.isEmpty()) {
+            this.jlmsg.setText(this.msgListToString(this.errors));
         } else {
             this.jlmsg.setText("");
             this.alvModel.appendRow(row);
@@ -78,14 +78,42 @@ public class SalesForm extends AbstractForm {
     private Object[] getNewITemForModel() {
 
         Object[] row = new Object[this.headers.length];
-
+        
+        this.errors.clear();
+        
         if (!this.jtfqty.getText().isEmpty()) {
-            row[0] = ((ProductModel) this.jcbproduct.getSelectedItem()).getId();
-            row[1] = ((ProductModel) this.jcbproduct.getSelectedItem()).getName();
-            row[2] = this.jtfprice.getText();
-            row[3] = this.jtfqty.getText();
-            row[4] = this.jtfamount.getText();
-            return row;
+            
+            
+            try {
+                this.query = "SELECT stockqty "
+                        + "FROM products "
+                        + "WHERE id=" + Integer.parseInt(this.jtfqty.getText());
+                
+                this.rs.close();
+                
+                this.rs = this.stmt.executeQuery(this.query);
+                
+                if (this.rs.next()) {
+
+                    long stockqty = this.rs.getLong("stockqty");
+                    stockqty -= Integer.parseInt(this.jtfqty.getText());
+                    
+                    if(stockqty >=0 ){
+                        row[0] = ((ProductModel) this.jcbproduct.getSelectedItem()).getId();
+                        row[1] = ((ProductModel) this.jcbproduct.getSelectedItem()).getName();
+                        row[2] = this.jtfprice.getText();
+                        row[3] = this.jtfqty.getText();
+                        row[4] = this.jtfamount.getText();
+                        
+                        return row;
+                    } else {
+                        this.errors.add("You can order only " + (Integer.parseInt(this.jtfqty.getText()) + stockqty) + ""
+                                + "of this product");
+                    }
+                }          
+            } catch (Exception ex) {
+                this.errors.add(ex.getMessage());
+            }
         }
         return null;
     }
@@ -693,6 +721,20 @@ public class SalesForm extends AbstractForm {
                                 + "'" + item.getQuantity() + "', '" + item.getAmount() + "')";
 
                         this.stmt.executeUpdate(this.query);
+                        //There are two more updates required
+                        //update Product stock - get the current stock and then deduct the sales quantity and update
+                        this.query = "SELECT stockqty "
+                                + "FROM products "
+                                + "WHERE id=" + item.getProductId();
+                        this.rs.close();
+                        
+                        this.rs = this.stmt.executeQuery(this.query);
+                        if(this.rs.next()){
+                        
+                            long stockqty = this.rs.getLong("stockqty");
+                            stockqty -= item.getQuantity();
+                        }
+                        //update farmer account balance  - add order total to account balance
 
                     }
                     
