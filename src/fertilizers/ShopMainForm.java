@@ -165,6 +165,11 @@ public class ShopMainForm extends AbstractForm {
 
         jbtsell.setText("Sell");
         jbtsell.setToolTipText("");
+        jbtsell.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtsellActionPerformed(evt);
+            }
+        });
 
         jbtsalesreport.setText("Sales Report");
 
@@ -245,7 +250,7 @@ public class ShopMainForm extends AbstractForm {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jlbanner, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE))
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -264,7 +269,7 @@ public class ShopMainForm extends AbstractForm {
                     .addComponent(jbtlogout, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 372, Short.MAX_VALUE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -352,6 +357,12 @@ public class ShopMainForm extends AbstractForm {
         this.setVisible(false);
         (new PurchaseForm(this)).setVisible(true);
     }//GEN-LAST:event_jbtpurchaseActionPerformed
+
+    private void jbtsellActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtsellActionPerformed
+        // TODO add your handling code here:
+        this.setVisible(false);
+        (new SalesForm(this)).setVisible(true);
+    }//GEN-LAST:event_jbtsellActionPerformed
 
     /**
      * @param args the command line arguments
