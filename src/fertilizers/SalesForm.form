@@ -97,7 +97,7 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Tahoma" size="18" style="0"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Create Purchase Entry"/>
+            <Property name="text" type="java.lang.String" value="Create Sales Entry"/>
           </Properties>
         </Component>
         <Container class="javax.swing.JPanel" name="jPanel3">
@@ -118,25 +118,16 @@
                               <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" attributes="0">
-                                      <Component id="jlsupplier" min="-2" pref="150" max="-2" attributes="0"/>
+                                      <Component id="jlfarmer" min="-2" pref="150" max="-2" attributes="0"/>
                                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                                      <Component id="jcbsupplier" max="32767" attributes="0"/>
+                                      <Component id="jcbfarmer" max="32767" attributes="0"/>
                                   </Group>
                                   <Group type="102" attributes="0">
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Group type="102" attributes="0">
-                                              <Component id="jlsubsidy" min="-2" pref="150" max="-2" attributes="0"/>
-                                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                                              <Component id="jtfsubsidy" min="-2" pref="200" max="-2" attributes="0"/>
-                                          </Group>
-                                          <Group type="102" alignment="0" attributes="0">
-                                              <Component id="jbtneworder" min="-2" pref="150" max="-2" attributes="0"/>
-                                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                                              <Component id="jbtadditem" min="-2" pref="150" max="-2" attributes="0"/>
-                                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                                              <Component id="jbtclearitemdata" min="-2" pref="150" max="-2" attributes="0"/>
-                                          </Group>
-                                      </Group>
+                                      <Component id="jbtneworder" min="-2" pref="150" max="-2" attributes="0"/>
+                                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                                      <Component id="jbtadditem" min="-2" pref="150" max="-2" attributes="0"/>
+                                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                                      <Component id="jbtclearitemdata" min="-2" pref="150" max="-2" attributes="0"/>
                                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
@@ -190,15 +181,10 @@
                       <Component id="jlheader" min="-2" pref="30" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jlsupplier" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
-                          <Component id="jcbsupplier" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
+                          <Component id="jlfarmer" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
+                          <Component id="jcbfarmer" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jlsubsidy" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
-                          <Component id="jtfsubsidy" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="69" max="-2" attributes="0"/>
                       <Component id="jSeparator1" min="-2" pref="10" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="jlitem" min="-2" pref="30" max="-2" attributes="0"/>
@@ -222,7 +208,7 @@
                           <Component id="jlamount" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
                           <Component id="jtfamount" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace pref="58" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jbtadditem" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
                           <Component id="jbtclearitemdata" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
@@ -242,19 +228,13 @@
                 <Property name="text" type="java.lang.String" value="Header"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JLabel" name="jlsupplier">
+            <Component class="javax.swing.JLabel" name="jlfarmer">
               <Properties>
                 <Property name="horizontalAlignment" type="int" value="4"/>
-                <Property name="text" type="java.lang.String" value="Supplier : "/>
+                <Property name="text" type="java.lang.String" value="Farmer : "/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JLabel" name="jlsubsidy">
-              <Properties>
-                <Property name="horizontalAlignment" type="int" value="4"/>
-                <Property name="text" type="java.lang.String" value="Subsidy Amount : "/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JComboBox" name="jcbsupplier">
+            <Component class="javax.swing.JComboBox" name="jcbfarmer">
               <Properties>
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                   <StringArray count="4">
@@ -268,11 +248,6 @@
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
               </AuxValues>
-            </Component>
-            <Component class="javax.swing.JTextField" name="jtfsubsidy">
-              <Properties>
-                <Property name="toolTipText" type="java.lang.String" value=""/>
-              </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jlproduct">
               <Properties>

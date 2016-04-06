@@ -23,9 +23,9 @@ import javax.swing.JFrame;
  */
 public class SalesForm extends AbstractForm {
 
-    private Vector<Object[]> purchaseItems;
+    private Vector<Object[]> salesItems;
     private String[] headers;
-    private PurchaseModel purchaseOrder;
+    private SalesModel salesOrder;
     private ALVDynamicTableModel alvModel;
 
     public SalesForm(JFrame prev) {
@@ -45,8 +45,8 @@ public class SalesForm extends AbstractForm {
 
     private void initializeItemsTable() {
         this.headers = this.getTableColumns();
-        this.purchaseItems = new Vector<Object[]>();
-        this.alvModel = new ALVDynamicTableModel(this.purchaseItems, this.headers);
+        this.salesItems = new Vector<Object[]>();
+        this.alvModel = new ALVDynamicTableModel(this.salesItems, this.headers);
         this.jtbitemdata.setModel(alvModel);
     }
 
@@ -79,7 +79,7 @@ public class SalesForm extends AbstractForm {
 
         Object[] row = new Object[this.headers.length];
 
-        if (!this.jtfsubsidy.getText().isEmpty() && !this.jtfqty.getText().isEmpty()) {
+        if (!this.jtfqty.getText().isEmpty()) {
             row[0] = ((ProductModel) this.jcbproduct.getSelectedItem()).getId();
             row[1] = ((ProductModel) this.jcbproduct.getSelectedItem()).getName();
             row[2] = this.jtfprice.getText();
@@ -113,38 +113,37 @@ public class SalesForm extends AbstractForm {
         this.jtfamount.setText(amount + "");
     }
 
-    private ComboBoxModel getSupplierModel() {
-        SupplierModel[] suppliers = null;
-        ArrayList<SupplierModel> slist = new ArrayList();
+    private ComboBoxModel getFarmerModel() {
+        FarmerModel[] farmers = null;
+        ArrayList<FarmerModel> flist = new ArrayList();
 
         this.stmt = DatabaseConnection.getConnection().getStatement();
 
-        this.query = "SELECT * FROM supplier";
+        this.query = "SELECT * FROM farmer";
 
         try {
             this.rs = this.stmt.executeQuery(this.query);
             while (this.rs.next()) {
-                slist.add(new SupplierModel(this.rs.getLong("id"),
+                flist.add(new FarmerModel(this.rs.getLong("id"),
                         this.rs.getString("name"),
                         this.rs.getString("address"),
-                        this.rs.getString("mobile"),
-                        this.rs.getString("tin")
+                        this.rs.getString("mobile")
                 ));
 
             }
 
-            suppliers = new SupplierModel[slist.size()];
-            Iterator it = slist.iterator();
+            farmers = new FarmerModel[flist.size()];
+            Iterator it = flist.iterator();
             int i = 0;
             while (it.hasNext()) {
-                suppliers[i++] = (SupplierModel) it.next();
+                farmers[i++] = (FarmerModel) it.next();
             }
 
         } catch (SQLException ex) {
-            this.jlmsg.setText("There was a problem getting supplier data from database");
+            this.jlmsg.setText("There was a problem getting farmer data from database");
         }
 
-        return new DefaultComboBoxModel(suppliers);
+        return new DefaultComboBoxModel(farmers);
     }
 
     private ComboBoxModel getProductModel() {
@@ -196,10 +195,8 @@ public class SalesForm extends AbstractForm {
         jlbanner = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jlheader = new javax.swing.JLabel();
-        jlsupplier = new javax.swing.JLabel();
-        jlsubsidy = new javax.swing.JLabel();
-        jcbsupplier = new javax.swing.JComboBox<>();
-        jtfsubsidy = new javax.swing.JTextField();
+        jlfarmer = new javax.swing.JLabel();
+        jcbfarmer = new javax.swing.JComboBox<>();
         jlproduct = new javax.swing.JLabel();
         jlprice = new javax.swing.JLabel();
         jlquantity = new javax.swing.JLabel();
@@ -228,22 +225,17 @@ public class SalesForm extends AbstractForm {
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         jlbanner.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jlbanner.setText("Create Purchase Entry");
+        jlbanner.setText("Create Sales Entry");
 
         jPanel3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         jlheader.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jlheader.setText("Header");
 
-        jlsupplier.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jlsupplier.setText("Supplier : ");
+        jlfarmer.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jlfarmer.setText("Farmer : ");
 
-        jlsubsidy.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jlsubsidy.setText("Subsidy Amount : ");
-
-        jcbsupplier.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        jtfsubsidy.setToolTipText("");
+        jcbfarmer.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jlproduct.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jlproduct.setText("Product : ");
@@ -311,21 +303,15 @@ public class SalesForm extends AbstractForm {
                         .addGap(20, 20, 20)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(jlsupplier, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jlfarmer, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(jcbsupplier, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(jcbfarmer, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel3Layout.createSequentialGroup()
-                                        .addComponent(jlsubsidy, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jtfsubsidy, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(jPanel3Layout.createSequentialGroup()
-                                        .addComponent(jbtneworder, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jbtadditem, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jbtclearitemdata, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(jbtneworder, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jbtadditem, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jbtclearitemdata, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                         .addContainerGap()
@@ -364,13 +350,9 @@ public class SalesForm extends AbstractForm {
                 .addComponent(jlheader, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jlsupplier, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jcbsupplier, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jlsubsidy, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jtfsubsidy, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(26, 26, 26)
+                    .addComponent(jlfarmer, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jcbfarmer, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(69, 69, 69)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jlitem, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -390,7 +372,7 @@ public class SalesForm extends AbstractForm {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jlamount, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jtfamount, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 58, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jbtadditem, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jbtclearitemdata, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -619,10 +601,11 @@ public class SalesForm extends AbstractForm {
     private javax.swing.JButton jbtneworder;
     private javax.swing.JButton jbtremoveitem;
     private javax.swing.JButton jbtsaveorder;
+    private javax.swing.JComboBox<String> jcbfarmer;
     private javax.swing.JComboBox<String> jcbproduct;
-    private javax.swing.JComboBox<String> jcbsupplier;
     private javax.swing.JLabel jlamount;
     private javax.swing.JLabel jlbanner;
+    private javax.swing.JLabel jlfarmer;
     private javax.swing.JLabel jlheader;
     private javax.swing.JLabel jlitem;
     private javax.swing.JLabel jlitems;
@@ -630,19 +613,16 @@ public class SalesForm extends AbstractForm {
     private javax.swing.JLabel jlprice;
     private javax.swing.JLabel jlproduct;
     private javax.swing.JLabel jlquantity;
-    private javax.swing.JLabel jlsubsidy;
     private javax.swing.JLabel jlsuccessmsg;
-    private javax.swing.JLabel jlsupplier;
     private javax.swing.JTable jtbitemdata;
     private javax.swing.JTextField jtfamount;
     private javax.swing.JTextField jtfprice;
     private javax.swing.JTextField jtfqty;
-    private javax.swing.JTextField jtfsubsidy;
     // End of variables declaration//GEN-END:variables
 
     private void initialize() {
         this.jcbproduct.setModel(this.getProductModel());
-        this.jcbsupplier.setModel(this.getSupplierModel());
+        this.jcbfarmer.setModel(this.getFarmerModel());
         this.jtfqty.setText("0");
         this.updatePrice();
         this.updateAmountField();
@@ -666,12 +646,12 @@ public class SalesForm extends AbstractForm {
         this.jtfqty.setText("0");
 //        this.jtfsubsidy.setText("");
         this.jcbproduct.setSelectedIndex(0);
-        this.jcbsupplier.setSelectedIndex(0);
+        this.jcbfarmer.setSelectedIndex(0);
     }
 
     private void saveOrder() {
         //local variable declaration
-        PurchaseItemsModel item;
+        SalesItemsModel item;
         long orderId = -1;
         //initialize the messages
         this.errors.clear();
@@ -683,12 +663,11 @@ public class SalesForm extends AbstractForm {
             this.jlmsg.setText("Order prepared successfully");
             this.stmt = DatabaseConnection.getConnection().getStatement();
 
-            this.query = "INSERT INTO purchase "
-                    + "(supplierid, date, subtotal, total, subsidy) "
+            this.query = "INSERT INTO sales "
+                    + "(farmerid, date, subtotal, total) "
                     + "VALUES "
-                    + "('" + this.purchaseOrder.getSupplierId() + "', '" + new java.sql.Date(this.purchaseOrder.getDate().getTime()) + "', "
-                    + "'" + this.purchaseOrder.getSubtotal() + "', '" + this.purchaseOrder.getTotal() + "', "
-                    + "'" + this.purchaseOrder.getSubsidy() + "')";
+                    + "('" + this.salesOrder.getFarmerId() + "', '" + new java.sql.Date(this.salesOrder.getDate().getTime()) + "', "
+                    + "'" + this.salesOrder.getSubtotal() + "', '" + this.salesOrder.getTotal() + "')";
 
             try {
                 this.rs.close(); //close the previous result set
@@ -697,16 +676,16 @@ public class SalesForm extends AbstractForm {
 
                 if (this.rs.next()) {
                     orderId = this.rs.getLong(1);
-                    this.purchaseOrder.setId(orderId); //set the generated Order ID
-                    Iterator itemIterator = this.purchaseOrder.getItems().iterator();
+                    this.salesOrder.setId(orderId); //set the generated Order ID
+                    Iterator itemIterator = this.salesOrder.getItems().iterator();
 
                     while (itemIterator.hasNext()) {
                         this.query = "";
                         this.rs.close();
 
-                        item = (PurchaseItemsModel) itemIterator.next();
+                        item = (SalesItemsModel) itemIterator.next();
 
-                        this.query = "INSERT INTO purchasedetails "
+                        this.query = "INSERT INTO salesdetails "
                                 + "(id, itemno, productid, price, quantity, amount) "
                                 + "VALUES "
                                 + "('" + orderId + "', '" + item.getItemNo() + "', "
@@ -727,13 +706,13 @@ public class SalesForm extends AbstractForm {
                 if (orderId > 0) {
                     //this means, order header saved but not item details.
                     //So, to maintain data consistency, we delete the order header/detials
-                    this.query = "DELETE FROM purchase "
+                    this.query = "DELETE FROM sales "
                             + "WHERE id=" + orderId;
 
                     try {
                         this.stmt.executeUpdate(this.query);
                         //if successfull, delete all partially saved item details
-                        this.query = "DELETE FROM purchasedetails "
+                        this.query = "DELETE FROM salesdetails "
                                 + "WHERE id=" + orderId;
                         this.stmt.executeUpdate(this.query);
                         
@@ -745,69 +724,68 @@ public class SalesForm extends AbstractForm {
 
         } else {
             this.jlmsg.setText(this.msgListToString(this.errors));
-        }
-        
+        }  
     }
 
     private boolean prepareOrderData() {
 
-        Long supplierId;
+        Long farmerId;
         java.util.Date util_today;
         double subsidy = 0;
 
-        PurchaseItemsModel purchaseItem;
+        SalesItemsModel salesItem;
         //initialize the messages
         this.errors.clear();
         this.success.clear();
-        this.purchaseOrder = null; //initialize
+        this.salesOrder = null; //initialize
 
         if (this.alvModel.getRowCount() <= 0) {
             this.jlmsg.setText("Add at least one item to order");
             return false;
         }
 
-        if (this.jtfsubsidy.getText().isEmpty()) {
-            this.errors.add("Enter a subsidy amount in Rs.");
-        }
+//        if (this.jtfsubsidy.getText().isEmpty()) {
+//            this.errors.add("Enter a subsidy amount in Rs.");
+//        }
 
         //if we are here, then there may not be any errors   
-        supplierId = ((SupplierModel) this.jcbsupplier.getSelectedItem()).getId();
+        farmerId = ((FarmerModel) this.jcbfarmer.getSelectedItem()).getId();
         util_today = new java.util.Date();
 
-        this.purchaseOrder = new PurchaseModel(supplierId, util_today);
+        this.salesOrder = new SalesModel(farmerId, util_today);
 
-        //get Subsisdy amount from the screen field
-        try {
-            subsidy = Double.parseDouble(this.jtfsubsidy.getText());
-        } catch (NumberFormatException ex) {
-            this.errors.add("Enter a decimal number for subsidy amount");
-        }
+        //no subsidy amount for sales order data
+//        try {
+//            subsidy = Double.parseDouble(this.jtfsubsidy.getText());
+//        } catch (NumberFormatException ex) {
+//            this.errors.add("Enter a decimal number for subsidy amount");
+//        }
 
         if (this.errors.isEmpty()) {
-            this.purchaseOrder.setSubsidy(subsidy);
+            //this.salesOrder.setSubsidy(subsidy);
             //prepare item data
 
             for (int rowIndex = 0; rowIndex < this.alvModel.getRowCount(); rowIndex++) {
 
-                purchaseItem = new PurchaseItemsModel();
+                salesItem = new SalesItemsModel();
                 int colIndex = 0;
                 //purchaseItem.setItemNo(itemNo++); addITem method takes care of this
-                purchaseItem.setProductId((long) this.alvModel.getValueAt(rowIndex, colIndex++));
+                salesItem.setProductId((long) this.alvModel.getValueAt(rowIndex, colIndex++));
                 colIndex++; //skip the product name column from the table model
-                purchaseItem.setPrice(Double.parseDouble((String) this.alvModel.getValueAt(rowIndex, colIndex++)));
-                purchaseItem.setQuantity(Integer.parseInt((String) this.alvModel.getValueAt(rowIndex, colIndex++)));
-                purchaseItem.setAmount(Double.parseDouble((String) this.alvModel.getValueAt(rowIndex, colIndex++)));
+                salesItem.setPrice(Double.parseDouble((String) this.alvModel.getValueAt(rowIndex, colIndex++)));
+                salesItem.setQuantity(Integer.parseInt((String) this.alvModel.getValueAt(rowIndex, colIndex++)));
+                salesItem.setAmount(Double.parseDouble((String) this.alvModel.getValueAt(rowIndex, colIndex++)));
 
                 //add the item to purchaseOrder.  Total and subtotal are calculated automatically
-                this.purchaseOrder.addItem(purchaseItem);
+                this.salesOrder.addItem(salesItem);
             }
 
-            if (this.purchaseOrder.getNumberOfItems() <= 0) {
+            if (this.salesOrder.getNumberOfItems() <= 0) {
                 this.errors.add("No Items are added to order");
             }
-            if (this.purchaseOrder.getTotal() <= 0) {
-                this.errors.add("Looks Like subsidy amount is more than order total amount");
-            }
+//            if (this.salesOrder.getTotal() <= 0) {
+//                this.errors.add("Looks Like subsidy amount is more than order total amount");
+//            }
         }
 
         if (this.errors.isEmpty()) {
