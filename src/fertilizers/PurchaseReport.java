@@ -15,11 +15,11 @@ import javax.swing.JFrame;
  *
  * @author ProjectTeam
  */
-public class SalesReport extends AbstractForm {
+public class PurchaseReport extends AbstractForm {
 
     private ALVTableModel alvModel;
     
-    public SalesReport(JFrame prev){
+    public PurchaseReport(JFrame prev){
         super(prev);
         initComponents();
         initialize();
@@ -28,7 +28,7 @@ public class SalesReport extends AbstractForm {
     /**
      * Creates new form SalesReport
      */
-    public SalesReport() {
+    public PurchaseReport() {
         initComponents();
         initialize();
         this.setLocationRelativeTo(null);
@@ -51,10 +51,9 @@ public class SalesReport extends AbstractForm {
         jbtlogout = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(850, 620));
 
         jlbanner.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jlbanner.setText("Sales Report");
+        jlbanner.setText("Purchase Report");
 
         jtbsalesreport.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -149,20 +148,21 @@ public class SalesReport extends AbstractForm {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(SalesReport.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PurchaseReport.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(SalesReport.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PurchaseReport.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(SalesReport.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PurchaseReport.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(SalesReport.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PurchaseReport.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new SalesReport().setVisible(true);
+                new PurchaseReport().setVisible(true);
             }
         });
     }
@@ -181,7 +181,7 @@ public class SalesReport extends AbstractForm {
         this.stmt = DatabaseConnection.getConnection().getStatement();
 
         this.query = "SELECT * "
-                + "FROM v_sales_report ";
+                + "FROM v_purchase_report ";
 
         try {
             this.rs = this.stmt.executeQuery(this.query);
@@ -190,11 +190,11 @@ public class SalesReport extends AbstractForm {
             this.jtbsalesreport.setModel(alvModel);
 
             if (this.rs.getMetaData().getColumnCount() <= 0) {
-                this.jlmsg.setText("No sales entry made yet");
+                this.jlmsg.setText("No purchase entry made yet");
             }
         } catch (SQLException ex) {
             Logger.getLogger(FarmerAccountsForm.class.getName()).log(Level.SEVERE, null, ex);
-            this.jlmsg.setText("Some problem fetching the sales report. Try after some time!!");
+            this.jlmsg.setText("Some problem fetching the purchase report. Try after some time!!");
         }
     }
 }
