@@ -136,10 +136,11 @@ public class SalesModel {
         Iterator it = this.items.iterator();
         double subtotal = 0;
         while (it.hasNext()) {
-            subtotal += ((PurchaseItemsModel) it.next()).getAmount();
+            subtotal += ((SalesItemsModel) it.next()).getAmount();
         }
         if (subtotal > 0) {
             this.subtotal = subtotal;
+            this.total = this.subtotal;
         }
 
     }

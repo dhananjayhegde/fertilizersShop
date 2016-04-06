@@ -739,7 +739,7 @@ public class SalesForm extends AbstractForm {
                             //here, stockqty cannot go negative!
                             this.query = "UPDATE products "
                                     + "SET stockqty=" + stockqty
-                                    + "WHERE id=" + item.getProductId();
+                                    + " WHERE id=" + item.getProductId();
                             this.rs.close();
                             
                             this.stmt.executeUpdate(this.query);
