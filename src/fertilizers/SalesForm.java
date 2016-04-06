@@ -68,7 +68,10 @@ public class SalesForm extends AbstractForm {
         Object[] row = this.getNewITemForModel();
         if (row == null && !this.errors.isEmpty()) {
             this.jlmsg.setText(this.msgListToString(this.errors));
-        } else {
+        } else if ( row == null){
+            this.jlmsg.setText("There is some problem adding item ");
+        }        
+        else {
             this.jlmsg.setText("");
             this.alvModel.appendRow(row);
         }
@@ -87,7 +90,7 @@ public class SalesForm extends AbstractForm {
             try {
                 this.query = "SELECT stockqty "
                         + "FROM products "
-                        + "WHERE id=" + Integer.parseInt(this.jtfqty.getText());
+                        + "WHERE id=" + ((ProductModel) this.jcbproduct.getSelectedItem()).getId();
                 
                 this.rs.close();
                 
@@ -108,7 +111,7 @@ public class SalesForm extends AbstractForm {
                         return row;
                     } else {
                         this.errors.add("You can order only " + (Integer.parseInt(this.jtfqty.getText()) + stockqty) + ""
-                                + "of this product");
+                                + " quantity of this product");
                     }
                 }          
             } catch (Exception ex) {
@@ -690,7 +693,7 @@ public class SalesForm extends AbstractForm {
             //first save the order header data into "purchase" tbale
             this.jlmsg.setText("Order prepared successfully");
             this.stmt = DatabaseConnection.getConnection().getStatement();
-
+            
             this.query = "INSERT INTO sales "
                     + "(farmerid, date, subtotal, total) "
                     + "VALUES "
@@ -722,7 +725,7 @@ public class SalesForm extends AbstractForm {
 
                         this.stmt.executeUpdate(this.query);
                         //There are two more updates required
-                        //update Product stock - get the current stock and then deduct the sales quantity and update
+                        //UPDATE PRODUCT STOCK - get the current stock and then deduct the sales quantity and update
                         this.query = "SELECT stockqty "
                                 + "FROM products "
                                 + "WHERE id=" + item.getProductId();
@@ -733,14 +736,50 @@ public class SalesForm extends AbstractForm {
                         
                             long stockqty = this.rs.getLong("stockqty");
                             stockqty -= item.getQuantity();
+                            //here, stockqty cannot go negative!
+                            this.query = "UPDATE products "
+                                    + "SET stockqty=" + stockqty
+                                    + "WHERE id=" + item.getProductId();
+                            this.rs.close();
+                            
+                            this.stmt.executeUpdate(this.query);
                         }
-                        //update farmer account balance  - add order total to account balance
-
                     }
                     
-                    this.jlsuccessmsg.setText("Order saved successfully. Order ID : " + orderId);
-                    this.clearItemModelData();
-                    this.clearItemData();
+                    //UPDATE FARMER ACCOUNT BALANCE  - add order total to account balance
+                    double accountBalance = 0;
+                    long accountId;
+                    this.query = "SELECT * "
+                            + "FROM account "
+                            + "WHERE farmerid=" + this.salesOrder.getFarmerId();
+                    
+                    this.rs.close();
+                    this.rs = this.stmt.executeQuery(this.query);
+                    if(this.rs.next()){
+                        accountId = this.rs.getLong("id");
+                        accountBalance = this.rs.getDouble("balance");
+                        
+                        //create transaction
+                        this.query = "INSERT INTO transaction "
+                                + "(accountid, date, type, amount) "
+                                + "VALUES "
+                                + "('" + accountId + "', '" + new java.sql.Date(this.salesOrder.getDate().getTime()) + "', "
+                                + "'" + 1 + "', '" + this.salesOrder.getTotal() + "')";
+                        this.rs.close();
+                        this.stmt.executeUpdate(this.query);
+                        
+                        //Update account balance
+                        accountBalance -= this.salesOrder.getTotal();
+                        
+                        this.query = "UPDATE account "
+                                + "SET balance=" + accountBalance
+                                + " WHERE id=" + accountId;
+                        this.rs.close();
+                        this.stmt.executeUpdate(this.query);
+                        this.jlsuccessmsg.setText("Order saved successfully. Order ID : " + orderId);
+                        this.clearItemModelData();
+                        this.clearItemData();
+                    }                            
                 }
 
             } catch (SQLException ex) {
