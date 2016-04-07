@@ -58,6 +58,7 @@ public class ShopMainForm extends AbstractForm {
         jlsales = new javax.swing.JLabel();
         jbtsell = new javax.swing.JButton();
         jbtsalesreport = new javax.swing.JButton();
+        jbtfpayments = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         jlpurchase = new javax.swing.JLabel();
         jbtpurchase = new javax.swing.JButton();
@@ -189,6 +190,8 @@ public class ShopMainForm extends AbstractForm {
             }
         });
 
+        jbtfpayments.setText("Payments Entry");
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -198,7 +201,8 @@ public class ShopMainForm extends AbstractForm {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jlsales, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jbtsell, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jbtsalesreport, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jbtsalesreport, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jbtfpayments, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(36, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
@@ -210,6 +214,8 @@ public class ShopMainForm extends AbstractForm {
                 .addComponent(jbtsell, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jbtsalesreport, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jbtfpayments, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -456,6 +462,7 @@ public class ShopMainForm extends AbstractForm {
     private javax.swing.JButton jbtdisplayfarmer;
     private javax.swing.JButton jbtdisplayproducts;
     private javax.swing.JButton jbtdisplaysupp;
+    private javax.swing.JButton jbtfpayments;
     private javax.swing.JButton jbtlogout;
     private javax.swing.JButton jbtpurchase;
     private javax.swing.JButton jbtpurchasereport;

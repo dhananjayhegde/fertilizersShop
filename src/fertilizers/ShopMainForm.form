@@ -249,6 +249,7 @@
                           <Component id="jlsales" alignment="0" min="-2" pref="150" max="-2" attributes="0"/>
                           <Component id="jbtsell" alignment="0" min="-2" pref="150" max="-2" attributes="0"/>
                           <Component id="jbtsalesreport" alignment="0" min="-2" pref="150" max="-2" attributes="0"/>
+                          <Component id="jbtfpayments" alignment="0" min="-2" pref="150" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace pref="36" max="32767" attributes="0"/>
                   </Group>
@@ -263,6 +264,8 @@
                       <Component id="jbtsell" min="-2" pref="25" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="jbtsalesreport" min="-2" pref="25" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="jbtfpayments" min="-2" pref="25" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
@@ -293,6 +296,11 @@
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtsalesreportActionPerformed"/>
               </Events>
+            </Component>
+            <Component class="javax.swing.JButton" name="jbtfpayments">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Payments Entry"/>
+              </Properties>
             </Component>
           </SubComponents>
         </Container>
