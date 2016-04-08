@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
+import javax.swing.ListSelectionModel;
 
 /**
  *
@@ -87,6 +88,11 @@ public class FarmerAccountsForm extends AbstractForm {
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         jbrtrans.setText("View Transactions");
+        jbrtrans.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbrtransActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -160,6 +166,11 @@ public class FarmerAccountsForm extends AbstractForm {
         this.goToPrevious();
     }//GEN-LAST:event_jbtbackActionPerformed
 
+    private void jbrtransActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbrtransActionPerformed
+        // TODO add your handling code here:
+        this.showTransactions();
+    }//GEN-LAST:event_jbrtransActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -218,13 +229,28 @@ public class FarmerAccountsForm extends AbstractForm {
             this.alvModel = new ALVTableModel(this.rs);
             
             this.jtbaccounts.setModel(alvModel);
-            
+            this.jtbaccounts.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
             if(this.rs.getMetaData().getColumnCount() <= 0 ){
                 this.jlmsg.setText("No Accounts Found");
             }
         } catch (SQLException ex) {
             Logger.getLogger(FarmerAccountsForm.class.getName()).log(Level.SEVERE, null, ex);
             this.jlmsg.setText("No Accounts Found");
+        }
+    }
+
+    private void showTransactions() {
+        String accountId;
+        int row = -1;
+        
+        row = this.jtbaccounts.getSelectedRow();
+        if(row < 0){
+            this.jlmsg.setText("Select an account to view the transactions");
+            
+        } else {
+            accountId = (String)this.alvModel.getValueAt(row, 3);
+            this.setVisible(false);
+            (new TransactionsForm(this, accountId)).setVisible(true);
         }
     }
 }
