@@ -5,6 +5,12 @@
  */
 package fertilizers;
 
+import database.DatabaseConnection;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFrame;
 
 /**
@@ -13,10 +19,12 @@ import javax.swing.JFrame;
  */
 public class PaymentForm extends AbstractForm {
 
+    private ComboBoxModel farmerModel;
     
     public PaymentForm(JFrame prev){
         super(prev);
         initComponents();
+        initialize();
         this.setLocationRelativeTo(null);
     }
     /**
@@ -24,9 +32,47 @@ public class PaymentForm extends AbstractForm {
      */
     public PaymentForm() {
         initComponents();
+        initialize();
         this.setLocationRelativeTo(null);
     }
 
+    private ComboBoxModel getFarmerModel(){
+        FarmerModel[] farmers = null;
+        ArrayList<FarmerModel> flist = new ArrayList();
+
+        this.stmt = DatabaseConnection.getConnection().getStatement();
+
+        this.query = "SELECT * FROM v_farmer_account";
+
+        try {
+            this.rs = this.stmt.executeQuery(this.query);
+            while (this.rs.next()) {
+                flist.add(new FarmerModel(this.rs.getLong("Farmer ID"),
+                        this.rs.getString("Name"),
+                        this.rs.getString("Mobile"),
+                        this.rs.getLong("Account No."),
+                        this.rs.getDouble("Balance")                        
+                ));
+            }
+
+            farmers = new FarmerModel[flist.size()];
+            Iterator it = flist.iterator();
+            int i = 0;
+            while (it.hasNext()) {
+                farmers[i++] = (FarmerModel) it.next();
+            }
+
+        } catch (SQLException ex) {
+            this.jlmsg.setText("Problem getting farmer data");
+        }
+        
+        this.farmerModel = new DefaultComboBoxModel(farmers);
+        return this.farmerModel;
+    }
+    
+    private void updateBalanceLabel(FarmerModel farmer){
+        this.jlbalance.setText("Rs. " + farmer.getBalance());
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -51,6 +97,7 @@ public class PaymentForm extends AbstractForm {
         jbtprocess = new javax.swing.JButton();
         jbtcancel = new javax.swing.JButton();
         jftfamount = new javax.swing.JFormattedTextField();
+        jlmsg = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(675, 620));
@@ -74,6 +121,11 @@ public class PaymentForm extends AbstractForm {
         jlbalance.setText("6000.00");
 
         jbttrans.setText("Show Transactions");
+        jbttrans.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbttransActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -96,7 +148,7 @@ public class PaymentForm extends AbstractForm {
                 .addComponent(jlbalance, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jbttrans, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(128, 128, 128))
+                .addGap(129, 129, 129))
         );
 
         jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -111,10 +163,20 @@ public class PaymentForm extends AbstractForm {
         jlamount.setText("Deposit Amount : ");
 
         jcbfarmer.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jcbfarmer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jcbfarmerActionPerformed(evt);
+            }
+        });
 
         jbtprocess.setText("Process");
 
         jbtcancel.setText("Cancel");
+        jbtcancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtcancelActionPerformed(evt);
+            }
+        });
 
         jftfamount.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter()));
 
@@ -176,19 +238,22 @@ public class PaymentForm extends AbstractForm {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jbtlogout, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jlbanner, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jlbanner, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jlmsg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jlbanner, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jlbanner, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jlmsg, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(32, 32, 32)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -202,6 +267,23 @@ public class PaymentForm extends AbstractForm {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jcbfarmerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbfarmerActionPerformed
+        // TODO add your handling code here:
+        this.updateBalanceLabel((FarmerModel)this.jcbfarmer.getSelectedItem());
+    }//GEN-LAST:event_jcbfarmerActionPerformed
+
+    private void jbtcancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtcancelActionPerformed
+        // TODO add your handling code here:
+        this.jcbfarmer.setSelectedIndex(0);
+        this.jftfamount.setText("");
+    }//GEN-LAST:event_jbtcancelActionPerformed
+
+    private void jbttransActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbttransActionPerformed
+        // TODO add your handling code here:
+        this.setVisible(false);
+        (new TransactionsForm(this, ((FarmerModel)this.jcbfarmer.getSelectedItem()).getAccountId() + "")).setVisible(true);
+    }//GEN-LAST:event_jbttransActionPerformed
 
     /**
      * @param args the command line arguments
@@ -253,6 +335,12 @@ public class PaymentForm extends AbstractForm {
     private javax.swing.JLabel jlbalancebanner;
     private javax.swing.JLabel jlbanner;
     private javax.swing.JLabel jlfamer;
+    private javax.swing.JLabel jlmsg;
     private javax.swing.JLabel jlpaymentsbanner;
     // End of variables declaration//GEN-END:variables
+
+    private void initialize() {
+        this.jcbfarmer.setModel(this.getFarmerModel());
+        this.updateBalanceLabel((FarmerModel)this.jcbfarmer.getSelectedItem());
+    }
 }

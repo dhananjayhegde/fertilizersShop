@@ -15,6 +15,8 @@ public class FarmerModel {
     private String name;
     private String address;
     private String mobile;
+    private long accountId;
+    private double balance;
 
     public FarmerModel(long id, String name, String address, String mobile) {
         this.id = id;
@@ -22,6 +24,30 @@ public class FarmerModel {
         this.address = address;
         this.mobile = mobile;
 
+    }
+
+    public FarmerModel(long id, String name, String mobile, long accountId, double balance) {
+        this.id = id;
+        this.name = name;
+        this.mobile = mobile;
+        this.accountId = accountId;
+        this.balance = balance;
+    }
+
+    public long getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(long accountId) {
+        this.accountId = accountId;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
     }
 
     public String getMobile() {
