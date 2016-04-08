@@ -73,8 +73,18 @@ public class TransactionsForm extends AbstractForm {
         jScrollPane1.setViewportView(jtbtrans);
 
         jbtback.setText("Back");
+        jbtback.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtbackActionPerformed(evt);
+            }
+        });
 
         jbtlogout.setText("Logout");
+        jbtlogout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtlogoutActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -113,6 +123,17 @@ public class TransactionsForm extends AbstractForm {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jbtbackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtbackActionPerformed
+        // TODO add your handling code here:
+        this.goToPrevious();
+    }//GEN-LAST:event_jbtbackActionPerformed
+
+    private void jbtlogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtlogoutActionPerformed
+        // TODO add your handling code here:
+        this.setVisible(false);
+        (new LoginForm()).setVisible(true);
+    }//GEN-LAST:event_jbtlogoutActionPerformed
 
     /**
      * @param args the command line arguments
