@@ -22,13 +22,14 @@ import javax.swing.JFrame;
 public class PaymentForm extends AbstractForm {
 
     private ComboBoxModel farmerModel;
-    
-    public PaymentForm(JFrame prev){
+
+    public PaymentForm(JFrame prev) {
         super(prev);
         initComponents();
         initialize();
         this.setLocationRelativeTo(null);
     }
+
     /**
      * Creates new form PaymentForm
      */
@@ -38,7 +39,7 @@ public class PaymentForm extends AbstractForm {
         this.setLocationRelativeTo(null);
     }
 
-    private ComboBoxModel getFarmerModel(){
+    private ComboBoxModel getFarmerModel() {
         FarmerModel[] farmers = null;
         ArrayList<FarmerModel> flist = new ArrayList();
 
@@ -53,7 +54,7 @@ public class PaymentForm extends AbstractForm {
                         this.rs.getString("Name"),
                         this.rs.getString("Mobile"),
                         this.rs.getLong("Account No."),
-                        this.rs.getDouble("Balance")                        
+                        this.rs.getDouble("Balance")
                 ));
             }
 
@@ -67,14 +68,15 @@ public class PaymentForm extends AbstractForm {
         } catch (SQLException ex) {
             this.jlmsg.setText("Problem getting farmer data");
         }
-        
+
         this.farmerModel = new DefaultComboBoxModel(farmers);
         return this.farmerModel;
     }
-    
-    private void updateBalanceLabel(FarmerModel farmer){
+
+    private void updateBalanceLabel(FarmerModel farmer) {
         this.jlbalance.setText("Rs. " + farmer.getBalance());
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -277,19 +279,18 @@ public class PaymentForm extends AbstractForm {
 
     private void jcbfarmerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbfarmerActionPerformed
         // TODO add your handling code here:
-        this.updateBalanceLabel((FarmerModel)this.jcbfarmer.getSelectedItem());
+        this.updateBalanceLabel((FarmerModel) this.jcbfarmer.getSelectedItem());
     }//GEN-LAST:event_jcbfarmerActionPerformed
 
     private void jbtcancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtcancelActionPerformed
         // TODO add your handling code here:
-        this.jcbfarmer.setSelectedIndex(0);
-        this.jftfamount.setText("");
+        clearFields();
     }//GEN-LAST:event_jbtcancelActionPerformed
 
     private void jbttransActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbttransActionPerformed
         // TODO add your handling code here:
         this.setVisible(false);
-        (new TransactionsForm(this, ((FarmerModel)this.jcbfarmer.getSelectedItem()).getAccountId() + "")).setVisible(true);
+        (new TransactionsForm(this, ((FarmerModel) this.jcbfarmer.getSelectedItem()).getAccountId() + "")).setVisible(true);
     }//GEN-LAST:event_jbttransActionPerformed
 
     private void jbtprocessActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtprocessActionPerformed
@@ -353,87 +354,104 @@ public class PaymentForm extends AbstractForm {
 
     private void initialize() {
         this.jcbfarmer.setModel(this.getFarmerModel());
-        this.updateBalanceLabel((FarmerModel)this.jcbfarmer.getSelectedItem());
+        this.updateBalanceLabel((FarmerModel) this.jcbfarmer.getSelectedItem());
     }
 
     private void processPayments() {
-        
+
         String amountEntered;
         double amount = 0;
-        double balance; 
+        double balance;
         FarmerModel farmer;
-        
+
         //initialization ---->
         this.errors.clear();
         this.success.clear();
-        
+
         //read data from screen ---->
-        farmer = (FarmerModel)this.jcbfarmer.getSelectedItem();        
+        farmer = (FarmerModel) this.jcbfarmer.getSelectedItem();
         amountEntered = this.jftfamount.getText();
-        
+
         //validation ---->
-        if(farmer == null ){
+        if (farmer == null) {
             this.errors.add("No farmer account selected");
         }
-        
-        try{
+
+        try {
             amount = Double.parseDouble(amountEntered);
-            
-            if(amount <= 0){
+
+            if (amount <= 0) {
                 this.errors.add("Cannot process zero or negative payments");
             }
-        } catch (NumberFormatException ex){
+        } catch (NumberFormatException ex) {
             this.errors.add("Enter a decimal number in amound field");
         }
-        
+
         //processing ---->
-        if(this.errors.isEmpty()){
-            
+        if (this.errors.isEmpty()) {
+
             this.stmt = DatabaseConnection.getConnection().getStatement();
-            
+
             //get current balance from the farmer model
             balance = farmer.getBalance();
-            
+
             //calculate new balance
             balance += amount;
-            
-            //update the databse now with new balance
-            this.query = "UPDATE account "
-                    + "SET balance=" + balance
-                    + " WHERE id=" + farmer.getAccountId();
-            
+
+            //create transaction entry
             try {
+                java.sql.Date today = new java.sql.Date((new java.util.Date()).getTime());
+
+                this.query = "INSERT INTO transaction "
+                        + "(accountid, date, type, amount) "
+                        + "VALUES "
+                        + "('" + farmer.getAccountId() + "', '" + today + "', '" + 0 + "', "
+                        + "'" + amount + "')";
+
                 this.stmt.executeUpdate(this.query);
                 
+                //if successfull, update the databse now with new balance
+                this.query = "UPDATE account "
+                        + "SET balance=" + balance
+                        + " WHERE id=" + farmer.getAccountId();
+
+                this.stmt.executeUpdate(this.query);
+
                 //if updated successfully, update the balance in the combobox's model
                 this.updateBalanceToModel(balance);
-                
+
                 //updaet the current balance label on the screen
                 this.updateBalanceLabel(farmer);
-                
+
                 this.success.add("Payment processed successfully");
-                
+                this.clearFields();
+
             } catch (SQLException ex) {
                 this.errors.add("Problem updating database");
             }
         }
-        
-        if(!this.errors.isEmpty()) {
+
+        if (!this.errors.isEmpty()) {
             this.jlmsg.setText(this.msgListToString(this.errors));
-        } else if(!this.success.isEmpty()){
+        } else if (!this.success.isEmpty()) {
             this.jlmsg.setText(this.msgListToString(this.success));
         }
-        
+
     }
 
     private void updateBalanceToModel(double balance) {
         int selFarmer;
-        
+
         selFarmer = this.jcbfarmer.getSelectedIndex();
-        
-        if(selFarmer >= 0){
-            ((FarmerModel)this.farmerModel.getElementAt(selFarmer)).setBalance(balance);
+
+        if (selFarmer >= 0) {
+            ((FarmerModel) this.farmerModel.getElementAt(selFarmer)).setBalance(balance);
         }
     }
-    
+
+    private void clearFields() {
+        this.jcbfarmer.setSelectedIndex(0);
+        this.jftfamount.setText("");
+    }
+
 }
