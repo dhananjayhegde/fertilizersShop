@@ -7,6 +7,7 @@ package fertilizers;
 
 import database.DatabaseConnection;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.logging.Level;
@@ -197,7 +198,7 @@ public class PaymentForm extends AbstractForm {
             }
         });
 
-        jftfamount.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter()));
+        jftfamount.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00"))));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -380,7 +381,7 @@ public class PaymentForm extends AbstractForm {
 
     private void processPayments() {
 
-        String amountEntered;
+        String amountEntered = "0";
         double amount = 0;
         double balance;
         FarmerModel farmer;
@@ -391,7 +392,13 @@ public class PaymentForm extends AbstractForm {
 
         //read data from screen ---->
         farmer = (FarmerModel) this.jcbfarmer.getSelectedItem();
-        amountEntered = this.jftfamount.getText();
+        
+        try {
+            this.jftfamount.commitEdit();
+            amount = ((Long)this.jftfamount.getValue()).doubleValue();
+        } catch (ParseException ex) {
+            this.errors.add("Enter a decimal number in amound field : Formatter");
+        }        
 
         //validation ---->
         if (farmer == null) {
@@ -399,7 +406,7 @@ public class PaymentForm extends AbstractForm {
         }
 
         try {
-            amount = Double.parseDouble(amountEntered);
+//            amount = Double.parseDouble(amountEntered);
 
             if (amount <= 0) {
                 this.errors.add("Cannot process zero or negative payments");
@@ -445,7 +452,8 @@ public class PaymentForm extends AbstractForm {
                 this.updateBalanceLabel(farmer);
 
                 this.success.add("Payment processed successfully");
-                this.clearFields();
+//                this.clearFields();
+                this.jftfamount.setText("");
 
             } catch (SQLException ex) {
                 this.errors.add("Problem updating database");
