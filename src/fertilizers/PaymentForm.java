@@ -403,10 +403,10 @@ public class PaymentForm extends AbstractForm {
                 java.sql.Date today = new java.sql.Date((new java.util.Date()).getTime());
 
                 this.query = "INSERT INTO transaction "
-                        + "(accountid, date, type, amount) "
+                        + "(accountid, date, type, amount, balance) "
                         + "VALUES "
                         + "('" + farmer.getAccountId() + "', '" + today + "', '" + 0 + "', "
-                        + "'" + amount + "')";
+                        + "'" + amount + "', '" + balance + "')";
 
                 this.stmt.executeUpdate(this.query);
                 

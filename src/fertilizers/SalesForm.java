@@ -794,20 +794,22 @@ public class SalesForm extends AbstractForm {
                     this.rs.close();
                     this.rs = this.stmt.executeQuery(this.query);
                     if(this.rs.next()){
-                        accountId = this.rs.getLong("id");
+                        accountId = this.rs.getLong("id");                        
+                        //get current balance and update new balance
                         accountBalance = this.rs.getDouble("balance");
+                        accountBalance -= this.salesOrder.getTotal();
                         
                         //create transaction
                         this.query = "INSERT INTO transaction "
-                                + "(accountid, date, type, amount) "
+                                + "(accountid, date, type, amount, balance) "
                                 + "VALUES "
                                 + "('" + accountId + "', '" + new java.sql.Date(this.salesOrder.getDate().getTime()) + "', "
-                                + "'" + 1 + "', '" + this.salesOrder.getTotal() + "')";
+                                + "'" + 1 + "', '" + this.salesOrder.getTotal() + "', '" + accountBalance + "')";
                         this.rs.close();
                         this.stmt.executeUpdate(this.query);
                         
                         //Update account balance
-                        accountBalance -= this.salesOrder.getTotal();
+                        
                         
                         this.query = "UPDATE account "
                                 + "SET balance=" + accountBalance
