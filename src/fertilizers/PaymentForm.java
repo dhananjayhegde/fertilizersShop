@@ -9,6 +9,8 @@ import database.DatabaseConnection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFrame;
@@ -170,6 +172,11 @@ public class PaymentForm extends AbstractForm {
         });
 
         jbtprocess.setText("Process");
+        jbtprocess.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtprocessActionPerformed(evt);
+            }
+        });
 
         jbtcancel.setText("Cancel");
         jbtcancel.addActionListener(new java.awt.event.ActionListener() {
@@ -285,6 +292,11 @@ public class PaymentForm extends AbstractForm {
         (new TransactionsForm(this, ((FarmerModel)this.jcbfarmer.getSelectedItem()).getAccountId() + "")).setVisible(true);
     }//GEN-LAST:event_jbttransActionPerformed
 
+    private void jbtprocessActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtprocessActionPerformed
+        // TODO add your handling code here:
+        processPayments();
+    }//GEN-LAST:event_jbtprocessActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -343,4 +355,85 @@ public class PaymentForm extends AbstractForm {
         this.jcbfarmer.setModel(this.getFarmerModel());
         this.updateBalanceLabel((FarmerModel)this.jcbfarmer.getSelectedItem());
     }
+
+    private void processPayments() {
+        
+        String amountEntered;
+        double amount = 0;
+        double balance; 
+        FarmerModel farmer;
+        
+        //initialization ---->
+        this.errors.clear();
+        this.success.clear();
+        
+        //read data from screen ---->
+        farmer = (FarmerModel)this.jcbfarmer.getSelectedItem();        
+        amountEntered = this.jftfamount.getText();
+        
+        //validation ---->
+        if(farmer == null ){
+            this.errors.add("No farmer account selected");
+        }
+        
+        try{
+            amount = Double.parseDouble(amountEntered);
+            
+            if(amount <= 0){
+                this.errors.add("Cannot process zero or negative payments");
+            }
+        } catch (NumberFormatException ex){
+            this.errors.add("Enter a decimal number in amound field");
+        }
+        
+        //processing ---->
+        if(this.errors.isEmpty()){
+            
+            this.stmt = DatabaseConnection.getConnection().getStatement();
+            
+            //get current balance from the farmer model
+            balance = farmer.getBalance();
+            
+            //calculate new balance
+            balance += amount;
+            
+            //update the databse now with new balance
+            this.query = "UPDATE account "
+                    + "SET balance=" + balance
+                    + " WHERE id=" + farmer.getAccountId();
+            
+            try {
+                this.stmt.executeUpdate(this.query);
+                
+                //if updated successfully, update the balance in the combobox's model
+                this.updateBalanceToModel(balance);
+                
+                //updaet the current balance label on the screen
+                this.updateBalanceLabel(farmer);
+                
+                this.success.add("Payment processed successfully");
+                
+            } catch (SQLException ex) {
+                this.errors.add("Problem updating database");
+            }
+        }
+        
+        if(!this.errors.isEmpty()) {
+            this.jlmsg.setText(this.msgListToString(this.errors));
+        } else if(!this.success.isEmpty()){
+            this.jlmsg.setText(this.msgListToString(this.success));
+        }
+        
+    }
+
+    private void updateBalanceToModel(double balance) {
+        int selFarmer;
+        
+        selFarmer = this.jcbfarmer.getSelectedIndex();
+        
+        if(selFarmer >= 0){
+            ((FarmerModel)this.farmerModel.getElementAt(selFarmer)).setBalance(balance);
+        }
+    }
+    
 }
