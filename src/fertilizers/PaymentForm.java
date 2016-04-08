@@ -110,8 +110,18 @@ public class PaymentForm extends AbstractForm {
         jlbanner.setText("Payment Entry");
 
         jbtback.setText("Back");
+        jbtback.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtbackActionPerformed(evt);
+            }
+        });
 
         jbtlogout.setText("Logout");
+        jbtlogout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtlogoutActionPerformed(evt);
+            }
+        });
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -297,6 +307,17 @@ public class PaymentForm extends AbstractForm {
         // TODO add your handling code here:
         processPayments();
     }//GEN-LAST:event_jbtprocessActionPerformed
+
+    private void jbtbackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtbackActionPerformed
+        // TODO add your handling code here:
+        this.goToPrevious();
+    }//GEN-LAST:event_jbtbackActionPerformed
+
+    private void jbtlogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtlogoutActionPerformed
+        // TODO add your handling code here:
+        this.setVisible(false);
+        (new LoginForm()).setVisible(true);
+    }//GEN-LAST:event_jbtlogoutActionPerformed
 
     /**
      * @param args the command line arguments

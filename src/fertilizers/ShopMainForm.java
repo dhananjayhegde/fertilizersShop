@@ -191,6 +191,11 @@ public class ShopMainForm extends AbstractForm {
         });
 
         jbtfpayments.setText("Payments Entry");
+        jbtfpayments.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtfpaymentsActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -414,6 +419,12 @@ public class ShopMainForm extends AbstractForm {
         this.setVisible(false);
         (new PurchaseReport(this)).setVisible(true);
     }//GEN-LAST:event_jbtpurchasereportActionPerformed
+
+    private void jbtfpaymentsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtfpaymentsActionPerformed
+        // TODO add your handling code here:
+        this.setVisible(false);
+        (new PaymentForm(this)).setVisible(true);
+    }//GEN-LAST:event_jbtfpaymentsActionPerformed
 
     /**
      * @param args the command line arguments
