@@ -65,8 +65,21 @@ public class SalesForm extends AbstractForm {
 
     private void addItemToModel() {
 
+        this.errors.clear();
+        //Check qty if it is negative - START
+        double qty;
+        
+        try{
+            qty = Integer.parseInt(this.jtfqty.getText());
+            if(qty < 0) {
+                this.errors.add("Quantity cannot be negative");
+            }
+        } catch (NumberFormatException ex){
+            this.errors.add("Please enter a whole number in quantity field");
+        }    
+        //Check qty if it is negative - END
         Object[] row = this.getNewITemForModel();
-        if (row == null && !this.errors.isEmpty()) {
+        if (!this.errors.isEmpty()) {
             this.jlmsg.setText(this.msgListToString(this.errors));
         } else if ( row == null){
             this.jlmsg.setText("There is some problem adding item ");
@@ -74,6 +87,7 @@ public class SalesForm extends AbstractForm {
         else {
             this.jlmsg.setText("");
             this.alvModel.appendRow(row);
+            this.errors.clear();
         }
     }
 
@@ -82,7 +96,7 @@ public class SalesForm extends AbstractForm {
 
         Object[] row = new Object[this.headers.length];
         
-        this.errors.clear();
+        //this.errors.clear();
         
         if (!this.jtfqty.getText().isEmpty()) {
             
@@ -110,8 +124,9 @@ public class SalesForm extends AbstractForm {
                         
                         return row;
                     } else {
-                        this.errors.add("You can order only " + (Integer.parseInt(this.jtfqty.getText()) + stockqty) + ""
-                                + " quantity of this product");
+                        this.errors.add("There is not enough stock. Maximum "
+                                + "quantity you can order of this product is : "
+                                + (Integer.parseInt(this.jtfqty.getText()) + stockqty));
                     }
                 }          
             } catch (Exception ex) {
