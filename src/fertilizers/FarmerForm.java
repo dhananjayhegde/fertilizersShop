@@ -223,7 +223,7 @@ public class FarmerForm extends AbstractForm {
         //validation
         if (name == null || name.isEmpty() || name.trim().isEmpty()) {
             this.errors.add("Enter Name of the farmer");
-        } else if (!StringMatcher.alphabetCheck(name)) {
+        } else if (!StringMatcher.isOnlyAlphabet(name)) {
             //12.04.2016
             this.errors.add("Enter only english alphabets and spaces in Name field");
         }

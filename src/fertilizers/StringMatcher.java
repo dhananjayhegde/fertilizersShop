@@ -18,7 +18,7 @@ public class StringMatcher {
         
         String name = "Some Name";
         
-        if(StringMatcher.alphabetCheck(name)){
+        if(StringMatcher.isOnlyAlphabet(name)){
             System.out.println("Only alphabets entered");
         } else {
             System.out.println("Digits and special chars are not allowed");
@@ -32,7 +32,7 @@ public class StringMatcher {
      * @param name
      * @return 
      */
-    public static boolean alphabetCheck(String name){
+    public static boolean isOnlyAlphabet(String name){
         Pattern alpha = Pattern.compile("[a-zA-Z ]+");
         
         if(!name.isEmpty()){
