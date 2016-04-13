@@ -65,8 +65,34 @@ public class PurchaseForm extends AbstractForm {
 
     private void addItemToModel() {
 
+        this.errors.clear();
+        //Check qty if it is negative - START
+        double qty;
+        double subsidy;
+        
+        try {
+            qty = Integer.parseInt(this.jtfqty.getText());
+            if (qty < 0) {
+                this.errors.add("Quantity cannot be negative");
+            }
+        } catch (NumberFormatException ex) {
+            this.errors.add("Please enter a whole number in quantity field");
+        }
+        
+        try {
+            subsidy = Double.parseDouble(this.jtfsubsidy.getText());
+            if (subsidy < 0) {
+                this.errors.add("Subsidy cannot be negative");
+            }
+        } catch (NumberFormatException ex) {
+            this.errors.add("Please enter a whole number in subsidy field");
+        }
+        
+
         Object[] row = this.getNewITemForModel();
-        if (row == null) {
+        if (!this.errors.isEmpty()) {
+            this.jlmsg.setText(this.msgListToString(this.errors));
+        } else if (row == null) {
             this.jlmsg.setText("Enter All fields to add the item to order");
         } else {
             this.jlmsg.setText("");
@@ -763,7 +789,7 @@ public class PurchaseForm extends AbstractForm {
 
                             long stockqty = this.rs.getLong("stockqty");
                             stockqty += item.getQuantity();
-                           
+
                             this.query = "UPDATE products "
                                     + "SET stockqty=" + stockqty
                                     + " WHERE id=" + item.getProductId();
@@ -772,7 +798,7 @@ public class PurchaseForm extends AbstractForm {
                             this.stmt.executeUpdate(this.query);
                         }
                     }
-                    
+
                     this.jlsuccessmsg.setText("Order saved successfully. Order ID : " + orderId);
                     this.clearItemModelData();
                     this.clearItemData();
@@ -792,7 +818,7 @@ public class PurchaseForm extends AbstractForm {
                         this.query = "DELETE FROM purchasedetails "
                                 + "WHERE id=" + orderId;
                         this.stmt.executeUpdate(this.query);
-                        
+
                     } catch (SQLException ex1) {
                         this.jlmsg.setText("There was a problem saving the order");
                     }
@@ -802,7 +828,7 @@ public class PurchaseForm extends AbstractForm {
         } else {
             this.jlmsg.setText(this.msgListToString(this.errors));
         }
-        
+
     }
 
     private boolean prepareOrderData() {
