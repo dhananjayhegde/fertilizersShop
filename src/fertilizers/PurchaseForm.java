@@ -29,6 +29,7 @@ public class PurchaseForm extends AbstractForm {
     private String[] headers;
     private PurchaseModel purchaseOrder;
     private ALVDynamicTableModel alvModel;
+    private long lastOrderId;
 
     public PurchaseForm(JFrame prev) {
         super(prev);
@@ -851,6 +852,9 @@ public class PurchaseForm extends AbstractForm {
                     }
 
                     this.jlsuccessmsg.setText("Order saved successfully. Order ID : " + orderId);
+                    //update lastOrderId
+                    this.lastOrderId = orderId;
+                    //clear Model and tableModel
                     this.clearItemModelData();
                     this.clearItemData();
                 }
