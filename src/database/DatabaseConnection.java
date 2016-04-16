@@ -28,6 +28,7 @@ public class DatabaseConnection {
     private String connectionString;    
     private Connection con;
     private Statement stmt;
+    private PreparedStatement pstmt;
  
     private DatabaseConnection(){
     
@@ -56,6 +57,18 @@ public class DatabaseConnection {
     public Statement getStatement(){
         
         return this.stmt;
+    }
+    
+    public PreparedStatement getPreparedStatement(String prearedStatement) throws SQLException{
+        return this.con.prepareStatement(prearedStatement);
+    }
+    
+    public PreparedStatement getPreparedStatement(String prearedStatement, boolean auotGeneratedKeys) throws SQLException{
+        if(auotGeneratedKeys){
+            return this.con.prepareStatement(prearedStatement, Statement.RETURN_GENERATED_KEYS);
+        } else {
+            return this.con.prepareStatement(prearedStatement);
+        }
     }
     
     public String getConnectionString(){

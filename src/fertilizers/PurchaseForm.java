@@ -6,6 +6,7 @@
 package fertilizers;
 
 import database.DatabaseConnection;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.ParseException;
@@ -773,6 +774,7 @@ public class PurchaseForm extends AbstractForm {
         //local variable declaration
         PurchaseItemsModel item;
         long orderId = -1;
+        String pstmt = "";
         //initialize the messages
         this.errors.clear();
         this.success.clear();
@@ -827,12 +829,20 @@ public class PurchaseForm extends AbstractForm {
                             long stockqty = this.rs.getLong("stockqty");
                             stockqty += item.getQuantity();
 
-                            this.query = "UPDATE products "
-                                    + "SET stockqty=" + stockqty
-                                    + " WHERE id=" + item.getProductId();
-                            this.rs.close();
-
-                            this.stmt.executeUpdate(this.query);
+//                            this.query = "UPDATE products "
+//                                    + "SET stockqty=" + stockqty
+//                                    + " WHERE id=" + item.getProductId();
+//                            this.stmt.executeUpdate(this.query);
+                            
+                            //using prepared statement to update the data into product table
+                            pstmt = "UPDATE products SET stockqty=?, expiry_date=? where id=?";                            
+                            this.pstmt = this.getPreparedStatement(pstmt);
+                            this.pstmt.setLong(1, stockqty);
+                            this.pstmt.setDate(2, new java.sql.Date(item.getExpiryDate().getTime()));
+                            this.pstmt.setLong(3, item.getProductId());
+                            
+                            this.pstmt.executeUpdate();
+                            
                         }
                     }
 
@@ -923,6 +933,8 @@ public class PurchaseForm extends AbstractForm {
                     expiryDate = DateUtil.strinToDate((String) this.alvModel.getValueAt(rowIndex, colIndex++));
                     if(DateUtil.isInPast(expiryDate)){
                         this.errors.add("Product on item  " + (rowIndex + 1) + " has already expired");
+                    } else {
+                        purchaseItem.setExpiryDate(expiryDate);
                     }
                 } catch (ParseException ex) {
                     this.errors.add("Enter date in format dd/mm/yyyy for Item number " + (rowIndex+1));
