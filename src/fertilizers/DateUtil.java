@@ -135,4 +135,11 @@ public class DateUtil {
         
         return util_date;
     }
+    
+    public static String dateToString(java.util.Date date) throws Exception{
+        
+//        System.out.println("Expiry Date : " + date);
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");        
+        return sdf.format(date);
+    }
 }

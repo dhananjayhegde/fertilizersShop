@@ -208,7 +208,8 @@ public class PurchaseForm extends AbstractForm {
                         this.rs.getString("description"),
                         this.rs.getString("composition"),
                         this.rs.getLong("stockqty"),
-                        this.rs.getDouble("price")
+                        this.rs.getDouble("price"),
+                        this.rs.getDate("expiry_date")
                 ));
 
             }
@@ -352,8 +353,7 @@ public class PurchaseForm extends AbstractForm {
         jlexdate.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jlexdate.setText("Expiry Date : ");
 
-        jtexdate.setEditable(false);
-        jtexdate.setToolTipText("User input not allowed on this field");
+        jtexdate.setToolTipText("Enter date in format dd/mm/yyyy");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -624,6 +624,7 @@ public class PurchaseForm extends AbstractForm {
     private void jcbproductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbproductActionPerformed
         // TODO add your handling code here:
         this.updatePrice();
+        this.refreshExpDate();
     }//GEN-LAST:event_jcbproductActionPerformed
 
     private void jtfqtyKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfqtyKeyReleased
@@ -746,6 +747,7 @@ public class PurchaseForm extends AbstractForm {
         this.jcbsupplier.setModel(this.getSupplierModel());
         this.jtfqty.setText("0");
         this.updatePrice();
+        this.refreshExpDate();
         this.updateAmountField();
         this.initializeItemsTable();
     }
@@ -809,13 +811,15 @@ public class PurchaseForm extends AbstractForm {
                         item = (PurchaseItemsModel) itemIterator.next();
 
                         this.query = "INSERT INTO purchasedetails "
-                                + "(id, itemno, productid, price, quantity, amount) "
+                                + "(id, itemno, productid, price, quantity, amount, expiry_date) "
                                 + "VALUES "
                                 + "('" + orderId + "', '" + item.getItemNo() + "', "
                                 + "'" + item.getProductId() + "', '" + item.getPrice() + "', "
-                                + "'" + item.getQuantity() + "', '" + item.getAmount() + "')";
+                                + "'" + item.getQuantity() + "', '" + item.getAmount() + "', "
+                                + "'" + new java.sql.Date(item.getExpiryDate().getTime()) + "')";
 
                         this.stmt.executeUpdate(this.query);
+                        //insert using prepared statement
 
                         //UPDATE PRODUCT STOCK - get the current stock and then add the purchase quantity and update
                         this.query = "SELECT stockqty "
@@ -960,5 +964,18 @@ public class PurchaseForm extends AbstractForm {
             return false;
         }
 
+    }
+    
+    private void refreshExpDate() {
+        java.util.Date exp_date = ((ProductModel) this.jcbproduct.getSelectedItem()).getExpiryDate();
+        if (exp_date == null) {
+            this.jtexdate.setText("Not Entered");
+        } else {
+            try {
+                this.jtexdate.setText(DateUtil.dateToString(exp_date));
+            } catch (Exception ex) {
+                this.jtexdate.setText("Not Entered");
+            }
+        }
     }
 }

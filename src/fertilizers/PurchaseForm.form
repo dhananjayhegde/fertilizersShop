@@ -400,8 +400,7 @@
             </Component>
             <Component class="javax.swing.JTextField" name="jtexdate">
               <Properties>
-                <Property name="editable" type="boolean" value="false"/>
-                <Property name="toolTipText" type="java.lang.String" value="User input not allowed on this field"/>
+                <Property name="toolTipText" type="java.lang.String" value="Enter date in format dd/mm/yyyy"/>
               </Properties>
             </Component>
           </SubComponents>

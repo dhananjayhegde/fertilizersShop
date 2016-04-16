@@ -209,7 +209,8 @@ public class SalesForm extends AbstractForm {
                         this.rs.getString("description"),
                         this.rs.getString("composition"),
                         this.rs.getLong("stockqty"),
-                        this.rs.getDouble("price")
+                        this.rs.getDouble("price"),
+                        this.rs.getDate("expiry_date")
                 ));
 
             }
@@ -256,6 +257,8 @@ public class SalesForm extends AbstractForm {
         jbtneworder = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
         jlitem = new javax.swing.JLabel();
+        jlexpdate = new javax.swing.JLabel();
+        jlexpdateval = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jlitems = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -341,6 +344,11 @@ public class SalesForm extends AbstractForm {
         jlitem.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jlitem.setText("Item");
 
+        jlexpdate.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jlexpdate.setText("Expiry Date : ");
+
+        jlexpdateval.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -373,13 +381,18 @@ public class SalesForm extends AbstractForm {
                                 .addGap(18, 18, 18)
                                 .addComponent(jtfprice, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(jlamount, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jtfamount, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(jlproduct, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(jcbproduct, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addComponent(jcbproduct, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(jPanel3Layout.createSequentialGroup()
+                                    .addComponent(jlexpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(jlexpdateval, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
+                                    .addComponent(jlamount, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(jtfamount, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jSeparator1))
@@ -404,7 +417,7 @@ public class SalesForm extends AbstractForm {
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jlitem, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jlproduct, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jcbproduct, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -420,7 +433,11 @@ public class SalesForm extends AbstractForm {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jlamount, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jtfamount, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 58, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jlexpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jlexpdateval, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jbtadditem, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jbtclearitemdata, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -590,6 +607,7 @@ public class SalesForm extends AbstractForm {
     private void jcbproductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbproductActionPerformed
         // TODO add your handling code here:
         this.updatePrice();
+        this.refreshExpDate();
     }//GEN-LAST:event_jcbproductActionPerformed
 
     private void jtfqtyKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfqtyKeyReleased
@@ -689,6 +707,8 @@ public class SalesForm extends AbstractForm {
     private javax.swing.JComboBox<String> jcbproduct;
     private javax.swing.JLabel jlamount;
     private javax.swing.JLabel jlbanner;
+    private javax.swing.JLabel jlexpdate;
+    private javax.swing.JLabel jlexpdateval;
     private javax.swing.JLabel jlfarmer;
     private javax.swing.JLabel jlheader;
     private javax.swing.JLabel jlitem;
@@ -709,6 +729,7 @@ public class SalesForm extends AbstractForm {
         this.jcbfarmer.setModel(this.getFarmerModel());
         this.jtfqty.setText("0");
         this.updatePrice();
+        this.refreshExpDate();
         this.updateAmountField();
         this.initializeItemsTable();
     }
@@ -931,5 +952,18 @@ public class SalesForm extends AbstractForm {
             return false;
         }
 
+    }
+
+    private void refreshExpDate() {
+        java.util.Date exp_date = ((ProductModel)this.jcbproduct.getSelectedItem()).getExpiryDate();
+        if( exp_date == null ){
+            this.jlexpdateval.setText("Not Entered");
+        } else {
+            try {
+                this.jlexpdateval.setText(DateUtil.dateToString(exp_date));
+            } catch (Exception ex) {
+                this.jlexpdateval.setText("Not Entered");
+            }
+        } 
     }
 }
