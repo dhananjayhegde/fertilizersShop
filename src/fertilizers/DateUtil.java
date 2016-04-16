@@ -19,8 +19,10 @@ public class DateUtil {
 
     /**
      * Returns 'date' as it is if number of days to add is 0<br>
-     * Forwards date by as many days as given by 'days' if 'days' is positive<br>
-     * Advances date by as many days as given by 'days' if 'days' is negative<br>
+     * Forwards date by as many days as given by 'days' if 'days' is
+     * positive<br>
+     * Advances date by as many days as given by 'days' if 'days' is
+     * negative<br>
      *
      * @param date
      * @param days
@@ -31,85 +33,88 @@ public class DateUtil {
         return new java.util.Date(date.getTime() + (days * DAY_IN_MILLISECONDS));
 
     }
+
     /**
-     * returns true if "from" date is less than "to" date.
-     * In all other cases, returns false
-     * 
+     * returns true if "from" date is less than "to" date. In all other cases,
+     * returns false
+     *
      * @param from
      * @param to
-     * @return 
+     * @return
      */
-    public static boolean compareDate(java.util.Date from, java.util.Date to){
-        
+    public static boolean compareDate(java.util.Date from, java.util.Date to) {
+
         return DateUtil.dateDiff(from, to) >= 0;
     }
-    
+
     /**
      * Returns the difference between two dates in number of milliseconds
-     * 
+     *
      * @param from
      * @param to
-     * @return 
+     * @return
      */
-    public static long dateDiff(java.util.Date from, java.util.Date to){
+    public static long dateDiff(java.util.Date from, java.util.Date to) {
         return (to.getTime() - from.getTime());
     }
+
     /**
-     * Only if the difference between DAte Of Admission and Date of Birth is more
-     * than 18 years and less than 25 years, returns true.
-     * 
+     * Only if the difference between DAte Of Admission and Date of Birth is
+     * more than 18 years and less than 25 years, returns true.
+     *
      * In all other cases, returns false
-     * 
+     *
      * @param doa
      * @param dob
-     * @return 
+     * @return
      */
-    public static boolean isAllowedAgeForCollege(java.util.Date doa, java.util.Date dob){
+    public static boolean isAllowedAgeForCollege(java.util.Date doa, java.util.Date dob) {
         double days = 0;
         long years = 0;
-        
+
         Double daysInMilSec = new Double(DateUtil.DAY_IN_MILLISECONDS);
-        
+
         days = DateUtil.dateDiff(dob, doa);
-        
-        if(days > 0){
+
+        if (days > 0) {
             years = Math.round(days / (365 * daysInMilSec)); //*approximation
-            
-            if(years >= 18 && years <= 25){
+
+            if (years >= 18 && years <= 25) {
                 return true;
             }
         }
-        
+
         return false;
     }
+
     /**
      * Returns true if and only if "date" is greater than "today"
-     * 
+     *
      * @param date
-     * @return 
+     * @return
      */
-    public static boolean isInFuture(java.util.Date date){
-        java.util.Date today = new java.util.Date();        
-        return ( DateUtil.dateDiff(today, date) > 0);
+    public static boolean isInFuture(java.util.Date date) {
+        java.util.Date today = new java.util.Date();
+        return (DateUtil.dateDiff(today, date) > 0);
     }
-    
+
     /**
      * Returns true if and only if "date" is less than "today"
-     * 
+     *
      * @param date
-     * @return 
+     * @return
      */
     public static boolean isInPast(java.util.Date date) {
         java.util.Date today = new java.util.Date();
         return (DateUtil.dateDiff(today, date) < 0);
     }
-    
+
     /**
-     * Validate if the given Date string is in the format dd/mm/yyyy
-     * and if it can be converted to java.util.Date in dd/mm/yyyy format
-     * 
+     * Validate if the given Date string is in the format dd/mm/yyyy and if it
+     * can be converted to java.util.Date in dd/mm/yyyy format
+     *
      */
-    private boolean validateSimpleDate(String dateText) {
+    public static boolean validateSimpleDate(String dateText) {
 
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         formatter.setLenient(false);
@@ -121,5 +126,13 @@ public class DateUtil {
         }
 
         return true;
+    }
+
+    public static java.util.Date strinToDate(String dateText) throws ParseException {
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        java.util.Date util_date = sdf.parse(dateText);
+        
+        return util_date;
     }
 }

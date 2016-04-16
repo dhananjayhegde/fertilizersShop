@@ -8,6 +8,7 @@ package fertilizers;
 import database.DatabaseConnection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Vector;
@@ -51,7 +52,7 @@ public class PurchaseForm extends AbstractForm {
     }
 
     private String[] getTableColumns() {
-        return new String[]{"Produ. ID", "Product Name", "Unit Price", "Quantity(in kg)", "Amount (in Rs.)"};
+        return new String[]{"Produ. ID", "Product Name", "Unit Price", "Quantity(in kg)", "Amount (in Rs.)", "Expiry Date"};
     }
 
     private void clearItemModelData() {
@@ -69,6 +70,8 @@ public class PurchaseForm extends AbstractForm {
         //Check qty if it is negative - START
         double qty;
         double subsidy;
+        String dateText;
+        java.util.Date expiryDate;
         
         try {
             qty = Integer.parseInt(this.jtfqty.getText());
@@ -87,16 +90,26 @@ public class PurchaseForm extends AbstractForm {
         } catch (NumberFormatException ex) {
             this.errors.add("Please enter a whole number in subsidy field");
         }
+        //Expiry Date validation
+        dateText = this.jtexdate.getText();
+        try {
+            expiryDate = DateUtil.strinToDate(dateText);
+        } catch (ParseException ex) {
+            this.errors.add("Please enter date in dd/mm/yyyy format");
+        }
         
-
-        Object[] row = this.getNewITemForModel();
-        if (!this.errors.isEmpty()) {
-            this.jlmsg.setText(this.msgListToString(this.errors));
-        } else if (row == null) {
-            this.jlmsg.setText("Enter All fields to add the item to order");
+        if(this.errors.isEmpty()){
+            Object[] row = this.getNewITemForModel();
+            if (!this.errors.isEmpty()) {
+                this.jlmsg.setText(this.msgListToString(this.errors));
+            } else if (row == null) {
+                this.jlmsg.setText("Enter All fields to add the item to order");
+            } else {
+                this.jlmsg.setText("");
+                this.alvModel.appendRow(row);
+            }
         } else {
-            this.jlmsg.setText("");
-            this.alvModel.appendRow(row);
+            this.jlmsg.setText(this.msgListToString(this.errors));
         }
     }
 
