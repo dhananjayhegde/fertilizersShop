@@ -267,6 +267,7 @@ public class PurchaseForm extends AbstractForm {
         jtbitemdata = new javax.swing.JTable();
         jbtremoveitem = new javax.swing.JButton();
         jbtsaveorder = new javax.swing.JButton();
+        jbtinvoice = new javax.swing.JButton();
         jlsuccessmsg = new javax.swing.JLabel();
         jbtback = new javax.swing.JButton();
         jblogout = new javax.swing.JButton();
@@ -489,10 +490,18 @@ public class PurchaseForm extends AbstractForm {
             }
         });
 
-        jbtsaveorder.setText("Save Order");
+        jbtsaveorder.setText("Place Order");
         jbtsaveorder.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtsaveorderActionPerformed(evt);
+            }
+        });
+
+        jbtinvoice.setText("Print Invoice");
+        jbtinvoice.setToolTipText("Print invoice last order");
+        jbtinvoice.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtinvoiceActionPerformed(evt);
             }
         });
 
@@ -510,6 +519,8 @@ public class PurchaseForm extends AbstractForm {
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jbtremoveitem, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jbtinvoice, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
                         .addComponent(jbtsaveorder, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
@@ -523,7 +534,8 @@ public class PurchaseForm extends AbstractForm {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jbtremoveitem, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jbtsaveorder, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jbtsaveorder, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jbtinvoice, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -671,6 +683,11 @@ public class PurchaseForm extends AbstractForm {
         (new LoginForm()).setVisible(true);
     }//GEN-LAST:event_jblogoutActionPerformed
 
+    private void jbtinvoiceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtinvoiceActionPerformed
+        // TODO add your handling code here:
+        this.prepareInvoice();
+    }//GEN-LAST:event_jbtinvoiceActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -717,6 +734,7 @@ public class PurchaseForm extends AbstractForm {
     private javax.swing.JButton jbtadditem;
     private javax.swing.JButton jbtback;
     private javax.swing.JButton jbtclearitemdata;
+    private javax.swing.JButton jbtinvoice;
     private javax.swing.JButton jbtneworder;
     private javax.swing.JButton jbtremoveitem;
     private javax.swing.JButton jbtsaveorder;
@@ -981,5 +999,9 @@ public class PurchaseForm extends AbstractForm {
                 this.jtexdate.setText("Not Entered");
             }
         }
+    }
+
+    private void prepareInvoice() {
+        
     }
 }

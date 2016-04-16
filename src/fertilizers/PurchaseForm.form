@@ -428,6 +428,8 @@
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jbtremoveitem" min="-2" pref="150" max="-2" attributes="0"/>
                               <EmptySpace max="32767" attributes="0"/>
+                              <Component id="jbtinvoice" min="-2" pref="150" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="jbtsaveorder" min="-2" pref="150" max="-2" attributes="0"/>
                           </Group>
                       </Group>
@@ -446,6 +448,7 @@
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jbtremoveitem" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
                           <Component id="jbtsaveorder" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
+                          <Component id="jbtinvoice" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -493,10 +496,19 @@
             </Component>
             <Component class="javax.swing.JButton" name="jbtsaveorder">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Save Order"/>
+                <Property name="text" type="java.lang.String" value="Place Order"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtsaveorderActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JButton" name="jbtinvoice">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Print Invoice"/>
+                <Property name="toolTipText" type="java.lang.String" value="Print invoice last order"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtinvoiceActionPerformed"/>
               </Events>
             </Component>
           </SubComponents>
