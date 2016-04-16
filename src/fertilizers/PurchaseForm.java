@@ -239,6 +239,8 @@ public class PurchaseForm extends AbstractForm {
         jbtneworder = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
         jlitem = new javax.swing.JLabel();
+        jlexdate = new javax.swing.JLabel();
+        jtexdate = new javax.swing.JTextField();
         jPanel4 = new javax.swing.JPanel();
         jlitems = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -329,6 +331,12 @@ public class PurchaseForm extends AbstractForm {
         jlitem.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jlitem.setText("Item");
 
+        jlexdate.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jlexdate.setText("Expiry Date : ");
+
+        jtexdate.setEditable(false);
+        jtexdate.setToolTipText("User input not allowed on this field");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -384,6 +392,12 @@ public class PurchaseForm extends AbstractForm {
                             .addComponent(jlheader, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jlexdate, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jtexdate, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -402,7 +416,7 @@ public class PurchaseForm extends AbstractForm {
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jlitem, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jlproduct, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jcbproduct, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -418,6 +432,10 @@ public class PurchaseForm extends AbstractForm {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jlamount, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jtfamount, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jlexdate, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jtexdate, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jbtadditem, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -686,6 +704,7 @@ public class PurchaseForm extends AbstractForm {
     private javax.swing.JComboBox<String> jcbsupplier;
     private javax.swing.JLabel jlamount;
     private javax.swing.JLabel jlbanner;
+    private javax.swing.JLabel jlexdate;
     private javax.swing.JLabel jlheader;
     private javax.swing.JLabel jlitem;
     private javax.swing.JLabel jlitems;
@@ -697,6 +716,7 @@ public class PurchaseForm extends AbstractForm {
     private javax.swing.JLabel jlsuccessmsg;
     private javax.swing.JLabel jlsupplier;
     private javax.swing.JTable jtbitemdata;
+    private javax.swing.JTextField jtexdate;
     private javax.swing.JTextField jtfamount;
     private javax.swing.JTextField jtfprice;
     private javax.swing.JTextField jtfqty;

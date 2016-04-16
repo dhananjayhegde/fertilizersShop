@@ -5,6 +5,10 @@
  */
 package fertilizers;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  *
  * @author ProjectTeam
@@ -98,5 +102,24 @@ public class DateUtil {
     public static boolean isInPast(java.util.Date date) {
         java.util.Date today = new java.util.Date();
         return (DateUtil.dateDiff(today, date) < 0);
+    }
+    
+    /**
+     * Validate if the given Date string is in the format dd/mm/yyyy
+     * and if it can be converted to java.util.Date in dd/mm/yyyy format
+     * 
+     */
+    private boolean validateSimpleDate(String dateText) {
+
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        formatter.setLenient(false);
+        Date date;
+        try {
+            date = formatter.parse(dateText);
+        } catch (ParseException pe) {
+            return false;
+        }
+
+        return true;
     }
 }
