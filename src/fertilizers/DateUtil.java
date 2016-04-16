@@ -54,7 +54,7 @@ public class DateUtil {
      * @param to
      * @return
      */
-    public static long dateDiff(java.util.Date from, java.util.Date to) {
+    public static long dateDiff(java.util.Date from, java.util.Date to) throws NullPointerException{
         return (to.getTime() - from.getTime());
     }
 

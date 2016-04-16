@@ -94,6 +94,9 @@ public class PurchaseForm extends AbstractForm {
         dateText = this.jtexdate.getText();
         try {
             expiryDate = DateUtil.strinToDate(dateText);
+            if(DateUtil.isInPast(expiryDate)){
+                this.errors.add("You cannot buy already expired products");
+            }
         } catch (ParseException ex) {
             this.errors.add("Please enter date in dd/mm/yyyy format");
         }
@@ -124,6 +127,7 @@ public class PurchaseForm extends AbstractForm {
             row[2] = this.jtfprice.getText();
             row[3] = this.jtfqty.getText();
             row[4] = this.jtfamount.getText();
+            row[5] = this.jtexdate.getText();
             return row;
         }
         return null;
@@ -869,6 +873,7 @@ public class PurchaseForm extends AbstractForm {
         Long supplierId;
         java.util.Date util_today;
         double subsidy = 0;
+        java.util.Date expiryDate;
 
         PurchaseItemsModel purchaseItem;
         //initialize the messages
@@ -912,7 +917,16 @@ public class PurchaseForm extends AbstractForm {
                 purchaseItem.setPrice(Double.parseDouble((String) this.alvModel.getValueAt(rowIndex, colIndex++)));
                 purchaseItem.setQuantity(Integer.parseInt((String) this.alvModel.getValueAt(rowIndex, colIndex++)));
                 purchaseItem.setAmount(Double.parseDouble((String) this.alvModel.getValueAt(rowIndex, colIndex++)));
-
+                
+                try {
+                    //set the expiry date
+                    expiryDate = DateUtil.strinToDate((String) this.alvModel.getValueAt(rowIndex, colIndex++));
+                    if(DateUtil.isInPast(expiryDate)){
+                        this.errors.add("Product on item  " + (rowIndex + 1) + " has already expired");
+                    }
+                } catch (ParseException ex) {
+                    this.errors.add("Enter date in format dd/mm/yyyy for Item number " + (rowIndex+1));
+                }
                 //add the item to purchaseOrder.  Total and subtotal are calculated automatically
                 this.purchaseOrder.addItem(purchaseItem);
             }
@@ -925,6 +939,8 @@ public class PurchaseForm extends AbstractForm {
             }
         }
 
+        //if any errors are raised, we return false and errors are displayed on
+        //screen by saveOrder() method.  Don't clear 'errors' from here on.
         if (this.errors.isEmpty()) {
             return true;
         } else {
