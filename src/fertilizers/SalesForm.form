@@ -403,6 +403,8 @@
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jbtremoveitem" min="-2" pref="150" max="-2" attributes="0"/>
                               <EmptySpace max="32767" attributes="0"/>
+                              <Component id="jbtprintinv" min="-2" pref="150" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="jbtsaveorder" min="-2" pref="150" max="-2" attributes="0"/>
                           </Group>
                       </Group>
@@ -421,6 +423,7 @@
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jbtremoveitem" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
                           <Component id="jbtsaveorder" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
+                          <Component id="jbtprintinv" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -472,6 +475,15 @@
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtsaveorderActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JButton" name="jbtprintinv">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Print Invoice"/>
+                <Property name="toolTipText" type="java.lang.String" value="Prints the invoice of last order"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtprintinvActionPerformed"/>
               </Events>
             </Component>
           </SubComponents>

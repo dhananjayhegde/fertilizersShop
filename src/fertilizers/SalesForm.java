@@ -27,6 +27,7 @@ public class SalesForm extends AbstractForm {
     private String[] headers;
     private SalesModel salesOrder;
     private ALVDynamicTableModel alvModel;
+    private long lastOrderId;
 
     public SalesForm(JFrame prev) {
         super(prev);
@@ -265,6 +266,7 @@ public class SalesForm extends AbstractForm {
         jtbitemdata = new javax.swing.JTable();
         jbtremoveitem = new javax.swing.JButton();
         jbtsaveorder = new javax.swing.JButton();
+        jbtprintinv = new javax.swing.JButton();
         jlsuccessmsg = new javax.swing.JLabel();
         jbtback = new javax.swing.JButton();
         jbtlogout = new javax.swing.JButton();
@@ -478,6 +480,14 @@ public class SalesForm extends AbstractForm {
             }
         });
 
+        jbtprintinv.setText("Print Invoice");
+        jbtprintinv.setToolTipText("Prints the invoice of last order");
+        jbtprintinv.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtprintinvActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -492,6 +502,8 @@ public class SalesForm extends AbstractForm {
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jbtremoveitem, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jbtprintinv, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
                         .addComponent(jbtsaveorder, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
@@ -505,7 +517,8 @@ public class SalesForm extends AbstractForm {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jbtremoveitem, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jbtsaveorder, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jbtsaveorder, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jbtprintinv, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -653,6 +666,11 @@ public class SalesForm extends AbstractForm {
         (new LoginForm()).setVisible(true);
     }//GEN-LAST:event_jbtlogoutActionPerformed
 
+    private void jbtprintinvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtprintinvActionPerformed
+        // TODO add your handling code here:
+        this.printInvoice();
+    }//GEN-LAST:event_jbtprintinvActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -701,6 +719,7 @@ public class SalesForm extends AbstractForm {
     private javax.swing.JButton jbtclearitemdata;
     private javax.swing.JButton jbtlogout;
     private javax.swing.JButton jbtneworder;
+    private javax.swing.JButton jbtprintinv;
     private javax.swing.JButton jbtremoveitem;
     private javax.swing.JButton jbtsaveorder;
     private javax.swing.JComboBox<String> jcbfarmer;
@@ -853,6 +872,7 @@ public class SalesForm extends AbstractForm {
                         this.rs.close();
                         this.stmt.executeUpdate(this.query);
                         this.jlsuccessmsg.setText("Order saved successfully. Order ID : " + orderId);
+                        this.lastOrderId = orderId;
                         this.clearItemModelData();
                         this.clearItemData();
                     }                            
@@ -965,5 +985,20 @@ public class SalesForm extends AbstractForm {
                 this.jlexpdateval.setText("Not Entered");
             }
         } 
+    }
+
+    private void printInvoice() {
+        if(this.lastOrderId > 0){
+            SalesInvoicePdf si = new SalesInvoicePdf(this.lastOrderId);
+            try {
+                String filecreatedat = si.createPdf();
+                this.jlmsg.setText("Invoice saved at : " + filecreatedat);
+            } catch (Exception ex) {
+                this.jlmsg.setText(ex.getMessage());
+            }
+        } else {
+            this.jlmsg.setText("Create an order first");
+        }
+        
     }
 }

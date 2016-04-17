@@ -5,6 +5,9 @@
  */
 package fertilizers;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author ProjectTeam
@@ -13,6 +16,11 @@ public class TestPdf {
     
     public static void main(String[] args){
         SalesInvoicePdf si = new SalesInvoicePdf(900002L);
-        si.createPdf();
+        try {
+            String filecreatedat = si.createPdf();
+            System.out.println(filecreatedat);
+        } catch (Exception ex) {
+            Logger.getLogger(TestPdf.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

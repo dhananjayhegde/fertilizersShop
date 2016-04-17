@@ -64,9 +64,8 @@ public class SalesInvoicePdf {
         file.getParentFile().mkdirs();
     }
 
-    public boolean createPdf() {
+    public String createPdf() throws Exception {
 
-        try {
             this.loadData();
             Document document = new Document();
             PdfWriter.getInstance(document, new FileOutputStream(this.file));
@@ -77,11 +76,8 @@ public class SalesInvoicePdf {
             this.addMetaData(document);
             this.addTitlePage(document);
             document.close();
-            return true;
-        } catch (Exception ex) {
-            Logger.getLogger(SalesInvoicePdf.class.getName()).log(Level.SEVERE, null, ex);
-            return false;
-        }
+            return this.file.getAbsolutePath();
+
     }
 
     private void loadData() throws SQLException {
