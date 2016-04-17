@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 public class TestPdf {
     
     public static void main(String[] args){
-        SalesInvoicePdf si = new SalesInvoicePdf(900002L);
+        PurchaseInvoicePdf si = new PurchaseInvoicePdf(20160007L);
         try {
             String filecreatedat = si.createPdf();
             System.out.println(filecreatedat);

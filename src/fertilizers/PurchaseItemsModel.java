@@ -32,6 +32,15 @@ public class PurchaseItemsModel {
         this.quantity = quantity;
         this.amount = amount;
     }
+    
+    public PurchaseItemsModel(long id, int itemNo, long productId, double price, int quantity, double amount) {
+        this.id = id;
+        this.itemNo = itemNo;
+        this.productId = productId;
+        this.price = price;
+        this.quantity = quantity;
+        this.amount = amount;
+    }
 
     public Date getExpiryDate() {
         return expiryDate;

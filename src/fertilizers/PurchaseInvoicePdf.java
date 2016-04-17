@@ -11,16 +11,12 @@ package fertilizers;
  */
 import java.io.FileOutputStream;
 import com.itextpdf.text.BadElementException;
-import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
-import com.itextpdf.text.List;
-import com.itextpdf.text.ListItem;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
-import com.itextpdf.text.Section;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -34,7 +30,7 @@ import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class SalesInvoicePdf {
+public class PurchaseInvoicePdf {
 
     private static String FILE = "e:/pdf/si";
     private static Font titleFont = new Font(Font.FontFamily.TIMES_ROMAN, 18,
@@ -50,15 +46,15 @@ public class SalesInvoicePdf {
 //    private static Font smallBold = new Font(Font.FontFamily.TIMES_ROMAN, 12,
 //            Font.BOLD);
     
-    private static final String DEST = "/pdf/salesinvoice/";
+    private static final String DEST = "/pdf/purchaseinvoice/";
     private File file;
     
     private long orderId;
-    private SalesModel so;
-    private ArrayList<SalesItemsModel> soitem = new ArrayList();
-    private FarmerModel fm;
+    private PurchaseModel po;
+    private ArrayList<PurchaseItemsModel> poitem = new ArrayList();
+    private SupplierModel sm;
 
-    public SalesInvoicePdf(long orderId) {
+    public PurchaseInvoicePdf(long orderId) {
         this.orderId = orderId;
         this.file = new File(DEST + this.orderId + ".PDF");
         file.getParentFile().mkdirs();
@@ -81,7 +77,7 @@ public class SalesInvoicePdf {
     }
 
     private void loadData() throws SQLException {
-        this.loadFamerData();
+        this.loadSupplierData();
         this.loadOrderData();
     }
 
@@ -91,22 +87,23 @@ public class SalesInvoicePdf {
         String query;
 
         stmt = DatabaseConnection.getConnection().getStatement();
-        query = "SELECT * FROM sales where id=" + this.orderId;
+        query = "SELECT * FROM purchase where id=" + this.orderId;
         rs = stmt.executeQuery(query);
 
         if (rs.next()) {
-            this.so = new SalesModel(rs.getLong("id"), rs.getLong("farmerid"), rs.getDate("date"), rs.getDouble("subtotal"), rs.getDouble("total"));
+            this.po = new PurchaseModel(rs.getLong("id"), rs.getLong("supplierid"), rs.getDate("date"), rs.getDouble("subtotal"), rs.getDouble("total"),
+                                        rs.getDouble("subsidy"));
         } else {
             new Exception("No Order found with Id " + this.orderId);
         }
 
         //load order item data
-        query = "SELECT * FROM salesdetails WHERE id=" + this.orderId;
+        query = "SELECT * FROM purchasedetails WHERE id=" + this.orderId;
 
         rs = stmt.executeQuery(query);
 
         while (rs.next()) {
-            this.soitem.add(new SalesItemsModel(rs.getLong("id"),
+            this.poitem.add(new PurchaseItemsModel(rs.getLong("id"),
                     rs.getInt("itemno"),
                     rs.getLong("productid"),
                     rs.getDouble("price"),
@@ -114,28 +111,29 @@ public class SalesInvoicePdf {
                     rs.getDouble("amount")));
         }
         
-        if(this.soitem.isEmpty()) {
-            new Exception("Order has not items");
+        if(this.poitem.isEmpty()) {
+            new Exception("Order has no items");
         }
 
     }
 
-    private void loadFamerData() throws SQLException {
+    private void loadSupplierData() throws SQLException {
 
         Statement stmt;
         ResultSet rs;
         String query;
 
         stmt = DatabaseConnection.getConnection().getStatement();
-        query = "SELECT f.id, f.name, f.address, f.mobile "
-                + "FROM sales s INNER JOIN farmer as f ON s.farmerid = f.id "
-                + "WHERE s.id=" + this.orderId;
+        query = "SELECT s.id, s.name, s.address, s.mobile, s.tin "
+                + "FROM purchase p INNER JOIN supplier s ON p.supplierid = s.id "
+                + "WHERE p.id =" + this.orderId;
         rs = stmt.executeQuery(query);
 
         if (rs.next()) {
-            this.fm = new FarmerModel(rs.getLong("id"), rs.getString("name"), rs.getString("address"), rs.getString("mobile"));
+            this.sm = new SupplierModel(rs.getLong("id"), rs.getString("name"), rs.getString("address"), 
+                    rs.getString("mobile"), rs.getString("tin"));
         } else {
-            new Exception("No farmer data found for order Id " + this.orderId);
+            new Exception("No supplier data found for order Id " + this.orderId);
         }
     }
 
@@ -153,7 +151,7 @@ public class SalesInvoicePdf {
     private void addTitlePage(Document document)
             throws DocumentException {
         Paragraph preface = new Paragraph();
-        Paragraph header = new Paragraph("Fartilo Enterprises Sales Invoice", headerFont);
+        Paragraph header = new Paragraph("Fartilo Enterprises Purchase Invoice", headerFont);
         header.setAlignment(Paragraph.ALIGN_CENTER);
         preface.add(header);
         // We add one empty line
@@ -161,25 +159,27 @@ public class SalesInvoicePdf {
         // Lets write a big header
         preface.add(new Paragraph("Order ID : " + this.orderId, titleFont));
         try {
-            preface.add(new Paragraph("Order Date : " + DateUtil.dateToString(this.so.getDate())));
+            preface.add(new Paragraph("Order Date : " + DateUtil.dateToString(this.po.getDate())));
         } catch (Exception ex) {
-            Logger.getLogger(SalesInvoicePdf.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PurchaseInvoicePdf.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         addEmptyLine(preface, 1);
         addEmptyLine(preface, 1);
         //add customer data here
-        preface.add(new Paragraph("Customer/Farmer Details: ", subtitleFont));
-        preface.add(new Paragraph("Farmer Id    : " + this.fm.getId(), customerFont));
-        preface.add(new Paragraph("Name         : " + this.fm.getName(), customerFont));
-        preface.add(new Paragraph("Address      : " + this.fm.getAddress(), customerFont));
-        preface.add(new Paragraph("Mobile       : " + this.fm.getMobile(), customerFont));
+        preface.add(new Paragraph("Supplier Details : ", subtitleFont));
+        preface.add(new Paragraph("Supplier Id      : " + this.sm.getId(), customerFont));
+        preface.add(new Paragraph("Name             : " + this.sm.getName(), customerFont));
+        preface.add(new Paragraph("Address          : " + this.sm.getAddress(), customerFont));
+        preface.add(new Paragraph("Mobile           : " + this.sm.getMobile(), customerFont));
+        preface.add(new Paragraph("Tin              : " + this.sm.getTin(), customerFont));
 
         //add order header data
         addEmptyLine(preface, 1);
         preface.add(new Paragraph("Order Details: ", subtitleFont));
-        preface.add(new Paragraph("Subtotal     : Rs. " + this.so.getSubtotal(), customerFont));
-        preface.add(new Paragraph("Total        : Rs. " + this.so.getTotal(), customerFont));
+        preface.add(new Paragraph("Subtotal     : Rs. " + this.po.getSubtotal(), customerFont));
+        preface.add(new Paragraph("Subsidy      : Rs. " + this.po.getSubsidy(), customerFont));
+        preface.add(new Paragraph("Total        : Rs. " + this.po.getTotal(), customerFont));
 
         //add item details
         addEmptyLine(preface, 1);
@@ -223,15 +223,15 @@ public class SalesInvoicePdf {
         table.setHeaderRows(1);
 
         //add table items
-        Iterator ii = this.soitem.iterator();
-        SalesItemsModel si;
+        Iterator ii = this.poitem.iterator();
+        PurchaseItemsModel pi;
         while(ii.hasNext()){
-            si = (SalesItemsModel)ii.next();
-            table.addCell(si.getItemNo() + "");
-            table.addCell(si.getProductId() + "");
-            table.addCell(si.getPrice() + "");
-            table.addCell(si.getQuantity() + "");
-            table.addCell(si.getAmount() + "");
+            pi = (PurchaseItemsModel)ii.next();
+            table.addCell(pi.getItemNo() + "");
+            table.addCell(pi.getProductId() + "");
+            table.addCell(pi.getPrice() + "");
+            table.addCell(pi.getQuantity() + "");
+            table.addCell(pi.getAmount() + "");
         }
 
         para.add(table);
