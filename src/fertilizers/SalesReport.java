@@ -239,7 +239,8 @@ public class SalesReport extends AbstractForm {
             int colInd = -1;
             for(int i = 0; i < columnNames.length ; i++){
                 if(columnNames[i].equalsIgnoreCase("Order No.")){
-                    colInd = i + 1;
+                    colInd = i;
+                    break;
                 }
             }
             

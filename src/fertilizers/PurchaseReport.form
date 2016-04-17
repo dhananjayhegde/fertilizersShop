@@ -36,6 +36,8 @@
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="jbtback" min="-2" pref="150" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
+                      <Component id="jbtprintinv" min="-2" pref="150" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="jbtlogout" min="-2" pref="150" max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -57,6 +59,7 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jbtback" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
                   <Component id="jbtlogout" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
+                  <Component id="jbtprintinv" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -109,6 +112,14 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtlogoutActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="jbtprintinv">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Print Invoices"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtprintinvActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>
