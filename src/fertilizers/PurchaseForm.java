@@ -1002,6 +1002,16 @@ public class PurchaseForm extends AbstractForm {
     }
 
     private void prepareInvoice() {
-        
+        if (this.lastOrderId > 0) {
+            PurchaseInvoicePdf si = new PurchaseInvoicePdf(this.lastOrderId);
+            try {
+                String filecreatedat = si.createPdf();
+                this.jlmsg.setText("Invoice saved at : " + filecreatedat);
+            } catch (Exception ex) {
+                this.jlmsg.setText(ex.getMessage());
+            }
+        } else {
+            this.jlmsg.setText("Create an order first");
+        }
     }
 }
