@@ -89,6 +89,7 @@ public class SalesReport extends AbstractForm {
         });
 
         jbtprintinv.setText("Print Invoice");
+        jbtprintinv.setToolTipText("You can select multiple rows to print multiple invoices at a time");
         jbtprintinv.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtprintinvActionPerformed(evt);

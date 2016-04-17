@@ -120,6 +120,7 @@
     <Component class="javax.swing.JButton" name="jbtprintinv">
       <Properties>
         <Property name="text" type="java.lang.String" value="Print Invoice"/>
+        <Property name="toolTipText" type="java.lang.String" value="You can select multiple rows to print multiple invoices at a time"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtprintinvActionPerformed"/>

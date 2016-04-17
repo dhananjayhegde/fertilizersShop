@@ -87,6 +87,7 @@ public class PurchaseReport extends AbstractForm {
         });
 
         jbtprintinv.setText("Print Invoices");
+        jbtprintinv.setToolTipText("You can select multiple rows to print multiple invoices at a time");
         jbtprintinv.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtprintinvActionPerformed(evt);
@@ -236,7 +237,7 @@ public class PurchaseReport extends AbstractForm {
             String[] columnNames = this.alvModel.getColumns();
             int colInd = -1;
             for (int i = 0; i < columnNames.length; i++) {
-                if (columnNames[i].equalsIgnoreCase("Order No.")) {
+                if (columnNames[i].equalsIgnoreCase("Order No")) {
                     colInd = i;
                     break;
                 }
