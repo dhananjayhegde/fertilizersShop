@@ -38,7 +38,7 @@ public class SalesModel {
         this.total = total;
     }
 
-    private SalesModel(long id, long farmerId, Date date, double subtotal, double total, double subsidy) {
+    public SalesModel(long id, long farmerId, Date date, double subtotal, double total) {
         this.id = id;
         this.farmerId = farmerId;
         this.date = date;
