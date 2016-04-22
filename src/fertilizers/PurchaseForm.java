@@ -6,8 +6,10 @@
 package fertilizers;
 
 import database.DatabaseConnection;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Vector;
@@ -27,6 +29,7 @@ public class PurchaseForm extends AbstractForm {
     private String[] headers;
     private PurchaseModel purchaseOrder;
     private ALVDynamicTableModel alvModel;
+    private long lastOrderId;
 
     public PurchaseForm(JFrame prev) {
         super(prev);
@@ -51,7 +54,7 @@ public class PurchaseForm extends AbstractForm {
     }
 
     private String[] getTableColumns() {
-        return new String[]{"Produ. ID", "Product Name", "Unit Price", "Quantity(in kg)", "Amount (in Rs.)"};
+        return new String[]{"Produ. ID", "Product Name", "Unit Price", "Quantity(in kg)", "Amount (in Rs.)", "Expiry Date"};
     }
 
     private void clearItemModelData() {
@@ -65,12 +68,53 @@ public class PurchaseForm extends AbstractForm {
 
     private void addItemToModel() {
 
-        Object[] row = this.getNewITemForModel();
-        if (row == null) {
-            this.jlmsg.setText("Enter All fields to add the item to order");
+        this.errors.clear();
+        //Check qty if it is negative - START
+        double qty;
+        double subsidy;
+        String dateText;
+        java.util.Date expiryDate;
+        
+        try {
+            qty = Integer.parseInt(this.jtfqty.getText());
+            if (qty < 0) {
+                this.errors.add("Quantity cannot be negative");
+            }
+        } catch (NumberFormatException ex) {
+            this.errors.add("Please enter a whole number in quantity field");
+        }
+        
+        try {
+            subsidy = Double.parseDouble(this.jtfsubsidy.getText());
+            if (subsidy < 0) {
+                this.errors.add("Subsidy cannot be negative");
+            }
+        } catch (NumberFormatException ex) {
+            this.errors.add("Please enter a whole number in subsidy field");
+        }
+        //Expiry Date validation
+        dateText = this.jtexdate.getText();
+        try {
+            expiryDate = DateUtil.strinToDate(dateText);
+            if(DateUtil.isInPast(expiryDate)){
+                this.errors.add("You cannot buy already expired products");
+            }
+        } catch (ParseException ex) {
+            this.errors.add("Please enter date in dd/mm/yyyy format");
+        }
+        
+        if(this.errors.isEmpty()){
+            Object[] row = this.getNewITemForModel();
+            if (!this.errors.isEmpty()) {
+                this.jlmsg.setText(this.msgListToString(this.errors));
+            } else if (row == null) {
+                this.jlmsg.setText("Enter All fields to add the item to order");
+            } else {
+                this.jlmsg.setText("");
+                this.alvModel.appendRow(row);
+            }
         } else {
-            this.jlmsg.setText("");
-            this.alvModel.appendRow(row);
+            this.jlmsg.setText(this.msgListToString(this.errors));
         }
     }
 
@@ -85,6 +129,7 @@ public class PurchaseForm extends AbstractForm {
             row[2] = this.jtfprice.getText();
             row[3] = this.jtfqty.getText();
             row[4] = this.jtfamount.getText();
+            row[5] = this.jtexdate.getText();
             return row;
         }
         return null;
@@ -164,7 +209,8 @@ public class PurchaseForm extends AbstractForm {
                         this.rs.getString("description"),
                         this.rs.getString("composition"),
                         this.rs.getLong("stockqty"),
-                        this.rs.getDouble("price")
+                        this.rs.getDouble("price"),
+                        this.rs.getDate("expiry_date")
                 ));
 
             }
@@ -213,12 +259,15 @@ public class PurchaseForm extends AbstractForm {
         jbtneworder = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
         jlitem = new javax.swing.JLabel();
+        jlexdate = new javax.swing.JLabel();
+        jtexdate = new javax.swing.JTextField();
         jPanel4 = new javax.swing.JPanel();
         jlitems = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jtbitemdata = new javax.swing.JTable();
         jbtremoveitem = new javax.swing.JButton();
         jbtsaveorder = new javax.swing.JButton();
+        jbtinvoice = new javax.swing.JButton();
         jlsuccessmsg = new javax.swing.JLabel();
         jbtback = new javax.swing.JButton();
         jblogout = new javax.swing.JButton();
@@ -303,6 +352,11 @@ public class PurchaseForm extends AbstractForm {
         jlitem.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jlitem.setText("Item");
 
+        jlexdate.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jlexdate.setText("Expiry Date : ");
+
+        jtexdate.setToolTipText("Enter date in format dd/mm/yyyy");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -358,6 +412,12 @@ public class PurchaseForm extends AbstractForm {
                             .addComponent(jlheader, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jlexdate, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jtexdate, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -376,7 +436,7 @@ public class PurchaseForm extends AbstractForm {
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jlitem, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jlproduct, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jcbproduct, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -392,6 +452,10 @@ public class PurchaseForm extends AbstractForm {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jlamount, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jtfamount, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jlexdate, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jtexdate, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jbtadditem, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -426,10 +490,18 @@ public class PurchaseForm extends AbstractForm {
             }
         });
 
-        jbtsaveorder.setText("Save Order");
+        jbtsaveorder.setText("Place Order");
         jbtsaveorder.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtsaveorderActionPerformed(evt);
+            }
+        });
+
+        jbtinvoice.setText("Print Invoice");
+        jbtinvoice.setToolTipText("Print invoice last order");
+        jbtinvoice.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtinvoiceActionPerformed(evt);
             }
         });
 
@@ -447,6 +519,8 @@ public class PurchaseForm extends AbstractForm {
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jbtremoveitem, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jbtinvoice, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
                         .addComponent(jbtsaveorder, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
@@ -460,7 +534,8 @@ public class PurchaseForm extends AbstractForm {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jbtremoveitem, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jbtsaveorder, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jbtsaveorder, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jbtinvoice, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -562,6 +637,7 @@ public class PurchaseForm extends AbstractForm {
     private void jcbproductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbproductActionPerformed
         // TODO add your handling code here:
         this.updatePrice();
+        this.refreshExpDate();
     }//GEN-LAST:event_jcbproductActionPerformed
 
     private void jtfqtyKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfqtyKeyReleased
@@ -606,6 +682,11 @@ public class PurchaseForm extends AbstractForm {
         this.dispose();
         (new LoginForm()).setVisible(true);
     }//GEN-LAST:event_jblogoutActionPerformed
+
+    private void jbtinvoiceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtinvoiceActionPerformed
+        // TODO add your handling code here:
+        this.prepareInvoice();
+    }//GEN-LAST:event_jbtinvoiceActionPerformed
 
     /**
      * @param args the command line arguments
@@ -653,6 +734,7 @@ public class PurchaseForm extends AbstractForm {
     private javax.swing.JButton jbtadditem;
     private javax.swing.JButton jbtback;
     private javax.swing.JButton jbtclearitemdata;
+    private javax.swing.JButton jbtinvoice;
     private javax.swing.JButton jbtneworder;
     private javax.swing.JButton jbtremoveitem;
     private javax.swing.JButton jbtsaveorder;
@@ -660,6 +742,7 @@ public class PurchaseForm extends AbstractForm {
     private javax.swing.JComboBox<String> jcbsupplier;
     private javax.swing.JLabel jlamount;
     private javax.swing.JLabel jlbanner;
+    private javax.swing.JLabel jlexdate;
     private javax.swing.JLabel jlheader;
     private javax.swing.JLabel jlitem;
     private javax.swing.JLabel jlitems;
@@ -671,6 +754,7 @@ public class PurchaseForm extends AbstractForm {
     private javax.swing.JLabel jlsuccessmsg;
     private javax.swing.JLabel jlsupplier;
     private javax.swing.JTable jtbitemdata;
+    private javax.swing.JTextField jtexdate;
     private javax.swing.JTextField jtfamount;
     private javax.swing.JTextField jtfprice;
     private javax.swing.JTextField jtfqty;
@@ -682,6 +766,7 @@ public class PurchaseForm extends AbstractForm {
         this.jcbsupplier.setModel(this.getSupplierModel());
         this.jtfqty.setText("0");
         this.updatePrice();
+        this.refreshExpDate();
         this.updateAmountField();
         this.initializeItemsTable();
     }
@@ -710,6 +795,7 @@ public class PurchaseForm extends AbstractForm {
         //local variable declaration
         PurchaseItemsModel item;
         long orderId = -1;
+        String pstmt = "";
         //initialize the messages
         this.errors.clear();
         this.success.clear();
@@ -744,13 +830,15 @@ public class PurchaseForm extends AbstractForm {
                         item = (PurchaseItemsModel) itemIterator.next();
 
                         this.query = "INSERT INTO purchasedetails "
-                                + "(id, itemno, productid, price, quantity, amount) "
+                                + "(id, itemno, productid, price, quantity, amount, expiry_date) "
                                 + "VALUES "
                                 + "('" + orderId + "', '" + item.getItemNo() + "', "
                                 + "'" + item.getProductId() + "', '" + item.getPrice() + "', "
-                                + "'" + item.getQuantity() + "', '" + item.getAmount() + "')";
+                                + "'" + item.getQuantity() + "', '" + item.getAmount() + "', "
+                                + "'" + new java.sql.Date(item.getExpiryDate().getTime()) + "')";
 
                         this.stmt.executeUpdate(this.query);
+                        //insert using prepared statement
 
                         //UPDATE PRODUCT STOCK - get the current stock and then add the purchase quantity and update
                         this.query = "SELECT stockqty "
@@ -763,17 +851,28 @@ public class PurchaseForm extends AbstractForm {
 
                             long stockqty = this.rs.getLong("stockqty");
                             stockqty += item.getQuantity();
-                           
-                            this.query = "UPDATE products "
-                                    + "SET stockqty=" + stockqty
-                                    + " WHERE id=" + item.getProductId();
-                            this.rs.close();
 
-                            this.stmt.executeUpdate(this.query);
+//                            this.query = "UPDATE products "
+//                                    + "SET stockqty=" + stockqty
+//                                    + " WHERE id=" + item.getProductId();
+//                            this.stmt.executeUpdate(this.query);
+                            
+                            //using prepared statement to update the data into product table
+                            pstmt = "UPDATE products SET stockqty=?, expiry_date=? where id=?";                            
+                            this.pstmt = this.getPreparedStatement(pstmt);
+                            this.pstmt.setLong(1, stockqty);
+                            this.pstmt.setDate(2, new java.sql.Date(item.getExpiryDate().getTime()));
+                            this.pstmt.setLong(3, item.getProductId());
+                            
+                            this.pstmt.executeUpdate();
+                            
                         }
                     }
-                    
+
                     this.jlsuccessmsg.setText("Order saved successfully. Order ID : " + orderId);
+                    //update lastOrderId
+                    this.lastOrderId = orderId;
+                    //clear Model and tableModel
                     this.clearItemModelData();
                     this.clearItemData();
                 }
@@ -792,7 +891,7 @@ public class PurchaseForm extends AbstractForm {
                         this.query = "DELETE FROM purchasedetails "
                                 + "WHERE id=" + orderId;
                         this.stmt.executeUpdate(this.query);
-                        
+
                     } catch (SQLException ex1) {
                         this.jlmsg.setText("There was a problem saving the order");
                     }
@@ -802,7 +901,7 @@ public class PurchaseForm extends AbstractForm {
         } else {
             this.jlmsg.setText(this.msgListToString(this.errors));
         }
-        
+
     }
 
     private boolean prepareOrderData() {
@@ -810,6 +909,7 @@ public class PurchaseForm extends AbstractForm {
         Long supplierId;
         java.util.Date util_today;
         double subsidy = 0;
+        java.util.Date expiryDate;
 
         PurchaseItemsModel purchaseItem;
         //initialize the messages
@@ -853,7 +953,18 @@ public class PurchaseForm extends AbstractForm {
                 purchaseItem.setPrice(Double.parseDouble((String) this.alvModel.getValueAt(rowIndex, colIndex++)));
                 purchaseItem.setQuantity(Integer.parseInt((String) this.alvModel.getValueAt(rowIndex, colIndex++)));
                 purchaseItem.setAmount(Double.parseDouble((String) this.alvModel.getValueAt(rowIndex, colIndex++)));
-
+                
+                try {
+                    //set the expiry date
+                    expiryDate = DateUtil.strinToDate((String) this.alvModel.getValueAt(rowIndex, colIndex++));
+                    if(DateUtil.isInPast(expiryDate)){
+                        this.errors.add("Product on item  " + (rowIndex + 1) + " has already expired");
+                    } else {
+                        purchaseItem.setExpiryDate(expiryDate);
+                    }
+                } catch (ParseException ex) {
+                    this.errors.add("Enter date in format dd/mm/yyyy for Item number " + (rowIndex+1));
+                }
                 //add the item to purchaseOrder.  Total and subtotal are calculated automatically
                 this.purchaseOrder.addItem(purchaseItem);
             }
@@ -866,6 +977,8 @@ public class PurchaseForm extends AbstractForm {
             }
         }
 
+        //if any errors are raised, we return false and errors are displayed on
+        //screen by saveOrder() method.  Don't clear 'errors' from here on.
         if (this.errors.isEmpty()) {
             return true;
         } else {
@@ -873,5 +986,32 @@ public class PurchaseForm extends AbstractForm {
             return false;
         }
 
+    }
+    
+    private void refreshExpDate() {
+        java.util.Date exp_date = ((ProductModel) this.jcbproduct.getSelectedItem()).getExpiryDate();
+        if (exp_date == null) {
+            this.jtexdate.setText("Not Entered");
+        } else {
+            try {
+                this.jtexdate.setText(DateUtil.dateToString(exp_date));
+            } catch (Exception ex) {
+                this.jtexdate.setText("Not Entered");
+            }
+        }
+    }
+
+    private void prepareInvoice() {
+        if (this.lastOrderId > 0) {
+            PurchaseInvoicePdf si = new PurchaseInvoicePdf(this.lastOrderId);
+            try {
+                String filecreatedat = si.createPdf();
+                this.jlmsg.setText("Invoice saved at : " + filecreatedat);
+            } catch (Exception ex) {
+                this.jlmsg.setText(ex.getMessage());
+            }
+        } else {
+            this.jlmsg.setText("Create an order first");
+        }
     }
 }

@@ -42,7 +42,7 @@ public class PurchaseModel {
         this.subsidy = subsidy;
     }
 
-    private PurchaseModel(long id, long supplierId, Date date, double subtotal, double total, double subsidy) {
+    public PurchaseModel(long id, long supplierId, Date date, double subtotal, double total, double subsidy) {
         this.id = id;
         this.supplierId = supplierId;
         this.date = date;

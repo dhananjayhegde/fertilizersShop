@@ -5,9 +5,12 @@
  */
 package fertilizers;
 
+import database.DatabaseConnection;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -27,6 +30,7 @@ public class AbstractForm extends javax.swing.JFrame {
     protected ArrayList success = new ArrayList();
     
     protected Statement stmt;
+    protected PreparedStatement pstmt;
     protected ResultSet rs;
     protected String query;
     
@@ -103,6 +107,10 @@ public class AbstractForm extends javax.swing.JFrame {
             }
         }
         return message;
+    }
+    
+    protected PreparedStatement getPreparedStatement(String pstmt) throws SQLException{
+        return DatabaseConnection.getConnection().getPreparedStatement(pstmt);
     }
 
     /**

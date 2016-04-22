@@ -193,6 +193,13 @@
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jlexdate" min="-2" pref="150" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="jtexdate" min="-2" pref="200" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                  </Group>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
@@ -214,7 +221,7 @@
                       <Component id="jSeparator1" min="-2" pref="10" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="jlitem" min="-2" pref="30" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jlproduct" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
                           <Component id="jcbproduct" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
@@ -233,6 +240,11 @@
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jlamount" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
                           <Component id="jtfamount" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="jlexdate" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
+                          <Component id="jtexdate" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
@@ -380,6 +392,17 @@
                 <Property name="text" type="java.lang.String" value="Item"/>
               </Properties>
             </Component>
+            <Component class="javax.swing.JLabel" name="jlexdate">
+              <Properties>
+                <Property name="horizontalAlignment" type="int" value="4"/>
+                <Property name="text" type="java.lang.String" value="Expiry Date : "/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="jtexdate">
+              <Properties>
+                <Property name="toolTipText" type="java.lang.String" value="Enter date in format dd/mm/yyyy"/>
+              </Properties>
+            </Component>
           </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="jPanel4">
@@ -405,6 +428,8 @@
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jbtremoveitem" min="-2" pref="150" max="-2" attributes="0"/>
                               <EmptySpace max="32767" attributes="0"/>
+                              <Component id="jbtinvoice" min="-2" pref="150" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="jbtsaveorder" min="-2" pref="150" max="-2" attributes="0"/>
                           </Group>
                       </Group>
@@ -423,6 +448,7 @@
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jbtremoveitem" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
                           <Component id="jbtsaveorder" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
+                          <Component id="jbtinvoice" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -470,10 +496,19 @@
             </Component>
             <Component class="javax.swing.JButton" name="jbtsaveorder">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Save Order"/>
+                <Property name="text" type="java.lang.String" value="Place Order"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtsaveorderActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JButton" name="jbtinvoice">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Print Invoice"/>
+                <Property name="toolTipText" type="java.lang.String" value="Print invoice last order"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtinvoiceActionPerformed"/>
               </Events>
             </Component>
           </SubComponents>

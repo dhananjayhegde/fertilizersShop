@@ -27,6 +27,7 @@ public class SalesForm extends AbstractForm {
     private String[] headers;
     private SalesModel salesOrder;
     private ALVDynamicTableModel alvModel;
+    private long lastOrderId;
 
     public SalesForm(JFrame prev) {
         super(prev);
@@ -65,8 +66,21 @@ public class SalesForm extends AbstractForm {
 
     private void addItemToModel() {
 
+        this.errors.clear();
+        //Check qty if it is negative - START
+        double qty;
+        
+        try{
+            qty = Integer.parseInt(this.jtfqty.getText());
+            if(qty < 0) {
+                this.errors.add("Quantity cannot be negative");
+            }
+        } catch (NumberFormatException ex){
+            this.errors.add("Please enter a whole number in quantity field");
+        }    
+        //Check qty if it is negative - END
         Object[] row = this.getNewITemForModel();
-        if (row == null && !this.errors.isEmpty()) {
+        if (!this.errors.isEmpty()) {
             this.jlmsg.setText(this.msgListToString(this.errors));
         } else if ( row == null){
             this.jlmsg.setText("There is some problem adding item ");
@@ -74,6 +88,7 @@ public class SalesForm extends AbstractForm {
         else {
             this.jlmsg.setText("");
             this.alvModel.appendRow(row);
+            this.errors.clear();
         }
     }
 
@@ -82,7 +97,7 @@ public class SalesForm extends AbstractForm {
 
         Object[] row = new Object[this.headers.length];
         
-        this.errors.clear();
+        //this.errors.clear();
         
         if (!this.jtfqty.getText().isEmpty()) {
             
@@ -110,8 +125,9 @@ public class SalesForm extends AbstractForm {
                         
                         return row;
                     } else {
-                        this.errors.add("You can order only " + (Integer.parseInt(this.jtfqty.getText()) + stockqty) + ""
-                                + " quantity of this product");
+                        this.errors.add("There is not enough stock. Maximum "
+                                + "quantity you can order of this product is : "
+                                + (Integer.parseInt(this.jtfqty.getText()) + stockqty));
                     }
                 }          
             } catch (Exception ex) {
@@ -194,7 +210,8 @@ public class SalesForm extends AbstractForm {
                         this.rs.getString("description"),
                         this.rs.getString("composition"),
                         this.rs.getLong("stockqty"),
-                        this.rs.getDouble("price")
+                        this.rs.getDouble("price"),
+                        this.rs.getDate("expiry_date")
                 ));
 
             }
@@ -241,12 +258,15 @@ public class SalesForm extends AbstractForm {
         jbtneworder = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
         jlitem = new javax.swing.JLabel();
+        jlexpdate = new javax.swing.JLabel();
+        jlexpdateval = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jlitems = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jtbitemdata = new javax.swing.JTable();
         jbtremoveitem = new javax.swing.JButton();
         jbtsaveorder = new javax.swing.JButton();
+        jbtprintinv = new javax.swing.JButton();
         jlsuccessmsg = new javax.swing.JLabel();
         jbtback = new javax.swing.JButton();
         jbtlogout = new javax.swing.JButton();
@@ -326,6 +346,11 @@ public class SalesForm extends AbstractForm {
         jlitem.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jlitem.setText("Item");
 
+        jlexpdate.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jlexpdate.setText("Expiry Date : ");
+
+        jlexpdateval.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -358,13 +383,18 @@ public class SalesForm extends AbstractForm {
                                 .addGap(18, 18, 18)
                                 .addComponent(jtfprice, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(jlamount, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jtfamount, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(jlproduct, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(jcbproduct, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addComponent(jcbproduct, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(jPanel3Layout.createSequentialGroup()
+                                    .addComponent(jlexpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(jlexpdateval, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
+                                    .addComponent(jlamount, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(jtfamount, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jSeparator1))
@@ -389,7 +419,7 @@ public class SalesForm extends AbstractForm {
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jlitem, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jlproduct, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jcbproduct, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -405,7 +435,11 @@ public class SalesForm extends AbstractForm {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jlamount, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jtfamount, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 58, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jlexpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jlexpdateval, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jbtadditem, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jbtclearitemdata, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -446,6 +480,14 @@ public class SalesForm extends AbstractForm {
             }
         });
 
+        jbtprintinv.setText("Print Invoice");
+        jbtprintinv.setToolTipText("Prints the invoice of last order");
+        jbtprintinv.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtprintinvActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -460,6 +502,8 @@ public class SalesForm extends AbstractForm {
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jbtremoveitem, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jbtprintinv, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
                         .addComponent(jbtsaveorder, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
@@ -473,7 +517,8 @@ public class SalesForm extends AbstractForm {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jbtremoveitem, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jbtsaveorder, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jbtsaveorder, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jbtprintinv, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -575,6 +620,7 @@ public class SalesForm extends AbstractForm {
     private void jcbproductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbproductActionPerformed
         // TODO add your handling code here:
         this.updatePrice();
+        this.refreshExpDate();
     }//GEN-LAST:event_jcbproductActionPerformed
 
     private void jtfqtyKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfqtyKeyReleased
@@ -619,6 +665,11 @@ public class SalesForm extends AbstractForm {
         this.dispose();
         (new LoginForm()).setVisible(true);
     }//GEN-LAST:event_jbtlogoutActionPerformed
+
+    private void jbtprintinvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtprintinvActionPerformed
+        // TODO add your handling code here:
+        this.printInvoice();
+    }//GEN-LAST:event_jbtprintinvActionPerformed
 
     /**
      * @param args the command line arguments
@@ -668,12 +719,15 @@ public class SalesForm extends AbstractForm {
     private javax.swing.JButton jbtclearitemdata;
     private javax.swing.JButton jbtlogout;
     private javax.swing.JButton jbtneworder;
+    private javax.swing.JButton jbtprintinv;
     private javax.swing.JButton jbtremoveitem;
     private javax.swing.JButton jbtsaveorder;
     private javax.swing.JComboBox<String> jcbfarmer;
     private javax.swing.JComboBox<String> jcbproduct;
     private javax.swing.JLabel jlamount;
     private javax.swing.JLabel jlbanner;
+    private javax.swing.JLabel jlexpdate;
+    private javax.swing.JLabel jlexpdateval;
     private javax.swing.JLabel jlfarmer;
     private javax.swing.JLabel jlheader;
     private javax.swing.JLabel jlitem;
@@ -694,6 +748,7 @@ public class SalesForm extends AbstractForm {
         this.jcbfarmer.setModel(this.getFarmerModel());
         this.jtfqty.setText("0");
         this.updatePrice();
+        this.refreshExpDate();
         this.updateAmountField();
         this.initializeItemsTable();
     }
@@ -817,6 +872,7 @@ public class SalesForm extends AbstractForm {
                         this.rs.close();
                         this.stmt.executeUpdate(this.query);
                         this.jlsuccessmsg.setText("Order saved successfully. Order ID : " + orderId);
+                        this.lastOrderId = orderId;
                         this.clearItemModelData();
                         this.clearItemData();
                     }                            
@@ -916,5 +972,33 @@ public class SalesForm extends AbstractForm {
             return false;
         }
 
+    }
+
+    private void refreshExpDate() {
+        java.util.Date exp_date = ((ProductModel)this.jcbproduct.getSelectedItem()).getExpiryDate();
+        if( exp_date == null ){
+            this.jlexpdateval.setText("Not Entered");
+        } else {
+            try {
+                this.jlexpdateval.setText(DateUtil.dateToString(exp_date));
+            } catch (Exception ex) {
+                this.jlexpdateval.setText("Not Entered");
+            }
+        } 
+    }
+
+    private void printInvoice() {
+        if(this.lastOrderId > 0){
+            SalesInvoicePdf si = new SalesInvoicePdf(this.lastOrderId);
+            try {
+                String filecreatedat = si.createPdf();
+                this.jlmsg.setText("Invoice saved at : " + filecreatedat);
+            } catch (Exception ex) {
+                this.jlmsg.setText(ex.getMessage());
+            }
+        } else {
+            this.jlmsg.setText("Create an order first");
+        }
+        
     }
 }

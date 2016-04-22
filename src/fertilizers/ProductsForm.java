@@ -8,8 +8,6 @@ package fertilizers;
 import database.DatabaseConnection;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFrame;
 
 /**
@@ -248,7 +246,7 @@ public class ProductsForm extends AbstractForm {
         }
         
         if(composition == null || composition.isEmpty()){
-            this.errors.add("Description cannot be empty");
+            this.errors.add("Composition cannot be empty");
         }
         
         if(stock == null || stock.isEmpty()){
@@ -256,6 +254,10 @@ public class ProductsForm extends AbstractForm {
         } else {
             try{
                 int qty = Integer.parseInt(stock);
+                if(qty < 0) {
+                    //12.04.2016
+                    this.errors.add("Initial stock cannot be negative");
+                }
             } catch (NumberFormatException ex){
                 this.errors.add("Stock can be only a whole number. Do not enter anything else.");
             }
@@ -266,6 +268,10 @@ public class ProductsForm extends AbstractForm {
         } else {
             try {
                 dbPrice = Double.parseDouble(price);
+                if (dbPrice < 0) {
+                    //12.04.2016
+                    this.errors.add("Price cannot be negative");
+                }
             } catch (NumberFormatException ex) {
                 this.errors.add("Please enter a decimal number in price field");
             }

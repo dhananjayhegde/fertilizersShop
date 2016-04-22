@@ -5,6 +5,8 @@
  */
 package fertilizers;
 
+import java.util.Date;
+
 /**
  *
  * @author ProjectTeam
@@ -17,6 +19,7 @@ public class PurchaseItemsModel {
     private double price;
     private int quantity;
     private double amount;
+    private java.util.Date expiryDate;
     
     public PurchaseItemsModel(){
     
@@ -28,6 +31,23 @@ public class PurchaseItemsModel {
         this.price = price;
         this.quantity = quantity;
         this.amount = amount;
+    }
+    
+    public PurchaseItemsModel(long id, int itemNo, long productId, double price, int quantity, double amount) {
+        this.id = id;
+        this.itemNo = itemNo;
+        this.productId = productId;
+        this.price = price;
+        this.quantity = quantity;
+        this.amount = amount;
+    }
+
+    public Date getExpiryDate() {
+        return expiryDate;
+    }
+
+    public void setExpiryDate(Date expiryDate) {
+        this.expiryDate = expiryDate;
     }
 
     public double getAmount() {

@@ -17,12 +17,12 @@ import javax.swing.JFrame;
  */
 public class FarmerForm extends AbstractForm {
 
-    
     public FarmerForm(JFrame prev) {
         super(prev);
         initComponents();
         this.setLocationRelativeTo(null);
     }
+
     /**
      * Creates new form FarmerForm
      */
@@ -37,6 +37,7 @@ public class FarmerForm extends AbstractForm {
         //dim.setSize(dim.getWidth() - 200, dim.getHeight() - 200);
         return dim;
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -213,17 +214,20 @@ public class FarmerForm extends AbstractForm {
         String name = this.jtfname.getText();
         String address = this.jtaaddress.getText();
         String mobileString = this.jtfmobile.getText();
-        
+
         java.sql.Date today;
-        
+
         //initialization
         this.errors.clear();
         this.success.clear();
         //validation
-        if(name == null || name.isEmpty()){
-            this.errors.add("Enter Name of the supplier");
+        if (name == null || name.isEmpty() || name.trim().isEmpty()) {
+            this.errors.add("Enter Name of the farmer");
+        } else if (!StringMatcher.isOnlyAlphabet(name)) {
+            //12.04.2016
+            this.errors.add("Enter only english alphabets and spaces in Name field");
         }
-        
+
         if (mobileString == null || mobileString.isEmpty()) {
             this.errors.add("Enter a mobile number");
         } else {
@@ -236,25 +240,25 @@ public class FarmerForm extends AbstractForm {
                 this.errors.add("Enter only digits in mobile field");
             }
         }
-        
+
         if (address == null || address.isEmpty()) {
             this.errors.add("Enter address of the supplier");
         }
-        
-        if(this.errors.isEmpty()){
-            
+
+        if (this.errors.isEmpty()) {
+
             this.stmt = DatabaseConnection.getConnection().getStatement();
 
             this.query = "SELECT id "
                     + "FROM farmer "
                     + "where name='" + name + "' AND address='" + address + "' AND "
                     + "mobile='" + mobileString + "'";
-            
+
             try {
                 this.rs = this.stmt.executeQuery(this.query);
-                
-                if(!this.rs.next()){
-                    
+
+                if (!this.rs.next()) {
+
                     this.query = "INSERT INTO farmer "
                             + "(name, address, mobile) "
                             + "VALUES "
@@ -263,27 +267,27 @@ public class FarmerForm extends AbstractForm {
                     this.rs = null; // to ensure we are not using the previous result set again
                     Integer numero = this.stmt.executeUpdate(this.query, Statement.RETURN_GENERATED_KEYS);
                     this.rs = this.stmt.getGeneratedKeys();
-                    
+
                     if (this.rs != null && this.rs.next()) {
                         Long farmerId = this.rs.getLong(1);
                         this.success.add("Farmer account with ID " + farmerId + " is created successfully");
                         //only if the Famer id is created, generate an account for the farmer
-                        
+
                         //convert today to sql date format
                         java.util.Date util_today = new java.util.Date();
                         today = new java.sql.Date(util_today.getTime());
-                        
+
                         this.query = "INSERT INTO account "
                                 + "(farmerid, date, balance) "
                                 + "VALUES "
                                 + "('" + farmerId + "', '" + today + "', '" + 0.00 + "')";
-                        
+
                         this.rs = null;
-                        
+
                         numero = this.stmt.executeUpdate(this.query, Statement.RETURN_GENERATED_KEYS);
                         this.rs = this.stmt.getGeneratedKeys();
-                        
-                        if(this.rs != null && this.rs.next()){
+
+                        if (this.rs != null && this.rs.next()) {
                             this.success.add("An account for the farmer with ID " + this.rs.getLong(1) + " is created successfully");
                         } else {
                             this.errors.add(" But account for this farmer is not created");
@@ -291,17 +295,17 @@ public class FarmerForm extends AbstractForm {
                     } else {
                         this.errors.add("Farmer IDis not created");
                     }
-                    
+
                 } else {
-                
+
                     this.errors.add("A farmer with same data already exists");
                 }
             } catch (SQLException ex) {
                 this.errors.add("Cannot insert data into database");
             }
-            
+
         }
-        
+
         if (!this.errors.isEmpty()) {
             this.jlmsg.setText(this.msgListToString(this.errors));
         }
@@ -309,12 +313,12 @@ public class FarmerForm extends AbstractForm {
         if (!this.success.isEmpty()) {
             this.jlmsg.setText(this.msgListToString(this.success));
         }
-        
+
     }//GEN-LAST:event_jbtcreateActionPerformed
 
     private void jbtclearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtclearActionPerformed
         // TODO add your handling code here:
-        
+
         this.jtaaddress.setText("");
         this.jtfmobile.setText("");
         this.jtfname.setText("");

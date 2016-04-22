@@ -7,6 +7,9 @@ package fertilizers;
 
 import database.DatabaseConnection;
 import java.sql.SQLException;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
@@ -49,6 +52,7 @@ public class PurchaseReport extends AbstractForm {
         jtbsalesreport = new javax.swing.JTable();
         jbtback = new javax.swing.JButton();
         jbtlogout = new javax.swing.JButton();
+        jbtprintinv = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -82,6 +86,14 @@ public class PurchaseReport extends AbstractForm {
             }
         });
 
+        jbtprintinv.setText("Print Invoices");
+        jbtprintinv.setToolTipText("You can select multiple rows to print multiple invoices at a time");
+        jbtprintinv.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtprintinvActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -98,6 +110,8 @@ public class PurchaseReport extends AbstractForm {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jbtback, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jbtprintinv, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
                         .addComponent(jbtlogout, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
@@ -113,7 +127,8 @@ public class PurchaseReport extends AbstractForm {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 84, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jbtback, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jbtlogout, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jbtlogout, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jbtprintinv, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -130,6 +145,11 @@ public class PurchaseReport extends AbstractForm {
         this.dispose();
         (new LoginForm()).setVisible(true);
     }//GEN-LAST:event_jbtlogoutActionPerformed
+
+    private void jbtprintinvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtprintinvActionPerformed
+        // TODO add your handling code here:
+        this.printInvoices();
+    }//GEN-LAST:event_jbtprintinvActionPerformed
 
     /**
      * @param args the command line arguments
@@ -171,6 +191,7 @@ public class PurchaseReport extends AbstractForm {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton jbtback;
     private javax.swing.JButton jbtlogout;
+    private javax.swing.JButton jbtprintinv;
     private javax.swing.JLabel jlbanner;
     private javax.swing.JLabel jlmsg;
     private javax.swing.JTable jtbsalesreport;
@@ -196,5 +217,65 @@ public class PurchaseReport extends AbstractForm {
             Logger.getLogger(FarmerAccountsForm.class.getName()).log(Level.SEVERE, null, ex);
             this.jlmsg.setText("Some problem fetching the purchase report. Try after some time!!");
         }
+    }
+    
+    private void printInvoices() {
+        int[] selIndex;
+        Set<Long> orderIds;
+
+        orderIds = new HashSet();
+
+        if (this.alvModel != null) {
+            selIndex = this.jtbsalesreport.getSelectedRows();
+
+            if (selIndex.length < 1) {
+                this.jlmsg.setText("Select at least one row to print invoices");
+                return;
+            }
+
+            //get the index of the column "Order No."
+            String[] columnNames = this.alvModel.getColumns();
+            int colInd = -1;
+            for (int i = 0; i < columnNames.length; i++) {
+                if (columnNames[i].equalsIgnoreCase("Order No")) {
+                    colInd = i;
+                    break;
+                }
+            }
+
+            if (colInd < 0) {
+                this.jlmsg.setText("Selected Row does not have order number");
+                return;
+            }
+
+            //get the value of Order Numbers for each selected row - but do not have duplicates
+            for (int index : selIndex) {
+                orderIds.add(Long.parseLong((String) this.alvModel.getValueAt(index, colInd)));
+            }
+
+            Iterator oi = orderIds.iterator();
+            while (oi.hasNext()) {
+                long orderId = (Long) oi.next();
+                PurchaseInvoicePdf pi = new PurchaseInvoicePdf(orderId);
+                try {
+                    String filecreatedat = pi.createPdf();
+                    this.success.add("Invoice saved at : " + filecreatedat);
+                } catch (Exception ex) {
+//                    this.jlmsg.setText(ex.getMessage());
+                    this.errors.add(ex.getMessage());
+                }
+            }
+
+            if (!this.success.isEmpty()) {
+                this.jlmsg.setText(this.msgListToString(this.success));
+            }
+
+            if (!this.errors.isEmpty()) {
+                this.jlmsg.setText(this.msgListToString(this.errors));
+            }
+        } else {
+            this.jlmsg.setText("No orders exist to print invoices");
+        }
+
     }
 }

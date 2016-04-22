@@ -5,6 +5,8 @@
  */
 package fertilizers;
 
+import java.sql.Date;
+
 /**
  *
  * @author ProjectTeam
@@ -17,6 +19,7 @@ public class ProductModel {
     private String composition;
     private long stockqty;
     private double price;
+    private java.sql.Date expiryDate;
 
     public ProductModel(long id, String name, String description, String composition, long stockqty, double price) {
         this.id = id;
@@ -26,6 +29,25 @@ public class ProductModel {
         this.stockqty = stockqty;
         this.price = price;
     }
+    
+    public ProductModel(long id, String name, String description, 
+            String composition, long stockqty, double price, java.sql.Date expiryDate) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.composition = composition;
+        this.stockqty = stockqty;
+        this.price = price;
+        this.expiryDate = expiryDate;
+    }
+
+    public Date getExpiryDate() {
+        return expiryDate;
+    }
+
+    public void setExpiryDate(Date expiryDate) {
+        this.expiryDate = expiryDate;
+    }
 
     public double getPrice() {
         return price;
@@ -34,7 +56,6 @@ public class ProductModel {
     public void setPrice(double price) {
         this.price = price;
     }
-
 
     public long getStockqty() {
         return stockqty;

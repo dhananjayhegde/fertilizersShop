@@ -28,6 +28,15 @@ public class SalesItemsModel {
         this.quantity = quantity;
         this.amount = amount;
     }
+    
+    public SalesItemsModel(long id, int itemNo, long productId, double price, int quantity, double amount) {
+        this.id = id;
+        this.itemNo = itemNo;
+        this.productId = productId;
+        this.price = price;
+        this.quantity = quantity;
+        this.amount = amount;
+    }
 
     public double getAmount() {
         return amount;
